@@ -7,9 +7,9 @@ import javafx.scene.layout.Region;
 
 public class MScene extends Scene {
 
-    public MScene(MGroup group, double width, double height) {
+    public MScene(MHBox group, double width, double height) {
         super(group, width, height);
-        MVBox parameterBox = new MVBox(true);
+        MVBox parameterBox = new MVBox(false);
         group.getChildren().add(parameterBox);
         parameterBox.getChildren().add(this.createPredictionTypePanel().getBox());
         parameterBox.getChildren().add(this.createDatasetPanel().getBox());
@@ -17,7 +17,14 @@ public class MScene extends Scene {
         parameterBox.getChildren().add(this.createArchitecturePanel().getBox());
         parameterBox.getChildren().add(this.createOptimizationPanel().getBox());
 
-        System.out.println();
+        MVBox visualisationBox = new MVBox(false);
+        group.getChildren().add(visualisationBox);
+        visualisationBox.getChildren().add(this.createVisualisationPanel().getBox());
+        visualisationBox.getChildren().add(this.createVisualisationPanel().getBox());
+        visualisationBox.getChildren().add(this.createVisualisationPanel().getBox());
+
+
+        System.out.println(visualisationBox.getPrefHeight());
     }
 
     private Panel createPredictionTypePanel() {
@@ -109,4 +116,11 @@ public class MScene extends Scene {
         return this.createPanel(regions, false, false);
     }
 
+    private Panel createVisualisationPanel() {
+        MTextArea visualizeTextArea = new MTextArea();
+
+        Region[] regions = {visualizeTextArea};
+
+        return this.createPanel(regions, true, false);
+    }
 }

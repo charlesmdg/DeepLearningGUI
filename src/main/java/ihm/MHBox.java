@@ -6,7 +6,7 @@ public class MHBox extends HBox {
     public MHBox(boolean bordered){
         super();
         if(bordered){
-            this.setStyle("-fx-border-color: red");
+            this.setStyle("-fx-border-color: black");
         }
     }
 }

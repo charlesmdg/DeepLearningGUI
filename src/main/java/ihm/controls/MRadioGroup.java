@@ -1,4 +1,4 @@
-package ihm;
+package ihm.controls;
 
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -12,7 +12,7 @@ public class MRadioGroup {
         ToggleGroup group = new ToggleGroup();
 
         for (String text : texts) {
-            RadioButton radioButton = new RadioButton(text);
+            MRadioButton radioButton = new MRadioButton(text);
             this.box.getChildren().add(radioButton);
             radioButton.setToggleGroup(group);
         }

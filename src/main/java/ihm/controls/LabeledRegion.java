@@ -1,9 +1,10 @@
-package ihm;
+package ihm.controls;
 
 import common.Tools;
 import common.Constants;
+import ihm.controls.MHBox;
+import ihm.controls.MLabel;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
 public class LabeledRegion extends MHBox {

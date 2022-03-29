@@ -8,7 +8,17 @@ public class Constants {
     public static final int MAIN_WINDOW_HEIGHT = 750;
     public static final String MAIN_WINDOW_TITLE = "Easy Deep Learning";
 
-    public static final int PARAMTER_FRAME_WIDTH = 400;
+    public static final int PARAMETER_AREA_WIDTH = 400;
+    public static final int DATASET_AREA_HEIGHT = 150;
+    public static final int PREDICTION_TYPE_AREA_HEIGHT = 150;
+    public static final int OPTIMISATION_AREA_HEIGHT = 150;
+    public static final int ARCHITECTURE_AREA_HEIGHT = 150;
+    public static final int BUTTON_AREA_HEIGHT = 150;
+
+    public static final int DISPLAY_AREA_WIDTH = 500;
+    public static final int VISUALISATION_AREA_HEIGHT = 250;
+    public static final int TRAINING_AREA_HEIGHT = 250;
+    public static final int EVALUATION_AREA_HEIGHT = 250;
 
     public static final String FILE = "Fichier";
     public static final String EDIT = "Éditer";
@@ -35,6 +45,7 @@ public class Constants {
     public static final String MIN_MAX_SCALER = "Min-max scaler";
     public static final String[] PRETREATMENT_OPTIONS = {NONE, STANDARD_SCALER, MIN_MAX_SCALER};
 
+
     public static final String INPUTS = "Entrrée(s)";
     public static final String OUTPUTS = "Sortie(s)";
     public static final String HIDDEN_LAYERS = "Couche(s) cachée(s)";
@@ -53,6 +64,19 @@ public class Constants {
     public static final String OPTIMIZER = "Optimiseur";
     public static final String PARAMETERS = "Paramètre(s)";
     public static final String ITERATIONS = "Itérations";
+
+    public static final int ITERATION_MIN_VALUE = 1;
+    public static final int ITERATION_MAX_VALUE = 1000;
+
+    public static final int INPUT_MIN_VALUE = 1;
+    public static final int INPUT_MAX_VALUE = 10;
+
+    public static final int OUTPUT_MIN_VALUE = 1;
+    public static final int OUTPUT_MAX_VALUE = 10;
+
+    public static final int HIDDEN_LAYER_MIN_VALUE = 1;
+    public static final int HIDDEN_LAYER_MAX_VALUE = 5;
+
 
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";
     public static final String HINGE_ERROR = "Hinge error";

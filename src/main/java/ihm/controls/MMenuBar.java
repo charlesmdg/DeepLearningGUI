@@ -1,4 +1,4 @@
-package ihm;
+package ihm.controls;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;

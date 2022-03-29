@@ -1,4 +1,4 @@
-package ihm;
+package ihm.controls;
 
 import common.Constants;
 import javafx.scene.control.Label;

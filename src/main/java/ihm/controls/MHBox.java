@@ -1,4 +1,4 @@
-package ihm;
+package ihm.controls;
 
 import javafx.scene.layout.HBox;
 

@@ -12,6 +12,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         TheScene scene = new TheScene(new DeepHBox(false));
         stage.setScene(scene);
+        scene.setStage(stage);
         stage.show();
         stage.setTitle(Constants.MAIN_WINDOW_TITLE);
     }

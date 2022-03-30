@@ -16,7 +16,7 @@ public class Constants {
 
     public static final int SPINNER_WIDTH = 60;
     public static final int COMBOBOX_WIDTH = 190;
-    public static final int TEXT_TEXTFIELD_WIDTH = 150;
+    public static final int TEXT_TEXTFIELD_WIDTH = 200;
     public static final int NUM_TEXTFIELD_WIDTH = 50;
     public static final int INPUT_FIELD_MAX_WIDTH = 195;
 
@@ -32,6 +32,9 @@ public class Constants {
     public static final int TRAINING_AREA_HEIGHT = 280;
     public static final int EVALUATION_AREA_HEIGHT = 120;
 
+    public static final String INFORMATION = "Information";
+    public static final String ERROR = "Erreur";
+
     public static final String FILE = "Fichier";
     public static final String EDIT = "Éditer";
     public static final String HELP = "Aide";
@@ -40,13 +43,15 @@ public class Constants {
     public static final String TRAIN = "Entraîner";
     public static final String EVALUATE = "Évaluer";
 
+    public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
     public static final String CR = "\n";
     public static final String SPACED_COLON = " : ";
     public static final String COLON = ":";
     public static final String SPACED_SHARP = " # ";
     public static final String EMPTY_STRING = "";
     public static final String[] EMPTY_STRINGS = {EMPTY_STRING};
-
+    public static final String CSV = "CSV";
+    public static final String STAR_DOT_CSV = "*.csv";
 
     public static final String CLASSIFICATION = "Classification";
     public static final String REGRESSION = "Prédiction";
@@ -56,6 +61,9 @@ public class Constants {
     public static final String TARGET_VARIABLE = "Variable cible";
     public static final String TRAINING = "Entraînement";
     public static final String CSV_FILE = "Fichier cvs";
+    public static final String CHOOSE_AND_DOTS = "Choisir...";
+    public static final String FILE_CHOOSER_TITLE = "Choix d'un fichier CSV";
+
     public static final String PRETREATMENT = "Prétraitement";
     public static final String NONE = "Aucun";
     public static final String STANDARD_SCALER = "Standard scaler";
@@ -110,8 +118,9 @@ public class Constants {
     public static final String ADAMAX = "AdaMax";
 
     public static final String[] OPTIMIZERS = {GRADIENT, STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
+    public static final double DEFAULT_LEARNING_RATE = 0.01;
+    public static final int DEFAULT_ITERATION_COUNT = 100;
 
-    public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
 
     public static final int NEURON_RADIUS = 10;
     public static final int NEURON_STROKE_WIDTH = 1;

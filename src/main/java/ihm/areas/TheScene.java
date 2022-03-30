@@ -1,14 +1,19 @@
 package ihm.areas;
 
 import common.Constants;
+import common.CsvLoader;
 import common.Tools;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
 
 public class TheScene extends Scene {
 
-    private final DatasetArea datasetArea = new DatasetArea();
+    private final DatasetArea datasetArea = new DatasetArea(this);
     private final PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
     private final ButtonArea buttonArea;
     private final ArchitectureArea architectureArea = new ArchitectureArea();
@@ -16,7 +21,8 @@ public class TheScene extends Scene {
     private final VisualisationArea visualisationArea = new VisualisationArea();
     private final TrainingArea trainingArea = new TrainingArea();
     private final EvaluationArea evaluationArea = new EvaluationArea();
-
+    private Stage stage;
+    private String csvFile;
 
 
     public TheScene(DeepHBox group) {
@@ -52,6 +58,10 @@ public class TheScene extends Scene {
         visualisationBox.getChildren().add(Tools.createVExpandableSpacer());
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     public void radioButtonGoupChanged(String text) {
         switch (text) {
             case Constants.CLASSIFICATION:
@@ -64,12 +74,20 @@ public class TheScene extends Scene {
         }
     }
 
-    //Todo
-    private void classificationPedictionTypeSelected(){
+    private void classificationPedictionTypeSelected() {
+        this.optimizationArea.setLossFunction(Constants.NEGATIVE_LOG_LIKELIHOOD);
+        this.selectDefaultOptimisationParameters();
     }
 
-    //Todo
-    private void regressionPedictionTypeSelected(){
+    private void regressionPedictionTypeSelected() {
+        this.optimizationArea.setLossFunction(Constants.MEAN_SQUARED_ERROR);
+        this.selectDefaultOptimisationParameters();
+    }
+
+    private void selectDefaultOptimisationParameters() {
+        this.optimizationArea.setOptimizer(Constants.STOCHASTIC_GRADIENT);
+        this.optimizationArea.setParameter(Constants.DEFAULT_LEARNING_RATE);
+        this.optimizationArea.setIterationCount(Constants.DEFAULT_ITERATION_COUNT);
     }
 
     public void buttonClicked(String buttonText) {
@@ -83,25 +101,47 @@ public class TheScene extends Scene {
             case Constants.EVALUATE:
                 this.evaluateButtonClicked();
                 break;
+            case Constants.CHOOSE_AND_DOTS:
+                this.chooseCSVFile();
+                break;
             default:
+        }
+    }
+
+    private void chooseCSVFile(){
+        //Todo
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("jkl");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(Constants.CSV, Constants.STAR_DOT_CSV),
+                new FileChooser.ExtensionFilter("Tous", "*.*"));
+        File file = fileChooser.showOpenDialog(this.stage);
+        if (file != null) {
+            CsvLoader csvLoader = new CsvLoader();
+            String filePath = file.getPath();
+                    if(csvLoader.check(filePath)){
+                        this.csvFile = filePath;
+                        this.datasetArea.setCsvFile(file.getName());
+                    }
+
         }
     }
 
     private void visualizeButtonClicked() {
         this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
-                                            this.architectureArea.getOutputCount(),
-                                            this.architectureArea.getHiddenLayerCount(),
-                                            this.architectureArea.getActivationFunction());
+                this.architectureArea.getOutputCount(),
+                this.architectureArea.getHiddenLayerCount(),
+                this.architectureArea.getActivationFunction());
     }
 
     private void trainButtonClicked() {
         //Todo
         int iterationCount = this.optimizationArea.getIterationCount();
-        for (int ii=1; ii<=iterationCount; ii++){
+        for (int ii = 1; ii <= iterationCount; ii++) {
             this.trainingArea.println(Constants.ITERATION +
-                                            Constants.SPACED_SHARP +
-                                            ii +
-                                            Constants.SPACED_COLON);
+                    Constants.SPACED_SHARP +
+                    ii +
+                    Constants.SPACED_COLON);
         }
     }
 

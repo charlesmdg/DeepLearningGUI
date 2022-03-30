@@ -11,7 +11,7 @@ import javafx.scene.layout.Region;
 public class OptimizationArea extends DeepVInputArea {
     private final DeepComboBox lossFunctionComboBox = new DeepComboBox(Constants.LOSS_FUNCTIONS);
     private final DeepComboBox optimizerComboBox = new DeepComboBox(Constants.OPTIMIZERS);
-    private final DeepTextField parameterTextField = new DeepTextField();
+    private final DeepTextField parameterTextField = new DeepTextField(true);
     private final DeepSpinner iterationSpinner = new DeepSpinner(Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE);
 
     public OptimizationArea(){

@@ -1,5 +1,6 @@
 package common;
 
+import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -56,5 +57,32 @@ public class Tools {
     public static void println(double x) {
         System.out.println(x);
     }
+
+    public static void inform(String message){
+        Tools.alert(Alert.AlertType.INFORMATION, message);
+    }
+
+    public static void error(String message){
+        Tools.alert(Alert.AlertType.ERROR, message);
+    }
+
+    private static void alert(Alert.AlertType alertType, String message){
+        Alert alert = new Alert(alertType);
+
+        String title = "";
+        if(alertType == Alert.AlertType.INFORMATION)
+            title = Constants.INFORMATION;
+        else if(alertType == Alert.AlertType.ERROR)
+            title = Constants.ERROR;
+
+        alert.setTitle(title);
+
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
+
 
 }

@@ -3,8 +3,8 @@ package ihm.controls;
 import common.Constants;
 import javafx.scene.control.RadioButton;
 
-public class MRadioButton extends RadioButton {
-    public MRadioButton(String text){
+public class DeepRadioButton extends RadioButton {
+    public DeepRadioButton(String text){
         super(text);
         this.setFont(Constants.NORMAL_FONT);
     }

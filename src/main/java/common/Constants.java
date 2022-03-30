@@ -1,24 +1,36 @@
 package common;
 
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class Constants {
-    public static final int MAIN_WINDOW_WIDTH = 1200;
+    public static final int MAIN_WINDOW_WIDTH = 1100;
     public static final int MAIN_WINDOW_HEIGHT = 750;
     public static final String MAIN_WINDOW_TITLE = "Easy Deep Learning";
 
-    public static final int PARAMETER_AREA_WIDTH = 400;
+    public static final int AREA_PADDING = 10;
+    public static final int RADIO_BUTTON_INTERSPACE = 20;
+    public static final int RADIO_BUTTON_GROUP_WIDTH = 150;
+    public static final int RADIO_BUTTON_GROUP_HEIGHT = 100;
+
+    public static final int SPINNER_WIDTH = 60;
+    public static final int COMBOBOX_WIDTH = 190;
+    public static final int TEXT_TEXTFIELD_WIDTH = 150;
+    public static final int NUM_TEXTFIELD_WIDTH = 50;
+    public static final int INPUT_FIELD_MAX_WIDTH = 195;
+
+    public static final int PARAMETER_AREA_WIDTH = 360;
     public static final int DATASET_AREA_HEIGHT = 150;
-    public static final int PREDICTION_TYPE_AREA_HEIGHT = 150;
+    public static final int PREDICTION_TYPE_AREA_HEIGHT = 120;
     public static final int OPTIMISATION_AREA_HEIGHT = 150;
     public static final int ARCHITECTURE_AREA_HEIGHT = 150;
-    public static final int BUTTON_AREA_HEIGHT = 150;
+    public static final int BUTTON_AREA_HEIGHT = 50;
 
-    public static final int DISPLAY_AREA_WIDTH = 500;
-    public static final int VISUALISATION_AREA_HEIGHT = 250;
-    public static final int TRAINING_AREA_HEIGHT = 250;
-    public static final int EVALUATION_AREA_HEIGHT = 250;
+    public static final int DISPLAY_AREA_WIDTH = 600;
+    public static final int VISUALISATION_AREA_HEIGHT = 255;
+    public static final int TRAINING_AREA_HEIGHT = 280;
+    public static final int EVALUATION_AREA_HEIGHT = 120;
 
     public static final String FILE = "Fichier";
     public static final String EDIT = "Éditer";
@@ -28,7 +40,10 @@ public class Constants {
     public static final String TRAIN = "Entraîner";
     public static final String EVALUATE = "Évaluer";
 
+    public static final String CR = "\n";
     public static final String SPACED_COLUMN = " : ";
+    public static final String EMPTY_STRING = "";
+    public static final String[] EMPTY_STRINGS = {EMPTY_STRING};
 
 
     public static final String CLASSIFICATION = "Classification";
@@ -94,4 +109,14 @@ public class Constants {
     public static final String[] OPTIMIZERS = {GRADIENT, STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
 
     public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
+
+    public static final int NEURON_RADIUS = 10;
+    public static final int NEURON_STROKE_WIDTH = 1;
+    public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLACK;
+    public static final Color INPUT_OUPUT_NEURON_STROKE_COLOR = Color.BLACK;
+    public static final Color HIDDEN_NEURON_FILL_COLOR = Color.RED;
+    public static final Color HIDDEN_NEURON_STROKE_COLOR = Color.BLACK;
+
+    public static final Color NETWORK_BACKGROUND_COLOR = Color.WHITE;
+
 }

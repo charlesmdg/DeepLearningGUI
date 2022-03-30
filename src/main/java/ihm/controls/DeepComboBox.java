@@ -1,19 +1,21 @@
 package ihm.controls;
 
 import common.Constants;
+import common.Tools;
 import javafx.scene.control.ComboBox;
 
-public class MComboBox extends ComboBox<String> {
-    public MComboBox(){
+public class DeepComboBox extends ComboBox<String> {
+    public DeepComboBox(){
         super();
     }
 
-    public MComboBox(String[] options){
+    public DeepComboBox(String[] options){
         super();
         this.getItems().addAll(options);
         //Todo
         this.getEditor().setFont(Constants.NORMAL_FONT);
-        this.setEditable(true);
+        Tools.setWidth(this, Constants.COMBOBOX_WIDTH);
+        this.setEditable(false);
     }
 
 }

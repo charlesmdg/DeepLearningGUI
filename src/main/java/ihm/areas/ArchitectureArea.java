@@ -1,17 +1,16 @@
-package ihm.app;
+package ihm.areas;
 
 import common.Constants;
-import ihm.controls.MComboBox;
-import ihm.controls.MSpinner;
-import ihm.controls.MTextField;
-import ihm.controls.VInputArea;
+import ihm.controls.DeepComboBox;
+import ihm.controls.DeepSpinner;
+import ihm.controls.DeepVInputArea;
 import javafx.scene.layout.Region;
 
-public class ArchitectureArea extends VInputArea {
-    private final MSpinner inputSpinner = new MSpinner(Constants.INPUT_MIN_VALUE, Constants.INPUT_MAX_VALUE);
-    private final MSpinner outputSpinner = new MSpinner(Constants.OUTPUT_MIN_VALUE, Constants.OUTPUT_MAX_VALUE);
-    private final MSpinner hiddenLayerSpinner = new MSpinner(Constants.HIDDEN_LAYER_MIN_VALUE, Constants.HIDDEN_LAYER_MAX_VALUE);
-    private final MComboBox activationFunctionComboBox = new MComboBox(Constants.ACTIVATION_FUNCTIONS);
+public class ArchitectureArea extends DeepVInputArea {
+    private final DeepSpinner inputSpinner = new DeepSpinner(Constants.INPUT_MIN_VALUE, Constants.INPUT_MAX_VALUE);
+    private final DeepSpinner outputSpinner = new DeepSpinner(Constants.OUTPUT_MIN_VALUE, Constants.OUTPUT_MAX_VALUE);
+    private final DeepSpinner hiddenLayerSpinner = new DeepSpinner(Constants.HIDDEN_LAYER_MIN_VALUE, Constants.HIDDEN_LAYER_MAX_VALUE);
+    private final DeepComboBox activationFunctionComboBox = new DeepComboBox(Constants.ACTIVATION_FUNCTIONS);
 
     public ArchitectureArea() {
         super(Constants.PARAMETER_AREA_WIDTH, Constants.ARCHITECTURE_AREA_HEIGHT, true);

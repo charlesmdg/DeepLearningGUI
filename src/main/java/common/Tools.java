@@ -1,6 +1,9 @@
 package common;
 
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 public class Tools {
     public static void setSize(Region region, double width, double heigt) {
@@ -28,6 +31,22 @@ public class Tools {
         Region region = new Region();
         Tools.setWidth(region, width);
         return region;
+    }
+
+    public static Region createVExpandableSpacer(){
+        Region region = new Region();
+        VBox.setVgrow(region, Priority.ALWAYS);
+        return region;
+    }
+
+    public static Region createHExpandableSpacer(){
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+        return region;
+    }
+
+    public static void addBorder(Region region){
+        region.setStyle("-fx-border-color: black");
     }
 
     public static void println(String text) {

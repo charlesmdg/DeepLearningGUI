@@ -1,20 +1,23 @@
-package ihm.app;
+package ihm.areas;
 
 import common.Constants;
-import ihm.controls.MComboBox;
-import ihm.controls.MSpinner;
-import ihm.controls.MTextField;
-import ihm.controls.VInputArea;
+import common.Tools;
+import ihm.controls.DeepComboBox;
+import ihm.controls.DeepSpinner;
+import ihm.controls.DeepTextField;
+import ihm.controls.DeepVInputArea;
 import javafx.scene.layout.Region;
 
-public class OptimizationArea extends VInputArea {
-    MComboBox lossFunctionComboBox = new MComboBox(Constants.LOSS_FUNCTIONS);
-    MComboBox optimizerComboBox = new MComboBox(Constants.OPTIMIZERS);
-    MTextField parameterTextField = new MTextField();
-    MSpinner iterationSpinner = new MSpinner(Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE);
+public class OptimizationArea extends DeepVInputArea {
+    DeepComboBox lossFunctionComboBox = new DeepComboBox(Constants.LOSS_FUNCTIONS);
+    DeepComboBox optimizerComboBox = new DeepComboBox(Constants.OPTIMIZERS);
+    DeepTextField parameterTextField = new DeepTextField();
+    DeepSpinner iterationSpinner = new DeepSpinner(Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE);
 
     public OptimizationArea(){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.OPTIMISATION_AREA_HEIGHT, true);
+
+        Tools.setWidth(this.parameterTextField, Constants.NUM_TEXTFIELD_WIDTH);
 
         String[] labelTexts = {Constants.LOSS_FUNCTION, Constants.OPTIMIZER, Constants.PARAMETERS, Constants.ITERATIONS};
         Region[] regions = {this.lossFunctionComboBox, this.optimizerComboBox, this.parameterTextField, this.iterationSpinner};

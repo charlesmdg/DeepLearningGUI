@@ -2,8 +2,8 @@ package ihm.controls;
 
 import javafx.scene.Group;
 
-public class MGroup extends Group {
-    public MGroup(){
+public class DeepGroup extends Group {
+    public DeepGroup(){
         super();
     }
 }

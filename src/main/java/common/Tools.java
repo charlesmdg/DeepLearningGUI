@@ -66,6 +66,10 @@ public class Tools {
         Tools.alert(Alert.AlertType.ERROR, message);
     }
 
+    public static void error(String message, String replacement){
+        Tools.alert(Alert.AlertType.ERROR, message.replace(Constants.STRING_TO_REPLACE, replacement));
+    }
+
     private static void alert(Alert.AlertType alertType, String message){
         Alert alert = new Alert(alertType);
 

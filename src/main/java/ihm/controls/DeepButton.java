@@ -2,9 +2,7 @@ package ihm.controls;
 
 import common.Constants;
 import ihm.areas.TheScene;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 
 public class DeepButton extends Button {
     private final String text;

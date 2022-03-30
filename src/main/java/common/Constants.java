@@ -45,6 +45,7 @@ public class Constants {
 
     public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
     public static final String SPACE = " ";
+    public static final String COMMA = ",";
     public static final String CR = "\n";
     public static final String SPACED_COLON = " : ";
     public static final String DOUBLE_QUOTE = "\"";
@@ -55,6 +56,7 @@ public class Constants {
     public static final String CSV = "CSV";
     public static final String STAR_DOT_CSV = "*.csv";
     public static final String HEADER_REGEX = "^\"[a-zA-Z][_a-zA-Z0-9]*\"$";
+    public static final String STRING_TO_REPLACE = "@@@";
 
 
     public static final String CLASSIFICATION = "Classification";
@@ -106,6 +108,8 @@ public class Constants {
 
     public static final int HIDDEN_LAYER_MIN_VALUE = 1;
     public static final int HIDDEN_LAYER_MAX_VALUE = 5;
+
+    public static final int CSV_DATA_LINE_MIN_COUNT = 10;
 
 
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";

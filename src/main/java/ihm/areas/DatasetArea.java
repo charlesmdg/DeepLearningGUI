@@ -3,6 +3,9 @@ package ihm.areas;
 import common.Constants;
 import common.Tools;
 import ihm.controls.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableListBase;
 import javafx.scene.layout.Region;
 
 import static common.Constants.CHOOSE_AND_DOTS;
@@ -59,4 +62,9 @@ public class DatasetArea extends DeepVInputArea {
     public void setPretreatment(String pretreatment){
         this.pretreatmentComboBox.setValue(pretreatment);
     }
+    public void setTargetVariableComboBoxItemList(String[] columnNames){
+        ObservableList<String> list = FXCollections.observableArrayList(columnNames);
+        this.targetVariableComboBox.setItems(list);
+    }
+
 }

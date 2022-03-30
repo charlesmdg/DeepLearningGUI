@@ -111,7 +111,7 @@ public class TheScene extends Scene {
     private void chooseCSVFile(){
         //Todo
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("jkl");
+        fileChooser.setTitle(Constants.FILE_CHOOSER_TITLE);
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(Constants.CSV, Constants.STAR_DOT_CSV),
                 new FileChooser.ExtensionFilter("Tous", "*.*"));
@@ -122,8 +122,13 @@ public class TheScene extends Scene {
                     if(csvLoader.check(filePath)){
                         this.csvFile = filePath;
                         this.datasetArea.setCsvFile(file.getName());
+                        this.datasetArea.setTargetVariableComboBoxItemList(csvLoader.getColumnNames());
+                        String[] columnNames = csvLoader.getColumnNames();
+                        //A ce stade, apres le csvLoader.check columnNames.length >=2
+                        this.datasetArea.setTargetVariable(columnNames[columnNames.length - 1]);
+                        this.datasetArea.setTraining(Constants.DEFAULT_TRAINING);
+                        this.datasetArea.setPretreatment(Constants.STANDARD_SCALER);
                     }
-
         }
     }
 

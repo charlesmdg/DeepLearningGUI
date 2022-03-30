@@ -44,14 +44,18 @@ public class Constants {
     public static final String EVALUATE = "Évaluer";
 
     public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
+    public static final String SPACE = " ";
     public static final String CR = "\n";
     public static final String SPACED_COLON = " : ";
+    public static final String DOUBLE_QUOTE = "\"";
     public static final String COLON = ":";
     public static final String SPACED_SHARP = " # ";
     public static final String EMPTY_STRING = "";
     public static final String[] EMPTY_STRINGS = {EMPTY_STRING};
     public static final String CSV = "CSV";
     public static final String STAR_DOT_CSV = "*.csv";
+    public static final String HEADER_REGEX = "^\"[a-zA-Z][_a-zA-Z0-9]*\"$";
+
 
     public static final String CLASSIFICATION = "Classification";
     public static final String REGRESSION = "Prédiction";
@@ -120,6 +124,7 @@ public class Constants {
     public static final String[] OPTIMIZERS = {GRADIENT, STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
     public static final double DEFAULT_LEARNING_RATE = 0.01;
     public static final int DEFAULT_ITERATION_COUNT = 100;
+    public static final double DEFAULT_TRAINING = 0.75;
 
 
     public static final int NEURON_RADIUS = 10;

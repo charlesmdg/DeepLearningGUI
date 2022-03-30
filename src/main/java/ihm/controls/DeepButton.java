@@ -16,11 +16,6 @@ public class DeepButton extends Button {
         this.scene = scene;
         this.setFont(Constants.NORMAL_FONT);
 
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                DeepButton.this.scene.buttonClicked(DeepButton.this.text);
-            }
-        });
+        this.setOnMouseClicked(mouseEvent -> DeepButton.this.scene.buttonClicked(DeepButton.this.text));
     }
 }

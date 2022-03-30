@@ -15,4 +15,8 @@ public class DeepSpinner extends Spinner<Integer>{
         Tools.setWidth(this, Constants.SPINNER_WIDTH);
         this.editorProperty().get().setAlignment(Pos.CENTER);
     }
+
+    public void setValue(int value){
+        this.getValueFactory().setValue(value);
+    }
 }

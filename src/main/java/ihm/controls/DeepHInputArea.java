@@ -7,7 +7,6 @@ public class DeepHInputArea extends DeepInputArea {
 
     public DeepHInputArea(double width, double height, boolean bordered) {
         super(new DeepHBox(bordered), width, height);
-//        this.box = new DeepHBox(bordered);
     }
 
     @Override

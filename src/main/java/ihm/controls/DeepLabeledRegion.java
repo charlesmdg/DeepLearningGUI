@@ -9,7 +9,7 @@ import javafx.scene.layout.Region;
 public class DeepLabeledRegion extends DeepHBox {
     public DeepLabeledRegion(String labelText, Region region){
         super(false);
-        DeepLabel label = new DeepLabel(labelText + Constants.SPACED_COLUMN);
+        DeepLabel label = new DeepLabel(labelText + Constants.SPACED_COLON);
         this.setAlignment(Pos.CENTER_LEFT);
         this.getChildren().add(label);
         this.getChildren().add(Tools.createHExpandableSpacer());

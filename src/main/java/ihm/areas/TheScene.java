@@ -4,23 +4,20 @@ import common.Constants;
 import common.Tools;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
-import ihm.network.HiddenNeuron;
-import ihm.network.InputOuputNeuron;
-import ihm.network.Neuron;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class TheScene extends Scene {
 
-    DatasetArea datasetArea = new DatasetArea();
-    PredictionTypeArea predictionTypeArea = new PredictionTypeArea();
-    ButtonArea buttonArea;
-    ArchitectureArea architectureArea = new ArchitectureArea();
-    OptimizationArea optimizationArea = new OptimizationArea();
-    VisualisationArea visualisationArea = new VisualisationArea();
-    TrainingArea trainingArea = new TrainingArea();
-    EvaluationArea evaluationArea = new EvaluationArea();
+    private final DatasetArea datasetArea = new DatasetArea();
+    private final PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
+    private final ButtonArea buttonArea;
+    private final ArchitectureArea architectureArea = new ArchitectureArea();
+    private final OptimizationArea optimizationArea = new OptimizationArea();
+    private final VisualisationArea visualisationArea = new VisualisationArea();
+    private final TrainingArea trainingArea = new TrainingArea();
+    private final EvaluationArea evaluationArea = new EvaluationArea();
+
+
 
     public TheScene(DeepHBox group) {
         super(group, Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
@@ -55,6 +52,26 @@ public class TheScene extends Scene {
         visualisationBox.getChildren().add(Tools.createVExpandableSpacer());
     }
 
+    public void radioButtonGoupChanged(String text) {
+        switch (text) {
+            case Constants.CLASSIFICATION:
+                this.classificationPedictionTypeSelected();
+                break;
+            case Constants.REGRESSION:
+                this.regressionPedictionTypeSelected();
+                break;
+            default:
+        }
+    }
+
+    //Todo
+    private void classificationPedictionTypeSelected(){
+    }
+
+    //Todo
+    private void regressionPedictionTypeSelected(){
+    }
+
     public void buttonClicked(String buttonText) {
         switch (buttonText) {
             case Constants.VISUALIZE:
@@ -66,11 +83,11 @@ public class TheScene extends Scene {
             case Constants.EVALUATE:
                 this.evaluateButtonClicked();
                 break;
+            default:
         }
     }
 
     private void visualizeButtonClicked() {
-        //Todo
         this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
                                             this.architectureArea.getOutputCount(),
                                             this.architectureArea.getHiddenLayerCount(),
@@ -79,7 +96,13 @@ public class TheScene extends Scene {
 
     private void trainButtonClicked() {
         //Todo
-        this.trainingArea.println("trainButtonClicked");
+        int iterationCount = this.optimizationArea.getIterationCount();
+        for (int ii=1; ii<=iterationCount; ii++){
+            this.trainingArea.println(Constants.ITERATION +
+                                            Constants.SPACED_SHARP +
+                                            ii +
+                                            Constants.SPACED_COLON);
+        }
     }
 
     private void evaluateButtonClicked() {

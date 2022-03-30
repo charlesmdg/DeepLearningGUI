@@ -17,5 +17,4 @@ public class DeepComboBox extends ComboBox<String> {
         Tools.setWidth(this, Constants.COMBOBOX_WIDTH);
         this.setEditable(false);
     }
-
 }

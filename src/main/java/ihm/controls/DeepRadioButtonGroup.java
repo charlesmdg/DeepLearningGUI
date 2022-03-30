@@ -2,6 +2,10 @@ package ihm.controls;
 
 import common.Constants;
 import common.Tools;
+import ihm.areas.TheScene;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 
 import static common.Constants.RADIO_BUTTON_GROUP_HEIGHT;
@@ -11,7 +15,7 @@ public class DeepRadioButtonGroup extends DeepVInputArea {
 
     private final ToggleGroup toggleGroup = new ToggleGroup();
 
-    public DeepRadioButtonGroup(String[] texts) {
+    public DeepRadioButtonGroup(String[] texts, TheScene scene) {
         super(RADIO_BUTTON_GROUP_WIDTH, RADIO_BUTTON_GROUP_HEIGHT, false);
 
         int length = texts.length;
@@ -25,6 +29,9 @@ public class DeepRadioButtonGroup extends DeepVInputArea {
             radioButton.setToggleGroup(this.toggleGroup);
         }
         this.add(Tools.createVExpandableSpacer());
+
+        this.toggleGroup.selectedToggleProperty().addListener(
+                (observableValue, oldToggle, newToggle) -> scene.radioButtonGoupChanged(((DeepRadioButton)newToggle).getText()));
     }
 
     public DeepRadioButton getSelectedRadioButton() {

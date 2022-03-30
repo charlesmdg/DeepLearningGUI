@@ -9,10 +9,10 @@ import ihm.controls.DeepVInputArea;
 import javafx.scene.layout.Region;
 
 public class OptimizationArea extends DeepVInputArea {
-    DeepComboBox lossFunctionComboBox = new DeepComboBox(Constants.LOSS_FUNCTIONS);
-    DeepComboBox optimizerComboBox = new DeepComboBox(Constants.OPTIMIZERS);
-    DeepTextField parameterTextField = new DeepTextField();
-    DeepSpinner iterationSpinner = new DeepSpinner(Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE);
+    private final DeepComboBox lossFunctionComboBox = new DeepComboBox(Constants.LOSS_FUNCTIONS);
+    private final DeepComboBox optimizerComboBox = new DeepComboBox(Constants.OPTIMIZERS);
+    private final DeepTextField parameterTextField = new DeepTextField();
+    private final DeepSpinner iterationSpinner = new DeepSpinner(Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE);
 
     public OptimizationArea(){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.OPTIMISATION_AREA_HEIGHT, true);
@@ -39,5 +39,21 @@ public class OptimizationArea extends DeepVInputArea {
 
     public int getIterationCount(){
         return this.iterationSpinner.getValue();
+    }
+
+    public void setLossFunction(String lossFunction){
+        this.lossFunctionComboBox.setValue(lossFunction);
+    }
+
+    public void setOptimizer(String optimizer){
+        this.optimizerComboBox.setValue(optimizer);
+    }
+
+    public void setParameter(double learningRate){
+        this.parameterTextField.setText(String.valueOf(learningRate));
+    }
+
+    public void setIterationCount(int iterationCount){
+        this.iterationSpinner.setValue(iterationCount);
     }
 }

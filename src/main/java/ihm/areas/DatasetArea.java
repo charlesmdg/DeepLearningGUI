@@ -45,4 +45,18 @@ public class DatasetArea extends DeepVInputArea {
         return this.pretreatmentComboBox.getSelectionModel().getSelectedItem();
     }
 
+    public void setCsvFile(String csvFile){
+        this.csvFileTextField.setText(csvFile);
+    }
+
+    public void setTargetVariable(String targetVariable){
+        this.targetVariableComboBox.setValue(targetVariable);
+    }
+
+    public void setTraining(double training){
+        this.trainingTextField.setText(String.valueOf(training));
+    }
+    public void setPretreatment(String pretreatment){
+        this.pretreatmentComboBox.setValue(pretreatment);
+    }
 }

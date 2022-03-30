@@ -41,7 +41,9 @@ public class Constants {
     public static final String EVALUATE = "Évaluer";
 
     public static final String CR = "\n";
-    public static final String SPACED_COLUMN = " : ";
+    public static final String SPACED_COLON = " : ";
+    public static final String COLON = ":";
+    public static final String SPACED_SHARP = " # ";
     public static final String EMPTY_STRING = "";
     public static final String[] EMPTY_STRINGS = {EMPTY_STRING};
 
@@ -79,6 +81,7 @@ public class Constants {
     public static final String OPTIMIZER = "Optimiseur";
     public static final String PARAMETERS = "Paramètre(s)";
     public static final String ITERATIONS = "Itérations";
+    public static final String ITERATION = "Itération";
 
     public static final int ITERATION_MIN_VALUE = 1;
     public static final int ITERATION_MAX_VALUE = 1000;

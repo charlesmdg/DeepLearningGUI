@@ -18,6 +18,10 @@ public class VisualisationArea extends DeepPane {
     public void drawNetwork(int inputCount, int outputCount, int hiddenLayerCount, String activationFunction) {
         //Todo
         this.clear();
+        this.drawNeurons(inputCount,outputCount, hiddenLayerCount, activationFunction);
+    }
+
+    private void drawNeurons(int inputCount, int outputCount, int hiddenLayerCount, String activationFunction){
         double width = this.getWidth();
         double height = this.getHeight();
 
@@ -51,7 +55,6 @@ public class VisualisationArea extends DeepPane {
             yOffset += vspace;
         }
     }
-
     private void draw(Shape shape) {
         this.getChildren().add(shape);
     }

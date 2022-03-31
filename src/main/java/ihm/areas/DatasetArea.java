@@ -48,8 +48,12 @@ public class DatasetArea extends DeepVInputArea {
         this.targetVariableComboBox.setItems(list);
     }
 
-    public void getValueCount(String columnName){
-
+    public String getTargetVariable(){
+        return this.targetVariableComboBox.getSelectionModel().getSelectedItem();
     }
 
+    public String getCsvFilePath() {
+        return csvFileTextField.getText();
+    }
+    get
 }

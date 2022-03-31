@@ -1,4 +1,8 @@
-package common;
+package data;
+
+import common.Constants;
+import common.Message;
+import common.Tools;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +19,11 @@ public class Dataset {
         this.data = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param row la ligne a rajouter
+     * @throws Exception
+     */
     public void addRow(double[] row) throws Exception{
         if (row == null || row.length != columnNames.length)
             throw new Exception(Message.INVALID_ROW_LENGTH);
@@ -34,7 +43,7 @@ public class Dataset {
     public int getValueCount(String columnName){
         int columnIndex = Tools.indexOf(this.columnNames, columnName);
 
-        if(columnIndex==Constants.IMPOSSIBLE_INDEX)
+        if(columnIndex== Constants.IMPOSSIBLE_INDEX)
             return 0;
 
         HashSet<Double> set = new HashSet<>();

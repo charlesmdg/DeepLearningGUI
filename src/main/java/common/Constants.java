@@ -4,6 +4,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+/**
+ * La classe de toutes les constantes du projet
+ */
 public class Constants {
     public static final int MAIN_WINDOW_WIDTH = 1100;
     public static final int MAIN_WINDOW_HEIGHT = 750;
@@ -55,6 +58,8 @@ public class Constants {
 
     public static final String CSV = "CSV";
     public static final String STAR_DOT_CSV = "*.csv";
+    public static final String ALL = "All";
+    public static final String STAR_DOT_STAR = "*.*";
 
     public static final String HEADER_REGEX = "^\"[a-zA-Z][_a-zA-Z0-9]*\"$";
     public static final String DATA_REGEX = "(^[0-9]+$|^\\.[0-9]+$|^[0-9]+\\.[0-9]*$)";
@@ -119,6 +124,11 @@ public class Constants {
     public static final String NADAM = "Nadam";
     public static final String NESTEROV = "Nesterov";
     public static final String ADAMAX = "AdaMax";
+
+    public static final int DEFAULT_OUTPUT_COUNT = 2;
+    public static final String DEFAULT_ACTIVATION_FUNCTION = Constants.IDENTITY;
+    public static final int DEFAULT_HIDDEN_LAYER_COUNT = 2;
+    public static final int DIFFERENT_VALUE_MAX_COUNT = 10;
 
     public static final String[] OPTIMIZERS = {GRADIENT, STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
     public static final double DEFAULT_LEARNING_RATE = 0.01;

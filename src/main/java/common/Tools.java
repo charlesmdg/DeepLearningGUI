@@ -1,17 +1,21 @@
 package common;
 
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
+
 public class Tools {
     /**
      *
-     * @param region : le controle a retailler
-     * @param width : la largeur finale
-     * @param heigt : la hauteur finale
+     * @param region le controle a retailler
+     * @param width la largeur finale
+     * @param heigt la hauteur finale
      */
     public static void setSize(Region region, double width, double heigt) {
         region.setMaxSize(width, heigt);
@@ -20,8 +24,8 @@ public class Tools {
 
     /**
      *
-     * @param region : le controle a retailler
-     * @param height : la hauteur finale
+     * @param region le controle a retailler
+     * @param height la hauteur finale
      */
     public static void setHeight(Region region, double height) {
         region.setMaxHeight(height);
@@ -30,8 +34,8 @@ public class Tools {
 
     /**
      *
-     * @param region : le controle a retailler
-     * @param width : la largeur finale
+     * @param region le controle a retailler
+     * @param width la largeur finale
      */
     public static void setWidth(Region region, double width) {
         region.setMaxWidth(width);
@@ -40,8 +44,8 @@ public class Tools {
 
     /**
      *
-     * @param height : la hauteur du spacer
-     * @return : un spacer vertical
+     * @param height la hauteur du spacer
+     * @return un spacer vertical
      */
     public static Region createVerticalSpacer(double height) {
         Region region = new Region();
@@ -51,7 +55,7 @@ public class Tools {
 
     /**
      *
-     * @return : un spacer vertical elastique
+     * @return un spacer vertical elastique
      */
     public static Region createVExpandableSpacer() {
         Region region = new Region();
@@ -61,7 +65,7 @@ public class Tools {
 
     /**
      *
-     * @return : un spacer horizontal elastique
+     * @return un spacer horizontal elastique
      */
     public static Region createHExpandableSpacer() {
         Region region = new Region();
@@ -71,7 +75,7 @@ public class Tools {
 
     /**
      *
-     * @param region : le controle a encader
+     * @param region le controle a encader
      */
     public static void addBorder(Region region) {
         region.setStyle("-fx-border-color: black");
@@ -79,7 +83,7 @@ public class Tools {
 
     /**
      *
-     * @param message : le message d'erreur a afficher
+     * @param message le message d'erreur a afficher
      */
     public static void error(String message) {
         Tools.alert(Alert.AlertType.ERROR, message);
@@ -87,8 +91,8 @@ public class Tools {
 
     /**
      *
-     * @param alertType : le type de message
-     * @param message : le message a afficher
+     * @param alertType le type de message
+     * @param message le message a afficher
      */
     private static void alert(Alert.AlertType alertType, String message) {
         Alert alert = new Alert(alertType);
@@ -110,9 +114,9 @@ public class Tools {
 
     /**
      *
-     * @param strings : la liste de chaine de caractere
+     * @param strings la liste de chaine de caractere
      * @param string :la chaine de caratere a chercher
-     * @return : l'indice de la chaine de caractere recherchee
+     * @return l'indice de la chaine de caractere recherchee
      */
     public static int indexOf(String[] strings, String string) {
         if (strings == null)
@@ -124,5 +128,30 @@ public class Tools {
         }
 
         return Constants.IMPOSSIBLE_INDEX;
+    }
+
+    /**
+     *
+     * @param nodes les nodes a activer/desactiver
+     * @param disabled le statut d'activation final
+     */
+    public static void setDisableNodes(Node[] nodes, boolean disabled){
+        for(Node node: nodes){
+            node.setDisable(disabled);
+        }
+    }
+
+    public static ArrayList<Node> getAllNodes(Parent parent) {
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        addAllDescendents(parent, nodes);
+        return nodes;
+    }
+
+    private static void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
+        for (Node node : parent.getChildrenUnmodifiable()) {
+            nodes.add(node);
+            if (node instanceof Parent)
+                addAllDescendents((Parent)node, nodes);
+        }
     }
 }

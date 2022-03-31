@@ -46,7 +46,7 @@ public class ArchitectureArea extends DeepVInputArea {
     }
 
     public void setOutputCount(int outputCount){
-        this.inputCountSpinner.setValue(outputCount);
+        this.outputCountSpinner.setValue(outputCount);
     }
 
     public void sethiddenLayerCount(int hiddenLayerCount){

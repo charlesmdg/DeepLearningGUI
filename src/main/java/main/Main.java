@@ -6,6 +6,9 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import common.Constants;
 
+/**
+ * Classe de lancement de l'application
+ */
 public class Main extends Application {
 
     @Override

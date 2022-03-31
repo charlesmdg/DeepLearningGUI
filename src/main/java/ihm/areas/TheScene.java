@@ -1,8 +1,10 @@
 package ihm.areas;
 
 import common.Constants;
-import common.CsvLoader;
+import data.CsvLoader;
+import common.Message;
 import common.Tools;
+import data.IaModel;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
 import javafx.scene.Scene;
@@ -13,6 +15,7 @@ import java.io.File;
 
 public class TheScene extends Scene {
 
+    private final PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
     private final DatasetArea datasetArea = new DatasetArea(this);
     private final ArchitectureArea architectureArea = new ArchitectureArea();
     private final OptimizationArea optimizationArea = new OptimizationArea();
@@ -20,11 +23,11 @@ public class TheScene extends Scene {
     private final TrainingArea trainingArea = new TrainingArea();
     private final EvaluationArea evaluationArea = new EvaluationArea();
     private Stage stage;
+    private IaModel iaModel;
 
 
     public TheScene(DeepHBox group) {
         super(group, Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
-        PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
         ButtonArea buttonArea = new ButtonArea(this);
 
         DeepVBox parameterBox = new DeepVBox(false);
@@ -36,7 +39,7 @@ public class TheScene extends Scene {
         group.getChildren().add(Tools.createHExpandableSpacer());
 
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(predictionTypeArea.getBox());
+        parameterBox.getChildren().add(this.predictionTypeArea.getBox());
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
         parameterBox.getChildren().add(this.datasetArea.getBox());
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
@@ -111,25 +114,59 @@ public class TheScene extends Scene {
         fileChooser.setTitle(Constants.FILE_CHOOSER_TITLE);
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(Constants.CSV, Constants.STAR_DOT_CSV),
-                new FileChooser.ExtensionFilter("Tous", "*.*"));
+                new FileChooser.ExtensionFilter(Constants.ALL, Constants.STAR_DOT_STAR));
         File file = fileChooser.showOpenDialog(this.stage);
         if (file != null) {
-            CsvLoader csvLoader = new CsvLoader();
             String filePath = file.getPath();
-            if (csvLoader.check(filePath)) {
+            CsvLoader csvLoader = new CsvLoader(filePath);
+            if (csvLoader.check()) {
                 this.fillDatasetArea(file, csvLoader);
+                this.fillArchitectureArea(csvLoader);
             }
         }
     }
 
     private void fillDatasetArea(File file, CsvLoader csvLoader) {
-        this.datasetArea.setCsvFile(file.getName());
+        this.datasetArea.setCsvFile(file.getPath());
         this.datasetArea.setTargetVariableComboBoxItemList(csvLoader.getColumnNames());
         String[] columnNames = csvLoader.getColumnNames();
         //A ce stade, apres le csvLoader.check columnNames.length >=2
         this.datasetArea.setTargetVariable(columnNames[columnNames.length - 1]);
         this.datasetArea.setTraining(Constants.DEFAULT_TRAINING);
         this.datasetArea.setPretreatment(Constants.STANDARD_SCALER);
+    }
+
+    private void fillArchitectureArea(CsvLoader csvLoader) {
+        int inputCount = csvLoader.getDataset().getColumnNames().length - 1;
+        int outputCount;
+        int hiddenLayerCount = Constants.DEFAULT_HIDDEN_LAYER_COUNT;
+        String activationFunction;
+        String predictionType = this.predictionTypeArea.getPredictionType();
+
+        switch (predictionType) {
+            case Constants.CLASSIFICATION:
+                activationFunction = Constants.TANH;
+
+                String targetVariable = this.datasetArea.getTargetVariable();
+
+                outputCount = csvLoader.getDataset().getValueCount(targetVariable);
+                if (outputCount > Constants.DIFFERENT_VALUE_MAX_COUNT) {
+                    Tools.error(Message.TOO_MANY_DIFFERENT_VALUES);
+                }
+                break;
+            case Constants.REGRESSION:
+                activationFunction = Constants.RELU;
+                outputCount = 1;
+                break;
+            default:
+                outputCount = Constants.DEFAULT_OUTPUT_COUNT;
+                activationFunction = Constants.ACTIVATION_FUNCTION;
+        }
+
+        this.architectureArea.setInputCount(inputCount);
+        this.architectureArea.setOutputCount(outputCount);
+        this.architectureArea.sethiddenLayerCount(hiddenLayerCount);
+        this.architectureArea.setActivationFunction(activationFunction);
     }
 
     private void visualizeButtonClicked() {
@@ -141,12 +178,25 @@ public class TheScene extends Scene {
 
     private void trainButtonClicked() {
         //Todo
-        int iterationCount = this.optimizationArea.getIterationCount();
-        for (int ii = 1; ii <= iterationCount; ii++) {
-            this.trainingArea.println(Constants.ITERATION +
-                    Constants.SPACED_SHARP +
-                    ii +
-                    Constants.SPACED_COLON);
+        if(iaModel == null){
+            this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
+                                        this.architectureArea.getInputCount(),
+                    this.architectureArea.getOutputCount(),
+                    this.architectureArea.getHiddenLayerCount(),
+                    this.architectureArea.getActivationFunction(),
+                    this.optimizationArea.getLossFunction(),
+                    this.optimizationArea.getOptimizer(),
+                    this.optimizationArea.getLearningRate());
+        }
+
+
+        try {
+            this.iaModel.train(this.optimizationArea.getIterationCount(),
+                                this.datasetArea.getCsvFilePath(),
+                                this.datasetArea.getT);
+            this.trainingArea.println("Start training for " + this.optimizationArea.getIterationCount() + " iterations.");
+        } catch (Exception e) {
+            Tools.error(Message.TRAINING_ERROR);
         }
     }
 

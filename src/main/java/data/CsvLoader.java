@@ -1,15 +1,28 @@
-package common;
+package data;
+
+import common.Constants;
+import common.Message;
+import common.Tools;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/**
+ * Outil de chargement, verification du fichier csv et chargement du jeu de donnees
+ */
 public class CsvLoader {
     private Dataset dataset;
+    private String filePath;
 
-    public CsvLoader() {
+    public CsvLoader(String filePath) {
+        this.filePath = filePath;
     }
 
-    public boolean check(String filePath) {
+    /**
+     *
+     * @return le statut de la verification
+     */
+    public boolean check() {
         boolean answer;
 
         try {
@@ -25,6 +38,12 @@ public class CsvLoader {
         return answer;
     }
 
+    /**
+     *
+     * @param bufferedReader le reader du fichier csv
+     * @return le statut de la verification du header
+     * @throws Exception cas de probleme de lecture du fichier
+     */
     private boolean checkHeader(BufferedReader bufferedReader) throws Exception {
         String line;
         String[] fields;
@@ -38,6 +57,12 @@ public class CsvLoader {
         return true;
     }
 
+    /**
+     *
+     * @param bufferedReader le reader du fichier csv
+     * @return le statut de la verification
+     * @throws Exception cas de probleme de lecture du fichier
+     */
     private boolean checkDataLines(BufferedReader bufferedReader) throws Exception {
         //A ce stade this.columnNames est initialise
         //car l'entete a ete verifiee
@@ -66,12 +91,22 @@ public class CsvLoader {
         return true;
     }
 
+    /**
+     *
+     * @param message le message d'erreur a afficher
+     * @return toujours false
+     */
     private boolean checkError(String message) {
         Tools.error(message);
         this.dataset = null;
         return false;
     }
 
+    /**
+     *
+     * @param fields la liste de champs sous forme de string
+     * @return le statut de la verification du header
+     */
     private boolean checkHeader(String[] fields) {
         //Il doit y avoir au moins deux champs
         // dans une entete de fichier csv
@@ -100,6 +135,11 @@ public class CsvLoader {
         return true;
     }
 
+    /**
+     *
+     * @param fields la liste des champs de donnees sous forme de string
+     * @return le statut de la verification
+     */
     private boolean checkDataLine(String[] fields) {
         if ((fields == null) || (fields.length <= 1))
             return false;
@@ -128,4 +168,11 @@ public class CsvLoader {
         return this.dataset.getColumnNames();
     }
 
+    public Dataset getDataset() {
+        return dataset;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
 }

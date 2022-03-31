@@ -14,20 +14,18 @@ import java.io.File;
 public class TheScene extends Scene {
 
     private final DatasetArea datasetArea = new DatasetArea(this);
-    private final PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
-    private final ButtonArea buttonArea;
     private final ArchitectureArea architectureArea = new ArchitectureArea();
     private final OptimizationArea optimizationArea = new OptimizationArea();
     private final VisualisationArea visualisationArea = new VisualisationArea();
     private final TrainingArea trainingArea = new TrainingArea();
     private final EvaluationArea evaluationArea = new EvaluationArea();
     private Stage stage;
-    private String csvFile;
 
 
     public TheScene(DeepHBox group) {
         super(group, Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
-        this.buttonArea = new ButtonArea(this);
+        PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
+        ButtonArea buttonArea = new ButtonArea(this);
 
         DeepVBox parameterBox = new DeepVBox(false);
         DeepVBox visualisationBox = new DeepVBox(false);
@@ -38,11 +36,11 @@ public class TheScene extends Scene {
         group.getChildren().add(Tools.createHExpandableSpacer());
 
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(this.predictionTypeArea.getBox());
+        parameterBox.getChildren().add(predictionTypeArea.getBox());
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
         parameterBox.getChildren().add(this.datasetArea.getBox());
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(this.buttonArea.getBox());
+        parameterBox.getChildren().add(buttonArea.getBox());
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
         parameterBox.getChildren().add(this.architectureArea.getBox());
         parameterBox.getChildren().add(Tools.createVExpandableSpacer());
@@ -108,8 +106,7 @@ public class TheScene extends Scene {
         }
     }
 
-    private void chooseCSVFile(){
-        //Todo
+    private void chooseCSVFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.FILE_CHOOSER_TITLE);
         fileChooser.getExtensionFilters().addAll(
@@ -119,17 +116,20 @@ public class TheScene extends Scene {
         if (file != null) {
             CsvLoader csvLoader = new CsvLoader();
             String filePath = file.getPath();
-                    if(csvLoader.check(filePath)){
-                        this.csvFile = filePath;
-                        this.datasetArea.setCsvFile(file.getName());
-                        this.datasetArea.setTargetVariableComboBoxItemList(csvLoader.getColumnNames());
-                        String[] columnNames = csvLoader.getColumnNames();
-                        //A ce stade, apres le csvLoader.check columnNames.length >=2
-                        this.datasetArea.setTargetVariable(columnNames[columnNames.length - 1]);
-                        this.datasetArea.setTraining(Constants.DEFAULT_TRAINING);
-                        this.datasetArea.setPretreatment(Constants.STANDARD_SCALER);
-                    }
+            if (csvLoader.check(filePath)) {
+                this.fillDatasetArea(file, csvLoader);
+            }
         }
+    }
+
+    private void fillDatasetArea(File file, CsvLoader csvLoader) {
+        this.datasetArea.setCsvFile(file.getName());
+        this.datasetArea.setTargetVariableComboBoxItemList(csvLoader.getColumnNames());
+        String[] columnNames = csvLoader.getColumnNames();
+        //A ce stade, apres le csvLoader.check columnNames.length >=2
+        this.datasetArea.setTargetVariable(columnNames[columnNames.length - 1]);
+        this.datasetArea.setTraining(Constants.DEFAULT_TRAINING);
+        this.datasetArea.setPretreatment(Constants.STANDARD_SCALER);
     }
 
     private void visualizeButtonClicked() {

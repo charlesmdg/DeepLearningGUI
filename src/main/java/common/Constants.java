@@ -34,6 +34,7 @@ public class Constants {
 
     public static final String INFORMATION = "Information";
     public static final String ERROR = "Erreur";
+    public static final String STRING_TO_REPLACE = "@@@";
 
     public static final String FILE = "Fichier";
     public static final String EDIT = "Éditer";
@@ -44,38 +45,36 @@ public class Constants {
     public static final String EVALUATE = "Évaluer";
 
     public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
-    public static final String SPACE = " ";
     public static final String COMMA = ",";
     public static final String CR = "\n";
     public static final String SPACED_COLON = " : ";
-    public static final String DOUBLE_QUOTE = "\"";
-    public static final String COLON = ":";
     public static final String SPACED_SHARP = " # ";
     public static final String EMPTY_STRING = "";
     public static final String[] EMPTY_STRINGS = {EMPTY_STRING};
+    public static final int IMPOSSIBLE_INDEX = -1;
+
     public static final String CSV = "CSV";
     public static final String STAR_DOT_CSV = "*.csv";
-    public static final String HEADER_REGEX = "^\"[a-zA-Z][_a-zA-Z0-9]*\"$";
-    public static final String STRING_TO_REPLACE = "@@@";
 
+    public static final String HEADER_REGEX = "^\"[a-zA-Z][_a-zA-Z0-9]*\"$";
+    public static final String DATA_REGEX = "(^[0-9]+$|^\\.[0-9]+$|^[0-9]+\\.[0-9]*$)";
 
     public static final String CLASSIFICATION = "Classification";
     public static final String REGRESSION = "Prédiction";
     public static final String[] PREDICTION_TYPES = {CLASSIFICATION, REGRESSION};
-
 
     public static final String TARGET_VARIABLE = "Variable cible";
     public static final String TRAINING = "Entraînement";
     public static final String CSV_FILE = "Fichier cvs";
     public static final String CHOOSE_AND_DOTS = "Choisir...";
     public static final String FILE_CHOOSER_TITLE = "Choix d'un fichier CSV";
+    public static final int CSV_DATA_LINE_MIN_COUNT = 10;
 
     public static final String PRETREATMENT = "Prétraitement";
     public static final String NONE = "Aucun";
     public static final String STANDARD_SCALER = "Standard scaler";
     public static final String MIN_MAX_SCALER = "Min-max scaler";
     public static final String[] PRETREATMENT_OPTIONS = {NONE, STANDARD_SCALER, MIN_MAX_SCALER};
-
 
     public static final String INPUTS = "Entrrée(s)";
     public static final String OUTPUTS = "Sortie(s)";
@@ -89,7 +88,6 @@ public class Constants {
     public static final String SOFTMAX = "Softmax";
     public static final String SOFTPLUS = "Softplus";
     public static final String[] ACTIVATION_FUNCTIONS = {RELU, SIGMOID, TANH, IDENTITY, SOFTMAX, SOFTPLUS};
-
 
     public static final String LOSS_FUNCTION = "Fonction perte";
     public static final String OPTIMIZER = "Optimiseur";
@@ -109,9 +107,6 @@ public class Constants {
     public static final int HIDDEN_LAYER_MIN_VALUE = 1;
     public static final int HIDDEN_LAYER_MAX_VALUE = 5;
 
-    public static final int CSV_DATA_LINE_MIN_COUNT = 10;
-
-
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";
     public static final String HINGE_ERROR = "Hinge error";
     public static final String NEGATIVE_LOG_LIKELIHOOD = "Negative log-likelihood";
@@ -130,7 +125,6 @@ public class Constants {
     public static final int DEFAULT_ITERATION_COUNT = 100;
     public static final double DEFAULT_TRAINING = 0.75;
 
-
     public static final int NEURON_RADIUS = 10;
     public static final int NEURON_STROKE_WIDTH = 1;
     public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLACK;
@@ -139,5 +133,4 @@ public class Constants {
     public static final Color HIDDEN_NEURON_STROKE_COLOR = Color.BLACK;
 
     public static final Color NETWORK_BACKGROUND_COLOR = Color.WHITE;
-
 }

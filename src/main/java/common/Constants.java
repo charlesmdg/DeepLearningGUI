@@ -31,7 +31,6 @@ public class Constants {
     public static final int ARCHITECTURE_AREA_HEIGHT = 150;
     public static final int BUTTON_AREA_HEIGHT = 50;
 
-
     public static final String VISUALIZATION = "Visualisation";
     public static final String TRAINING = "Entraînement";
     public static final String EVALUATION = "Évaluation";
@@ -68,13 +67,12 @@ public class Constants {
     public static final String STAR_DOT_STAR = "*.*";
 
     public static final String HEADER_REGEX = "^\"[a-zA-Z][_a-zA-Z0-9]*\"$";
-    public static final String DATA_REGEX = "(^[0-9]+$|^\\.[0-9]+$|^[0-9]+\\.[0-9]*$)";
+    public static final String DATA_REGEX = "(^-?[0-9]+$|^-?\\.[0-9]+$|^-?[0-9]+\\.[0-9]*$)";
 
     public static final String PREDICTION_TYPE = "Type de prédiction";
     public static final String CLASSIFICATION = "Classification";
-    public static final String REGRESSION = "Prédiction";
+    public static final String REGRESSION = "Régression";
     public static final String[] PREDICTION_TYPES = {CLASSIFICATION, REGRESSION};
-
 
     public static final String DATASET = "Jeu de données";
     public static final String TARGET_VARIABLE = "Variable cible";
@@ -126,7 +124,6 @@ public class Constants {
     public static final String HINGE_ERROR = "Hinge error";
     public static final String SQUARED_HINGE_ERROR = "Squared hinge error";
     public static final String NEGATIVE_LOG_LIKELIHOOD = "Negative log-likelihood";
-
     public static final String[] LOSS_FUNCTIONS = {MEAN_SQUARED_ERROR, NEGATIVE_LOG_LIKELIHOOD,
                                                     HINGE_ERROR, SQUARED_HINGE_ERROR};
 
@@ -136,7 +133,6 @@ public class Constants {
     public static final String NESTEROV = "Nesterov";
     public static final String ADAMAX = "AdaMax";
 
-    public static final int DEFAULT_OUTPUT_COUNT = 2;
     public static final int DEFAULT_HIDDEN_LAYER_COUNT = 2;
     public static final int DIFFERENT_VALUE_MAX_COUNT = 10;
 
@@ -152,6 +148,10 @@ public class Constants {
     public static final Color HIDDEN_NEURON_FILL_COLOR = Color.RED;
     public static final Color HIDDEN_NEURON_STROKE_COLOR = Color.GRAY;
     public static final Color NEURON_LINK_COLOR = Color.GRAY;
-
     public static final Color NETWORK_BACKGROUND_COLOR = Color.WHITE;
+
+    public static final String ACCURACY = "Accuracy";
+    public static final String PRECISION = "Precision";
+    public static final String RECALL = "Recall";
+    public static final String F1SCORE = "F1 Score";
 }

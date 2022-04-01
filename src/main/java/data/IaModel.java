@@ -19,6 +19,7 @@ import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.SplitTestAndTrain;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
+import org.nd4j.linalg.dataset.api.preprocessor.NormalizerMinMaxScaler;
 import org.nd4j.linalg.dataset.api.preprocessor.NormalizerStandardize;
 import org.nd4j.linalg.learning.config.*;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
@@ -46,20 +47,20 @@ public class IaModel {
         LossFunctions.LossFunction loss = this.createLossFunction(lossFunction);
 
         NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder()
-                                                    .activation(hiddenLayerActivation);
+                .activation(hiddenLayerActivation);
 
         builder = this.addOptimizer(builder, learningRate, optimizer);
 
-        NeuralNetConfiguration.ListBuilder  listBuilder = builder.list();
+        NeuralNetConfiguration.ListBuilder listBuilder = builder.list();
 
-        for(int ii = 0; ii< hiddenLayerCount; ii++){
+        for (int ii = 0; ii < hiddenLayerCount; ii++) {
             listBuilder = listBuilder.layer(new DenseLayer.Builder().nIn(inputCount).nOut(inputCount).build());
         }
 
         MultiLayerConfiguration conf = listBuilder
-                                        .layer(new OutputLayer.Builder(loss)
-                                        .activation(outputLayerActivation)
-                                        .nIn(inputCount).nOut(outputCount).build()).build();
+                .layer(new OutputLayer.Builder(loss)
+                        .activation(outputLayerActivation)
+                        .nIn(inputCount).nOut(outputCount).build()).build();
 
         this.model = new MultiLayerNetwork(conf);
         this.model.init();
@@ -67,7 +68,7 @@ public class IaModel {
 
     private NeuralNetConfiguration.Builder addOptimizer(NeuralNetConfiguration.Builder builder,
                                                         double learningRate,
-                                                        String optimizer){
+                                                        String optimizer) {
         switch (optimizer) {
             case Constants.STOCHASTIC_GRADIENT:
                 builder = builder.updater(new Sgd(learningRate));
@@ -86,10 +87,11 @@ public class IaModel {
         }
         return builder;
     }
-    private Activation createHiddenLayerActivation(String activationFunction){
+
+    private Activation createHiddenLayerActivation(String activationFunction) {
         Activation activation;
 
-        switch (activationFunction){
+        switch (activationFunction) {
             case Constants.RELU:
                 activation = Activation.RELU;
                 break;
@@ -112,33 +114,33 @@ public class IaModel {
         return activation;
     }
 
-    private Activation createOutputLayerActivation(String predictionType){
+    private Activation createOutputLayerActivation(String predictionType) {
         Activation activation;
 
-        if(predictionType.equals(Constants.CLASSIFICATION)){
+        if (predictionType.equals(Constants.CLASSIFICATION)) {
             activation = Activation.SOFTMAX;
-        }else{
+        } else {
             activation = Activation.IDENTITY;
         }
 
         return activation;
     }
 
-    private LossFunctions.LossFunction createLossFunction(String lossFunction){
+    private LossFunctions.LossFunction createLossFunction(String lossFunction) {
         LossFunctions.LossFunction loss;
 
-        switch (lossFunction){
+        switch (lossFunction) {
             case Constants.MEAN_SQUARED_ERROR:
                 loss = LossFunctions.LossFunction.SQUARED_LOSS;
                 break;
             case Constants.NEGATIVE_LOG_LIKELIHOOD:
-                loss = LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD ;
+                loss = LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD;
                 break;
             case Constants.HINGE_ERROR:
-                loss = LossFunctions.LossFunction.HINGE ;
+                loss = LossFunctions.LossFunction.HINGE;
                 break;
             case Constants.SQUARED_HINGE_ERROR:
-                loss = LossFunctions.LossFunction.SQUARED_HINGE ;
+                loss = LossFunctions.LossFunction.SQUARED_HINGE;
                 break;
             default:
                 loss = null;
@@ -173,9 +175,13 @@ public class IaModel {
             normalizer.fit(trainingData);
             normalizer.transform(trainingData);
             normalizer.transform(this.evaluationData);
+        } else if (pretreatment.equals(Constants.MIN_MAX_SCALER)) {
+            DataNormalization normalizer = new NormalizerMinMaxScaler();
+            normalizer.fit(trainingData);
+            normalizer.transform(trainingData);
+            normalizer.transform(this.evaluationData);
         }
     }
-
 
     public boolean dataReady() {
         return this.trainingData != null && this.evaluationData != null;
@@ -190,22 +196,27 @@ public class IaModel {
         }
     }
 
-    public ClassificationEvaluation train1() throws Exception {
+    public data.Evaluation train1() throws Exception {
         this.train(1);
 
         return this.evaluate(this.trainingData);
     }
 
-    public ClassificationEvaluation evaluate() {
+    public data.Evaluation evaluate() {
         return this.evaluate(this.trainingData);
     }
 
-    private ClassificationEvaluation evaluate(DataSet dataset) {
+    private data.Evaluation evaluate(DataSet dataset) {
         Evaluation eval = new Evaluation(this.outputCount);
         INDArray output = this.model.output(dataset.getFeatures());
-        eval.eval(dataset.getLabels(), output);
-        return new ClassificationEvaluation(eval.accuracy(), eval.precision(),
-                eval.recall(), eval.f1());
+        if(this.predictionType.equals(Constants.CLASSIFICATION)){
+            eval.eval(dataset.getLabels(), output);
+            return new data.ClassificationEvaluation(eval.accuracy(), eval.precision(),
+                    eval.recall(), eval.f1());
+        }
+        else{
+            return null;
+        }
     }
 
 }

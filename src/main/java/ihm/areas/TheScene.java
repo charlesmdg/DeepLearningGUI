@@ -3,8 +3,8 @@ package ihm.areas;
 import common.Constants;
 import common.Message;
 import common.Tools;
-import data.ClassificationEvaluation;
 import data.CsvLoader;
+import data.Evaluation;
 import data.IaModel;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
@@ -235,20 +235,18 @@ public class TheScene extends Scene {
                         this.datasetArea.getPretreatment());
             }
 
-
             new Thread(() -> {
                 int interationCount = this.optimizationArea.getIterationCount();
                 for (int ii = 1; ii <= interationCount; ii++) {
                     try {
                         Thread.sleep(100);
-                        ClassificationEvaluation evaluation = this.iaModel.train1();
+                        data.Evaluation evaluation = this.iaModel.train1();
                         this.trainingArea.println(evaluation.toStringWithIteration(ii));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }).start();
-
 
             this.buttonArea.getEvaluateButton().setDisable(false);
 
@@ -260,7 +258,7 @@ public class TheScene extends Scene {
 
     private void evaluateButtonClicked() {
         try {
-            ClassificationEvaluation evaluation = this.iaModel.evaluate();
+            Evaluation evaluation = this.iaModel.evaluate();
 
             this.evaluationArea.clear();
             this.evaluationArea.println(evaluation);

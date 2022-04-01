@@ -2,10 +2,7 @@ package ihm.areas;
 
 import common.Constants;
 import common.Tools;
-import ihm.controls.DeepComboBox;
-import ihm.controls.DeepSpinner;
-import ihm.controls.DeepTextField;
-import ihm.controls.DeepVInputArea;
+import ihm.controls.*;
 import javafx.scene.layout.Region;
 
 public class OptimizationArea extends DeepVInputArea {
@@ -16,6 +13,7 @@ public class OptimizationArea extends DeepVInputArea {
 
     public OptimizationArea(){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.OPTIMISATION_AREA_HEIGHT, true);
+        this.add(new DeepTitleLabel(Constants.OPTIMIZATION));
 
         Tools.setWidth(this.parameterTextField, Constants.NUM_TEXTFIELD_WIDTH);
 
@@ -23,6 +21,13 @@ public class OptimizationArea extends DeepVInputArea {
         Region[] regions = {this.lossFunctionComboBox, this.optimizerComboBox, this.parameterTextField, this.iterationSpinner};
 
         this.fill(labelTexts, regions);
+    }
+
+    public void setChildrenDisabled(boolean disabled){
+        this.lossFunctionComboBox.setDisable(disabled);
+        this.optimizerComboBox.setDisable(disabled);
+        this.parameterTextField.setDisable(disabled);
+        this.iterationSpinner.setDisable(disabled);
     }
 
     public String getLossFunction(){

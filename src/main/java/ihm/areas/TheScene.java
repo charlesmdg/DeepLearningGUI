@@ -1,13 +1,15 @@
 package ihm.areas;
 
 import common.Constants;
-import data.CsvLoader;
 import common.Message;
 import common.Tools;
+import data.ClassificationEvaluation;
+import data.CsvLoader;
 import data.IaModel;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -20,43 +22,75 @@ public class TheScene extends Scene {
     private final ArchitectureArea architectureArea = new ArchitectureArea();
     private final OptimizationArea optimizationArea = new OptimizationArea();
     private final VisualisationArea visualisationArea = new VisualisationArea();
-    private final TrainingArea trainingArea = new TrainingArea();
     private final EvaluationArea evaluationArea = new EvaluationArea();
+    private final TrainingArea trainingArea = new TrainingArea();
+    private final ButtonArea buttonArea = new ButtonArea(this);
+
     private Stage stage;
     private IaModel iaModel;
 
-
     public TheScene(DeepHBox group) {
         super(group, Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
-        ButtonArea buttonArea = new ButtonArea(this);
 
+        this.initScene(group);
+
+        this.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.R) {
+                TheScene.this.reset();
+            }
+        });
+    }
+
+    private void reset() {
+        this.iaModel = null;
+        this.predictionTypeArea.getChildren().clear();
+        Tools.inform("JK", "jkljlk");
+    }
+
+    private void initScene(DeepHBox group) {
         DeepVBox parameterBox = new DeepVBox(false);
         DeepVBox visualisationBox = new DeepVBox(false);
-        group.getChildren().add(Tools.createHExpandableSpacer());
-        group.getChildren().add(parameterBox);
-        group.getChildren().add(Tools.createHExpandableSpacer());
-        group.getChildren().add(visualisationBox);
-        group.getChildren().add(Tools.createHExpandableSpacer());
 
-        parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(this.predictionTypeArea.getBox());
-        parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(this.datasetArea.getBox());
-        parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(buttonArea.getBox());
-        parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(this.architectureArea.getBox());
-        parameterBox.getChildren().add(Tools.createVExpandableSpacer());
-        parameterBox.getChildren().add(this.optimizationArea.getBox());
-        parameterBox.getChildren().add(Tools.createVExpandableSpacer());
+        this.fillGroup(group, parameterBox, visualisationBox);
+        this.fillParameterBox(parameterBox);
+        this.fillVisualisationBox(visualisationBox);
 
-        visualisationBox.getChildren().add(Tools.createVExpandableSpacer());
-        visualisationBox.getChildren().add(this.visualisationArea);
-        visualisationBox.getChildren().add(Tools.createVExpandableSpacer());
-        visualisationBox.getChildren().add(this.trainingArea.getBox());
-        visualisationBox.getChildren().add(Tools.createVExpandableSpacer());
-        visualisationBox.getChildren().add(this.evaluationArea.getBox());
-        visualisationBox.getChildren().add(Tools.createVExpandableSpacer());
+        this.datasetArea.setChildrenDisabled(true);
+        this.architectureArea.setChildrenDisabled(true);
+        this.optimizationArea.setChildrenDisabled(true);
+        this.buttonArea.setChildrenDisabled(true);
+    }
+
+    private void fillGroup(DeepHBox group, DeepVBox parameterBox, DeepVBox visualisationBox) {
+        group.add(Tools.createHExpandableSpacer());
+        group.add(parameterBox);
+        group.add(Tools.createHExpandableSpacer());
+        group.add(visualisationBox);
+        group.add(Tools.createHExpandableSpacer());
+    }
+
+    private void fillParameterBox(DeepVBox parameterBox) {
+        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(this.predictionTypeArea.getBox());
+        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(this.datasetArea.getBox());
+        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(this.buttonArea.getBox());
+        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(this.architectureArea.getBox());
+        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(this.optimizationArea.getBox());
+        parameterBox.add(Tools.createVExpandableSpacer());
+    }
+
+    private void fillVisualisationBox(DeepVBox visualisationBox) {
+        visualisationBox.add(Tools.createVExpandableSpacer());
+        visualisationBox.add(this.visualisationArea);
+        visualisationBox.add(Tools.createVExpandableSpacer());
+        visualisationBox.add(this.trainingArea.getBox());
+        visualisationBox.add(Tools.createVExpandableSpacer());
+        visualisationBox.add(this.evaluationArea.getBox());
+        visualisationBox.add(Tools.createVExpandableSpacer());
     }
 
     public void setStage(Stage stage) {
@@ -73,6 +107,9 @@ public class TheScene extends Scene {
                 break;
             default:
         }
+
+        this.datasetArea.setChildrenDisabled(false);
+        this.optimizationArea.setChildrenDisabled(false);
     }
 
     private void classificationPedictionTypeSelected() {
@@ -118,16 +155,23 @@ public class TheScene extends Scene {
         File file = fileChooser.showOpenDialog(this.stage);
         if (file != null) {
             String filePath = file.getPath();
-            CsvLoader csvLoader = new CsvLoader(filePath);
-            if (csvLoader.check()) {
-                this.fillDatasetArea(file, csvLoader);
-                this.fillArchitectureArea(csvLoader);
+            if (this.datasetArea.checkCsvFile(filePath)) {
+                this.prepareTraining(file);
             }
         }
     }
 
-    private void fillDatasetArea(File file, CsvLoader csvLoader) {
-        this.datasetArea.setCsvFile(file.getPath());
+    private void prepareTraining(File file) {
+        this.architectureArea.setChildrenDisabled(false);
+        this.fillDatasetArea(file);
+        this.fillArchitectureArea();
+        this.buttonArea.getVisualizeButton().setDisable(false);
+        this.buttonArea.getTrainButton().setDisable(false);
+    }
+
+    private void fillDatasetArea(File file) {
+        this.datasetArea.setCsvFile(file.getName());
+        CsvLoader csvLoader = this.datasetArea.getCsvLoader();
         this.datasetArea.setTargetVariableComboBoxItemList(csvLoader.getColumnNames());
         String[] columnNames = csvLoader.getColumnNames();
         //A ce stade, apres le csvLoader.check columnNames.length >=2
@@ -136,7 +180,8 @@ public class TheScene extends Scene {
         this.datasetArea.setPretreatment(Constants.STANDARD_SCALER);
     }
 
-    private void fillArchitectureArea(CsvLoader csvLoader) {
+    private void fillArchitectureArea() {
+        CsvLoader csvLoader = this.datasetArea.getCsvLoader();
         int inputCount = csvLoader.getDataset().getColumnNames().length - 1;
         int outputCount;
         int hiddenLayerCount = Constants.DEFAULT_HIDDEN_LAYER_COUNT;
@@ -147,11 +192,11 @@ public class TheScene extends Scene {
             case Constants.CLASSIFICATION:
                 activationFunction = Constants.TANH;
 
-                String targetVariable = this.datasetArea.getTargetVariable();
+                String targetVariableName = this.datasetArea.getTargetVariableName();
 
-                outputCount = csvLoader.getDataset().getValueCount(targetVariable);
+                outputCount = csvLoader.getDataset().getValueCount(targetVariableName);
                 if (outputCount > Constants.DIFFERENT_VALUE_MAX_COUNT) {
-                    Tools.error(Message.TOO_MANY_DIFFERENT_VALUES);
+                    Tools.inform(Message.TOO_MANY_DIFFERENT_VALUES, targetVariableName);
                 }
                 break;
             case Constants.REGRESSION:
@@ -172,36 +217,62 @@ public class TheScene extends Scene {
     private void visualizeButtonClicked() {
         this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
                 this.architectureArea.getOutputCount(),
-                this.architectureArea.getHiddenLayerCount(),
-                this.architectureArea.getActivationFunction());
+                this.architectureArea.getHiddenLayerCount());
     }
 
     private void trainButtonClicked() {
         //Todo
-        if(iaModel == null){
-            this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
-                                        this.architectureArea.getInputCount(),
-                    this.architectureArea.getOutputCount(),
-                    this.architectureArea.getHiddenLayerCount(),
-                    this.architectureArea.getActivationFunction(),
-                    this.optimizationArea.getLossFunction(),
-                    this.optimizationArea.getOptimizer(),
-                    this.optimizationArea.getLearningRate());
-        }
-
-
         try {
-            this.iaModel.train(this.optimizationArea.getIterationCount(),
-                                this.datasetArea.getCsvFilePath(),
-                                this.datasetArea.getT);
-            this.trainingArea.println("Start training for " + this.optimizationArea.getIterationCount() + " iterations.");
+            if (iaModel == null) {
+                this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
+                        this.architectureArea.getInputCount(),
+                        this.architectureArea.getOutputCount(),
+                        this.architectureArea.getHiddenLayerCount(),
+                        this.architectureArea.getActivationFunction(),
+                        this.optimizationArea.getLossFunction(),
+                        this.optimizationArea.getOptimizer(),
+                        this.optimizationArea.getLearningRate());
+            }
+
+            if (!this.iaModel.dataReady()) {
+                this.iaModel.splitData(this.datasetArea.getCsvLoader(),
+                        this.datasetArea.getTargetVariableName(),
+                        this.datasetArea.getTrainingProportion(),
+                        this.datasetArea.getPretreatment());
+            }
+
+
+            new Thread(() -> {
+                int interationCount = this.optimizationArea.getIterationCount();
+                for (int ii = 1; ii <= interationCount; ii++) {
+                    try {
+                        Thread.sleep(100);
+                        ClassificationEvaluation evaluation = this.iaModel.train1();
+                        this.trainingArea.println(evaluation.toStringWithIteration(ii));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+
+            this.buttonArea.getEvaluateButton().setDisable(false);
+
         } catch (Exception e) {
+
             Tools.error(Message.TRAINING_ERROR);
         }
     }
 
     private void evaluateButtonClicked() {
-        //Todo
-        this.evaluationArea.println("evaluateButtonClicked");
+        try {
+            ClassificationEvaluation evaluation = this.iaModel.evaluate();
+
+            this.evaluationArea.clear();
+            this.evaluationArea.println(evaluation);
+
+        } catch (Exception e) {
+            Tools.error(Message.TRAINING_ERROR);
+        }
     }
 }

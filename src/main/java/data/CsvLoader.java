@@ -69,17 +69,17 @@ public class CsvLoader {
         int headerFieldCount = this.dataset.getColumnNames().length;
 
         // On verifie les lignes de donnees
-        int dataLineCount = 0;
+        int dataLineCount = 1;
         String line = bufferedReader.readLine();
 
         while (line != null) {
             dataLineCount++;
             String[] fields = line.split(Constants.COMMA);
             if (fields.length != headerFieldCount) {
-                return this.checkError(Message.INCOMPATIBLE_FIELD_COUNT);
+                return this.checkError(Message.INCOMPATIBLE_FIELD_COUNT, dataLineCount);
             }
             if (!checkDataLine(fields)) {
-                Tools.error(Message.INVALID_DATA_ROW);
+                return this.checkError(Message.INVALID_DATA_ROW, dataLineCount);
             }
             line = bufferedReader.readLine();
         }
@@ -96,6 +96,12 @@ public class CsvLoader {
      * @param message le message d'erreur a afficher
      * @return toujours false
      */
+    private boolean checkError(String message, int lineRank) {
+        Tools.error(message, lineRank);
+        this.dataset = null;
+        return false;
+    }
+
     private boolean checkError(String message) {
         Tools.error(message);
         this.dataset = null;
@@ -128,7 +134,7 @@ public class CsvLoader {
         try {
             this.dataset = new Dataset(cleanedFields);
         } catch (Exception e) {
-            Tools.error(Message.INVALID_ROW_LENGTH);
+            Tools.error(Message.INVALID_FIELD_COUNT);
             return false;
         }
 

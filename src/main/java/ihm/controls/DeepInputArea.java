@@ -8,6 +8,7 @@ import javafx.scene.layout.Region;
 
 public abstract class DeepInputArea extends DeepPane {
     protected Pane box;
+
     public DeepInputArea(Pane box, double width, double height) {
         super(false);
         this.getChildren().add(box);
@@ -16,7 +17,7 @@ public abstract class DeepInputArea extends DeepPane {
         this.box.setPadding(new Insets(Constants.AREA_PADDING));
     }
 
-    protected void add(Region region){
+    protected void add(Region region) {
         this.box.getChildren().add(region);
     }
 
@@ -24,25 +25,23 @@ public abstract class DeepInputArea extends DeepPane {
         return box;
     }
 
-    protected void fill(String[] labelTexts,  Region[] regions) {
-        int length= labelTexts.length;
-
-        for (int ii = 0 ; ii<length ; ii++) {
-            this.add(this.createExpandableSpacer());
-            this.add(new DeepLabeledRegion(labelTexts[ii], regions[ii]));
-        }
+    protected void fill(String[] labelTexts, Region[] regions) {
+        int length = labelTexts.length;
         this.add(this.createExpandableSpacer());
+        for (int ii = 0; ii < length; ii++) {
+            this.add(new DeepLabeledRegion(labelTexts[ii], regions[ii]));
+            this.add(this.createExpandableSpacer());
+        }
     }
 
-    protected abstract Region createExpandableSpacer();
+    abstract protected Region createExpandableSpacer();
 
     protected void fill(Region[] regions) {
-
-        for (Region region: regions) {
-            this.add(this.createExpandableSpacer());
-            this.add(region);
-        }
         this.add(this.createExpandableSpacer());
-    }
 
+        for (Region region : regions) {
+            this.add(region);
+            this.add(this.createExpandableSpacer());
+        }
+    }
 }

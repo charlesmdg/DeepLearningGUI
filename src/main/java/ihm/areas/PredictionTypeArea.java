@@ -4,6 +4,7 @@ import common.Constants;
 import common.Tools;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepRadioButtonGroup;
+import ihm.controls.DeepTitleLabel;
 import ihm.controls.DeepVInputArea;
 import javafx.scene.layout.Region;
 
@@ -12,6 +13,8 @@ public class PredictionTypeArea extends DeepVInputArea {
 
     public PredictionTypeArea(TheScene scene) {
         super(Constants.PARAMETER_AREA_WIDTH, Constants.PREDICTION_TYPE_AREA_HEIGHT, true);
+        this.add(new DeepTitleLabel(Constants.PREDICTION_TYPE));
+
         radioButtonGroup = new DeepRadioButtonGroup(Constants.PREDICTION_TYPES, scene);
 
         DeepHBox hBox = new DeepHBox(false);

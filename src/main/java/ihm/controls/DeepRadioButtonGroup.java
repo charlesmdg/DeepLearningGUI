@@ -3,9 +3,6 @@ package ihm.controls;
 import common.Constants;
 import common.Tools;
 import ihm.areas.TheScene;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 
 import static common.Constants.RADIO_BUTTON_GROUP_HEIGHT;

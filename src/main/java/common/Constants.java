@@ -2,6 +2,7 @@ package common;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 /**
@@ -12,14 +13,14 @@ public class Constants {
     public static final int MAIN_WINDOW_HEIGHT = 750;
     public static final String MAIN_WINDOW_TITLE = "Easy Deep Learning";
 
-    public static final int AREA_PADDING = 10;
+    public static final int AREA_PADDING = 3;
     public static final int RADIO_BUTTON_INTERSPACE = 20;
     public static final int RADIO_BUTTON_GROUP_WIDTH = 150;
     public static final int RADIO_BUTTON_GROUP_HEIGHT = 100;
 
     public static final int SPINNER_WIDTH = 60;
     public static final int COMBOBOX_WIDTH = 190;
-    public static final int TEXT_TEXTFIELD_WIDTH = 200;
+    public static final int TEXT_TEXTFIELD_WIDTH = 115;
     public static final int NUM_TEXTFIELD_WIDTH = 50;
     public static final int INPUT_FIELD_MAX_WIDTH = 195;
 
@@ -30,10 +31,15 @@ public class Constants {
     public static final int ARCHITECTURE_AREA_HEIGHT = 150;
     public static final int BUTTON_AREA_HEIGHT = 50;
 
+
+    public static final String VISUALIZATION = "Visualisation";
+    public static final String TRAINING = "Entraînement";
+    public static final String EVALUATION = "Évaluation";
     public static final int DISPLAY_AREA_WIDTH = 600;
-    public static final int VISUALISATION_AREA_HEIGHT = 255;
+    public static final int VISUALIZATION_AREA_HEIGHT = 255;
     public static final int TRAINING_AREA_HEIGHT = 280;
     public static final int EVALUATION_AREA_HEIGHT = 120;
+    public static final int DISPLAY_AREA_TOP_MARGIN = 20;
 
     public static final String INFORMATION = "Information";
     public static final String ERROR = "Erreur";
@@ -48,10 +54,10 @@ public class Constants {
     public static final String EVALUATE = "Évaluer";
 
     public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
+    public static final Font TITLE_FONT = Font.font("Arial", FontWeight.BLACK, FontPosture.ITALIC, 16);
     public static final String COMMA = ",";
     public static final String CR = "\n";
     public static final String SPACED_COLON = " : ";
-    public static final String SPACED_SHARP = " # ";
     public static final String EMPTY_STRING = "";
     public static final String[] EMPTY_STRINGS = {EMPTY_STRING};
     public static final int IMPOSSIBLE_INDEX = -1;
@@ -64,12 +70,15 @@ public class Constants {
     public static final String HEADER_REGEX = "^\"[a-zA-Z][_a-zA-Z0-9]*\"$";
     public static final String DATA_REGEX = "(^[0-9]+$|^\\.[0-9]+$|^[0-9]+\\.[0-9]*$)";
 
+    public static final String PREDICTION_TYPE = "Type de prédiction";
     public static final String CLASSIFICATION = "Classification";
     public static final String REGRESSION = "Prédiction";
     public static final String[] PREDICTION_TYPES = {CLASSIFICATION, REGRESSION};
 
+
+    public static final String DATASET = "Jeu de données";
     public static final String TARGET_VARIABLE = "Variable cible";
-    public static final String TRAINING = "Entraînement";
+    public static final String TRAINING_RATE = "Entraînement";
     public static final String CSV_FILE = "Fichier cvs";
     public static final String CHOOSE_AND_DOTS = "Choisir...";
     public static final String FILE_CHOOSER_TITLE = "Choix d'un fichier CSV";
@@ -81,6 +90,7 @@ public class Constants {
     public static final String MIN_MAX_SCALER = "Min-max scaler";
     public static final String[] PRETREATMENT_OPTIONS = {NONE, STANDARD_SCALER, MIN_MAX_SCALER};
 
+    public static final String ARCHITECTURE = "Architecture";
     public static final String INPUTS = "Entrrée(s)";
     public static final String OUTPUTS = "Sortie(s)";
     public static final String HIDDEN_LAYERS = "Couche(s) cachée(s)";
@@ -94,11 +104,11 @@ public class Constants {
     public static final String SOFTPLUS = "Softplus";
     public static final String[] ACTIVATION_FUNCTIONS = {RELU, SIGMOID, TANH, IDENTITY, SOFTMAX, SOFTPLUS};
 
+    public static final String OPTIMIZATION = "Optimisation";
     public static final String LOSS_FUNCTION = "Fonction perte";
     public static final String OPTIMIZER = "Optimiseur";
     public static final String PARAMETERS = "Paramètre(s)";
     public static final String ITERATIONS = "Itérations";
-    public static final String ITERATION = "Itération";
 
     public static final int ITERATION_MIN_VALUE = 1;
     public static final int ITERATION_MAX_VALUE = 1000;
@@ -110,7 +120,7 @@ public class Constants {
     public static final int OUTPUT_MAX_VALUE = 10;
 
     public static final int HIDDEN_LAYER_MIN_VALUE = 1;
-    public static final int HIDDEN_LAYER_MAX_VALUE = 5;
+    public static final int HIDDEN_LAYER_MAX_VALUE = 10;
 
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";
     public static final String HINGE_ERROR = "Hinge error";
@@ -126,21 +136,21 @@ public class Constants {
     public static final String ADAMAX = "AdaMax";
 
     public static final int DEFAULT_OUTPUT_COUNT = 2;
-    public static final String DEFAULT_ACTIVATION_FUNCTION = Constants.IDENTITY;
     public static final int DEFAULT_HIDDEN_LAYER_COUNT = 2;
     public static final int DIFFERENT_VALUE_MAX_COUNT = 10;
 
     public static final String[] OPTIMIZERS = {GRADIENT, STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
-    public static final double DEFAULT_LEARNING_RATE = 0.01;
+    public static final double DEFAULT_LEARNING_RATE = 0.1;
     public static final int DEFAULT_ITERATION_COUNT = 100;
     public static final double DEFAULT_TRAINING = 0.75;
 
     public static final int NEURON_RADIUS = 10;
     public static final int NEURON_STROKE_WIDTH = 1;
-    public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLACK;
-    public static final Color INPUT_OUPUT_NEURON_STROKE_COLOR = Color.BLACK;
+    public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.GRAY;
+    public static final Color INPUT_OUPUT_NEURON_STROKE_COLOR = Color.GRAY;
     public static final Color HIDDEN_NEURON_FILL_COLOR = Color.RED;
-    public static final Color HIDDEN_NEURON_STROKE_COLOR = Color.BLACK;
+    public static final Color HIDDEN_NEURON_STROKE_COLOR = Color.GRAY;
+    public static final Color NEURON_LINK_COLOR = Color.GRAY;
 
     public static final Color NETWORK_BACKGROUND_COLOR = Color.WHITE;
 }

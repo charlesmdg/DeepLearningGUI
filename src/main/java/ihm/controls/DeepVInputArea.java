@@ -1,6 +1,7 @@
 package ihm.controls;
 
 import common.Tools;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
 public class DeepVInputArea extends DeepInputArea {

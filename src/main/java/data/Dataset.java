@@ -53,4 +53,10 @@ public class Dataset {
 
         return set.size();
     }
+
+    public int getColumnIndex(String columnName){
+        int columnIndex = Tools.indexOf(this.columnNames, columnName);
+        return columnIndex;
+    }
+
 }

@@ -6,10 +6,14 @@ import common.Tools;
 public class DeepDisplayArea extends DeepVInputArea {
     private final DeepTextArea textArea = new DeepTextArea();
 
-    public DeepDisplayArea(double width, double height){
+    public DeepDisplayArea(String title, double width, double height){
         super(Constants.DISPLAY_AREA_WIDTH, height, true);
+
+        DeepTitleLabel titleLabel = new DeepTitleLabel(title);
+        this.box.getChildren().add(titleLabel);
+
         this.box.getChildren().add(Tools.createVExpandableSpacer());
-        Tools.setHeight(this.textArea, height - 2 * Constants.AREA_PADDING - 1);
+        Tools.setHeight(this.textArea, height - 2 * Constants.AREA_PADDING - Constants.DISPLAY_AREA_TOP_MARGIN);
         this.box.getChildren().add(this.textArea);
         this.box.getChildren().add(Tools.createVExpandableSpacer());
     }
@@ -18,19 +22,11 @@ public class DeepDisplayArea extends DeepVInputArea {
         this.textArea.setText(this.textArea.getText() + Constants.CR + text);
     }
 
-    public void println(double x){
-        this.println(String.valueOf(x));
-    }
-
-    public void println(float x){
-        this.println(String.valueOf(x));
-    }
-
-    public void println(int x){
-        this.println(String.valueOf(x));
-    }
-
     public void println(Object o){
         this.println(o.toString());
+    }
+
+    public void clear(){
+        this.textArea.clear();
     }
 }

@@ -11,7 +11,6 @@ import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.WeightInit;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.nd4j.evaluation.classification.Evaluation;
 import org.nd4j.linalg.activations.Activation;
@@ -21,21 +20,18 @@ import org.nd4j.linalg.dataset.SplitTestAndTrain;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
 import org.nd4j.linalg.dataset.api.preprocessor.NormalizerStandardize;
-import org.nd4j.linalg.learning.config.Sgd;
+import org.nd4j.linalg.learning.config.*;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.io.File;
 
 public class IaModel {
-    private MultiLayerNetwork model;
-    private int inputCount;
-    private int outptCount;
-    private String predictionType;
+    private final MultiLayerNetwork model;
+    private final int outputCount;
+    final private String predictionType;
 
     private DataSet trainingData;
     private DataSet evaluationData;
-
-    private Thread trainingThead;
 
     public IaModel(String predictionType,
                    int inputCount, int outputCount, int hiddenLayerCount,
@@ -43,37 +39,119 @@ public class IaModel {
                    double learningRate) {
 
         this.predictionType = predictionType;
-        this.inputCount = inputCount;
-        this.outptCount = outputCount;
+        this.outputCount = outputCount;
 
-        MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-                .activation(Activation.TANH)
-                .weightInit(WeightInit.XAVIER)
-                .updater(new Sgd(learningRate))
-                .l2(1e-4)
-                .list()
-                .layer(new DenseLayer.Builder().nIn(inputCount).nOut(inputCount)
-                        .build())
-                .layer(new DenseLayer.Builder().nIn(inputCount).nOut(inputCount)
-                        .build())
-                .layer(new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                        .activation(Activation.SOFTMAX) //Override the global TANH activation with softmax for this layer
-                        .nIn(inputCount).nOut(outputCount).build())
-                .build();
+        Activation hiddenLayerActivation = this.createHiddenLayerActivation(activationFunction);
+        Activation outputLayerActivation = this.createOutputLayerActivation(predictionType);
+        LossFunctions.LossFunction loss = this.createLossFunction(lossFunction);
+
+        NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder()
+                                                    .activation(hiddenLayerActivation);
+
+        builder = this.addOptimizer(builder, learningRate, optimizer);
+
+        NeuralNetConfiguration.ListBuilder  listBuilder = builder.list();
+
+        for(int ii = 0; ii< hiddenLayerCount; ii++){
+            listBuilder = listBuilder.layer(new DenseLayer.Builder().nIn(inputCount).nOut(inputCount).build());
+        }
+
+        MultiLayerConfiguration conf = listBuilder
+                                        .layer(new OutputLayer.Builder(loss)
+                                        .activation(outputLayerActivation)
+                                        .nIn(inputCount).nOut(outputCount).build()).build();
 
         this.model = new MultiLayerNetwork(conf);
         this.model.init();
-
-        this.trainingThead = new Thread(() -> {System.out.println("U");});
     }
 
-    //todo
+    private NeuralNetConfiguration.Builder addOptimizer(NeuralNetConfiguration.Builder builder,
+                                                        double learningRate,
+                                                        String optimizer){
+        switch (optimizer) {
+            case Constants.STOCHASTIC_GRADIENT:
+                builder = builder.updater(new Sgd(learningRate));
+                break;
+            case Constants.ADAM:
+                builder = builder.updater(new Adam(learningRate));
+                break;
+            case Constants.NADAM:
+                builder = builder.updater(new Nadam(learningRate));
+                break;
+            case Constants.NESTEROV:
+                builder = builder.updater(new Nesterovs(learningRate));
+                break;
+            default:
+                builder = builder.updater(new AdaMax(learningRate));
+        }
+        return builder;
+    }
+    private Activation createHiddenLayerActivation(String activationFunction){
+        Activation activation;
+
+        switch (activationFunction){
+            case Constants.RELU:
+                activation = Activation.RELU;
+                break;
+            case Constants.SIGMOID:
+                activation = Activation.SIGMOID;
+                break;
+            case Constants.SOFTMAX:
+                activation = Activation.SOFTMAX;
+                break;
+            case Constants.SOFTPLUS:
+                activation = Activation.SOFTPLUS;
+                break;
+            case Constants.TANH:
+                activation = Activation.TANH;
+                break;
+            default:
+                activation = Activation.IDENTITY;
+        }
+
+        return activation;
+    }
+
+    private Activation createOutputLayerActivation(String predictionType){
+        Activation activation;
+
+        if(predictionType.equals(Constants.CLASSIFICATION)){
+            activation = Activation.SOFTMAX;
+        }else{
+            activation = Activation.IDENTITY;
+        }
+
+        return activation;
+    }
+
+    private LossFunctions.LossFunction createLossFunction(String lossFunction){
+        LossFunctions.LossFunction loss;
+
+        switch (lossFunction){
+            case Constants.MEAN_SQUARED_ERROR:
+                loss = LossFunctions.LossFunction.SQUARED_LOSS;
+                break;
+            case Constants.NEGATIVE_LOG_LIKELIHOOD:
+                loss = LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD ;
+                break;
+            case Constants.HINGE_ERROR:
+                loss = LossFunctions.LossFunction.HINGE ;
+                break;
+            case Constants.SQUARED_HINGE_ERROR:
+                loss = LossFunctions.LossFunction.SQUARED_HINGE ;
+                break;
+            default:
+                loss = null;
+        }
+
+        return loss;
+    }
+
     public void splitData(CsvLoader csvLoader, String targetVariableName, double trainingProportion,
                           String pretreatment) throws Exception {
         int numLinesToSkip = 1;
         char delimiter = ',';
 
-        int numClasses = this.outptCount;
         int labelIndex = csvLoader.getDataset().getColumnIndex(targetVariableName);
 
         RecordReader recordReader = new CSVRecordReader(numLinesToSkip, delimiter);
@@ -82,7 +160,7 @@ public class IaModel {
         int batchSize = Tools.filelineCount(filePath);
 
         //Melange et eclatement du jeu de donnees en jeux d'entrainement et de validation
-        DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader, batchSize, labelIndex, numClasses);
+        DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader, batchSize, labelIndex, this.outputCount);
         DataSet allData = iterator.next();
         allData.shuffle();
         SplitTestAndTrain testAndTrain = allData.splitTestAndTrain(trainingProportion);
@@ -97,6 +175,7 @@ public class IaModel {
             normalizer.transform(this.evaluationData);
         }
     }
+
 
     public boolean dataReady() {
         return this.trainingData != null && this.evaluationData != null;
@@ -122,7 +201,7 @@ public class IaModel {
     }
 
     private ClassificationEvaluation evaluate(DataSet dataset) {
-        Evaluation eval = new Evaluation(this.outptCount);
+        Evaluation eval = new Evaluation(this.outputCount);
         INDArray output = this.model.output(dataset.getFeatures());
         eval.eval(dataset.getLabels(), output);
         return new ClassificationEvaluation(eval.accuracy(), eval.precision(),

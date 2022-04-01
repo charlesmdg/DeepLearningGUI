@@ -188,24 +188,18 @@ public class TheScene extends Scene {
         String activationFunction;
         String predictionType = this.predictionTypeArea.getPredictionType();
 
-        switch (predictionType) {
-            case Constants.CLASSIFICATION:
-                activationFunction = Constants.TANH;
+        if (predictionType.equals(Constants.CLASSIFICATION)) {
+            activationFunction = Constants.TANH;
 
-                String targetVariableName = this.datasetArea.getTargetVariableName();
+            String targetVariableName = this.datasetArea.getTargetVariableName();
 
-                outputCount = csvLoader.getDataset().getValueCount(targetVariableName);
-                if (outputCount > Constants.DIFFERENT_VALUE_MAX_COUNT) {
-                    Tools.inform(Message.TOO_MANY_DIFFERENT_VALUES, targetVariableName);
-                }
-                break;
-            case Constants.REGRESSION:
-                activationFunction = Constants.RELU;
-                outputCount = 1;
-                break;
-            default:
-                outputCount = Constants.DEFAULT_OUTPUT_COUNT;
-                activationFunction = Constants.ACTIVATION_FUNCTION;
+            outputCount = csvLoader.getDataset().getValueCount(targetVariableName);
+            if (outputCount > Constants.DIFFERENT_VALUE_MAX_COUNT) {
+                Tools.inform(Message.TOO_MANY_DIFFERENT_VALUES, targetVariableName);
+            }
+        } else {
+            activationFunction = Constants.RELU;
+            outputCount = 1;
         }
 
         this.architectureArea.setInputCount(inputCount);

@@ -124,11 +124,12 @@ public class Constants {
 
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";
     public static final String HINGE_ERROR = "Hinge error";
+    public static final String SQUARED_HINGE_ERROR = "Squared hinge error";
     public static final String NEGATIVE_LOG_LIKELIHOOD = "Negative log-likelihood";
 
-    public static final String[] LOSS_FUNCTIONS = {MEAN_SQUARED_ERROR, HINGE_ERROR, NEGATIVE_LOG_LIKELIHOOD};
+    public static final String[] LOSS_FUNCTIONS = {MEAN_SQUARED_ERROR, NEGATIVE_LOG_LIKELIHOOD,
+                                                    HINGE_ERROR, SQUARED_HINGE_ERROR};
 
-    public static final String GRADIENT = "Gradient";
     public static final String STOCHASTIC_GRADIENT = "Stochastic gradient";
     public static final String ADAM = "Adam";
     public static final String NADAM = "Nadam";
@@ -139,7 +140,7 @@ public class Constants {
     public static final int DEFAULT_HIDDEN_LAYER_COUNT = 2;
     public static final int DIFFERENT_VALUE_MAX_COUNT = 10;
 
-    public static final String[] OPTIMIZERS = {GRADIENT, STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
+    public static final String[] OPTIMIZERS = {STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
     public static final double DEFAULT_LEARNING_RATE = 0.1;
     public static final int DEFAULT_ITERATION_COUNT = 100;
     public static final double DEFAULT_TRAINING = 0.75;

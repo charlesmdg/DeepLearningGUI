@@ -1,6 +1,7 @@
 package data;
 
 import common.Constants;
+import common.Tools;
 
 public class ClassificationEvaluation extends Evaluation {
     private final double accuracy;
@@ -18,13 +19,19 @@ public class ClassificationEvaluation extends Evaluation {
 
     @Override
     public String toString() {
-        return Constants.ACCURACY + " : " + this.accuracy + "\n" +
-                Constants.PRECISION + " : " + this.precision + "\n" +
-                Constants.RECALL + " : " + this.recall + "\n" +
-                Constants.F1SCORE + " : " + this.f1Score;
+        return Constants.ACCURACY + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.accuracy) + Constants.CR +
+                Constants.PRECISION + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.precision) + Constants.CR +
+                Constants.RECALL + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.recall) + Constants.CR +
+                Constants.F1SCORE + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.f1Score);
     }
 
     public String toStringWithIteration(int iteration) {
-        return "Iteration # " + iteration + " : " + this.accuracy;
+        return Constants.TRAINING_DISPLAY_INTRODUCTION + iteration
+                + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.accuracy);
+    }
+
+    @Override
+    public double getIndicatorValue() {
+        return this.accuracy;
     }
 }

@@ -15,4 +15,10 @@ public class Message {
     public static final String TOO_MANY_DIFFERENT_VALUES = "Trop de valeur différentes pour la variable cible : " +
                                                                     Constants.STRING_TO_REPLACE + ".";
     public static final String TRAINING_ERROR = "Erreur dans l'entraînement du modèle.";
+    public static final String ARCHITECTURE_AND_DATASET_DISCORDANCY = "Incompatiblité entre le type de prédiction, le jeu de données et l'architecture.";
+    public static final String WRONG_PROPORTION = "Le champ suivant doit être un nombre décimal " +
+                                                    "strictement compris ente 0 et 1 : " + Constants.STRING_TO_REPLACE + ".";
+    public static final String OVERFITTING_MODEL = "Le modéle surajuste le jeu de données d'entraînement.";
+    public static final String NOT_IMPLEMENTED = "La fonctionnalité suivante n'est encore encore implémentée : " + Constants.STRING_TO_REPLACE + ".";
+
 }

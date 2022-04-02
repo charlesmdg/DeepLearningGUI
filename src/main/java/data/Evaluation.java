@@ -5,4 +5,5 @@ public abstract class Evaluation {
     }
 
     public abstract String toStringWithIteration(int iteration);
+    public abstract double getIndicatorValue();
 }

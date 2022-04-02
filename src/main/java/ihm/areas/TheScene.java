@@ -10,10 +10,6 @@ import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -37,24 +33,21 @@ public class TheScene extends Scene {
         super(group, Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
         this.architectureArea = new ArchitectureArea(this);
 
+        Tools.setSceneBackground(this, Constants.SCENE_TOP_LEFT_COLOR, Constants.SCENE_BOTTOM_RIGHT_COLOR);
+
         this.initScene(group);
-        this.setFill(new LinearGradient(
-                0, 0, 1, 1, true,
-                CycleMethod.NO_CYCLE,
-                new Stop(0, Color.WHITE),
-                new Stop(1, Color.web("#3498eb")))
-        );
+
         this.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.R) {
-                TheScene.this.reset();
+                TheScene.this.resetModel();
             }
         });
     }
 
-    private void reset() {
-        this.iaModel = null;
-        this.predictionTypeArea.getChildren().clear();
-        Tools.inform("RESET");
+    private void resetModel() {
+        this.iaModel.resetModel();
+
+        Tools.inform("RESET MODEL");
     }
 
     private void initScene(DeepHBox group) {
@@ -140,9 +133,6 @@ public class TheScene extends Scene {
 
     public void buttonClicked(String buttonText) {
         switch (buttonText) {
-            case Constants.VISUALIZE:
-                this.visualizeButtonClicked();
-                break;
             case Constants.TRAIN:
                 this.trainButtonClicked();
                 break;
@@ -162,18 +152,18 @@ public class TheScene extends Scene {
         switch (spinnerText) {
             case Constants.INPUTS:
                 this.visualisationArea.drawNetwork(newValue,
-                                                    this.architectureArea.getOutputCount(),
-                                                    this.architectureArea.getHiddenLayerCount());
+                        this.architectureArea.getOutputCount(),
+                        this.architectureArea.getHiddenLayerCount());
                 break;
             case Constants.OUTPUTS:
                 this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
-                                                    newValue,
-                                                    this.architectureArea.getHiddenLayerCount());
+                        newValue,
+                        this.architectureArea.getHiddenLayerCount());
                 break;
             case Constants.HIDDEN_LAYERS:
                 this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
-                                                    this.architectureArea.getOutputCount(),
-                                                    newValue);
+                        this.architectureArea.getOutputCount(),
+                        newValue);
                 break;
             default:
         }
@@ -198,7 +188,6 @@ public class TheScene extends Scene {
         this.architectureArea.setChildrenDisabled(false);
         this.fillDatasetArea(file);
         this.fillArchitectureArea();
-//        this.buttonArea.getVisualizeButton().setDisable(false);
         this.buttonArea.getTrainButton().setDisable(false);
     }
 
@@ -241,51 +230,117 @@ public class TheScene extends Scene {
         this.architectureArea.setActivationFunction(activationFunction);
     }
 
+    private boolean checkTrainingOptions() {
+        int predictiveVariableCount = this.datasetArea.getCsvLoader().getDataset().getColumnNames().length - 1;
 
-    private void visualizeButtonClicked() {
-        this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
-                                            this.architectureArea.getOutputCount(),
-                                            this.architectureArea.getHiddenLayerCount());
+        boolean answer = this.architectureArea.getInputCount() == predictiveVariableCount;
+
+
+        if (this.predictionTypeArea.getPredictionType().equals(Constants.CLASSIFICATION)) {
+            int classCount = this.datasetArea.getCsvLoader().getDataset()
+                    .getValueCount(this.datasetArea.getTargetVariableName());
+            answer = answer && (classCount == this.architectureArea.getOutputCount());
+        } else {
+            answer = answer && (this.architectureArea.getOutputCount() == 1);
+        }
+
+        return answer;
+    }
+
+    public void initModelIfNecessary(){
+        if (this.iaModel == null) {
+            this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
+                    this.architectureArea.getInputCount(),
+                    this.architectureArea.getOutputCount(),
+                    this.architectureArea.getHiddenLayerCount(),
+                    this.architectureArea.getActivationFunction(),
+                    this.optimizationArea.getLossFunction(),
+                    this.optimizationArea.getOptimizer(),
+                    this.optimizationArea.getLearningRate());
+        }
+
+        if (!this.iaModel.modelReady()) {
+            this.iaModel.resetModel();
+        }
+    }
+
+    public void splitDataIfNecessary() throws Exception{
+        if (!this.iaModel.dataReady()) {
+            this.iaModel.splitData(this.datasetArea.getCsvLoader(),
+                    this.datasetArea.getTargetVariableName(),
+                    this.datasetArea.getTrainingProportion(),
+                    this.datasetArea.getPretreatment());
+        }
+    }
+
+    private void disableControlsDuringTraining(){
+        this.predictionTypeArea.setChildrenDisabled(true);
+        this.datasetArea.setChildrenDisabled(true);
+        this.architectureArea.setChildrenDisabled(true);
+        this.optimizationArea.setChildrenDisabled(true);
+        this.buttonArea.getEvaluateButton().setDisable(true);
+        this.evaluationArea.clear();
+    }
+
+    private void enableControlsAfterTraining(){
+        this.optimizationArea.getIterationSpinner().setDisable(false);
+        this.buttonArea.getEvaluateButton().setDisable(false);
+    }
+
+    private boolean checkBeforeTraining(){
+
+        if(this.predictionTypeArea.getPredictionType().equals(Constants.REGRESSION)){
+            Tools.inform(Message.NOT_IMPLEMENTED, Constants.REGRESSION);
+            return false;
+        }
+
+        if (!this.checkTrainingOptions()) {
+            Tools.inform(Message.ARCHITECTURE_AND_DATASET_DISCORDANCY);
+            return false;
+        }
+
+        if (!Tools.checkNumericalTextField(this.datasetArea.getTrainingTextField(), 0, 1)){
+            Tools.inform(Message.WRONG_PROPORTION, Constants.TRAINING);
+            this.datasetArea.getTrainingTextField().requestFocus();
+            return false;
+        }
+
+        if (!Tools.checkNumericalTextField(this.optimizationArea.getParameterTextField(), 0, 1)){
+            Tools.inform(Message.WRONG_PROPORTION, Constants.PARAMETERS);
+            this.optimizationArea.getParameterTextField().requestFocus();
+            return false;
+        }
+
+        return true;
     }
 
     private void trainButtonClicked() {
+
         try {
-            if (iaModel == null) {
-                this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
-                        this.architectureArea.getInputCount(),
-                        this.architectureArea.getOutputCount(),
-                        this.architectureArea.getHiddenLayerCount(),
-                        this.architectureArea.getActivationFunction(),
-                        this.optimizationArea.getLossFunction(),
-                        this.optimizationArea.getOptimizer(),
-                        this.optimizationArea.getLearningRate());
+            if (! checkBeforeTraining()){
+                return;
             }
 
-            if (!this.iaModel.dataReady()) {
-                this.iaModel.splitData(this.datasetArea.getCsvLoader(),
-                        this.datasetArea.getTargetVariableName(),
-                        this.datasetArea.getTrainingProportion(),
-                        this.datasetArea.getPretreatment());
-            }
+            this.initModelIfNecessary();
+            this.splitDataIfNecessary();
 
             new Thread(() -> {
-                this.trainingArea.clear();
+                this.disableControlsDuringTraining();
                 int interationCount = this.optimizationArea.getIterationCount();
-                for (int ii = 1; ii <= interationCount; ii++) {
-                    try {
-                        Thread.sleep(100);
-                        data.Evaluation evaluation = this.iaModel.train1();
-                        this.trainingArea.println(evaluation.toStringWithIteration(ii));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                try {
+                    for (int ii = 1; ii <= interationCount; ii++) {
+                        Thread.sleep(Constants.TRAINING_DELAY);
+                        data.Evaluation evaluation = this.iaModel.train();
+                        this.trainingArea.println(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
                     }
+
+                    this.enableControlsAfterTraining();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }).start();
-
-            this.buttonArea.getEvaluateButton().setDisable(false);
-
         } catch (Exception e) {
-
             Tools.error(Message.TRAINING_ERROR);
         }
     }
@@ -293,9 +348,11 @@ public class TheScene extends Scene {
     private void evaluateButtonClicked() {
         try {
             Evaluation evaluation = this.iaModel.evaluate();
-
             this.evaluationArea.clear();
             this.evaluationArea.println(evaluation);
+            if(evaluation.getIndicatorValue() < this.iaModel.getAchivedLatestIndicatorValue()){
+                Tools.inform(Message.OVERFITTING_MODEL);
+            }
 
         } catch (Exception e) {
             Tools.error(Message.TRAINING_ERROR);

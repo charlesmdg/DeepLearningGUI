@@ -1,7 +1,5 @@
 package ihm.controls;
 
-import common.Tools;
-import common.Constants;
 import javafx.scene.control.TextField;
 
 

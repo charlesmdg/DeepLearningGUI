@@ -1,16 +1,17 @@
 package ihm.controls;
 
-import common.Constants;
 import common.Tools;
 import ihm.areas.TheScene;
 import javafx.scene.control.ToggleGroup;
 
-import static common.Constants.RADIO_BUTTON_GROUP_HEIGHT;
-import static common.Constants.RADIO_BUTTON_GROUP_WIDTH;
+import java.util.ArrayList;
+
+import static common.Constants.*;
 
 public class DeepRadioButtonGroup extends DeepVInputArea {
 
     private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final ArrayList<DeepRadioButton> deepRadioButtons = new ArrayList<>();
 
     public DeepRadioButtonGroup(String[] texts, TheScene scene) {
         super(RADIO_BUTTON_GROUP_WIDTH, RADIO_BUTTON_GROUP_HEIGHT, false);
@@ -20,9 +21,10 @@ public class DeepRadioButtonGroup extends DeepVInputArea {
         this.add(Tools.createVExpandableSpacer());
         for (int ii = 0; ii < length; ii++) {
             DeepRadioButton radioButton = new DeepRadioButton(texts[ii]);
+            this.deepRadioButtons.add(radioButton);
             this.add(radioButton);
             if(ii<length - 1)
-                this.add(Tools.createVerticalSpacer(Constants.RADIO_BUTTON_INTERSPACE));
+                this.add(Tools.createVerticalSpacer(RADIO_BUTTON_INTERSPACE));
             radioButton.setToggleGroup(this.toggleGroup);
         }
         this.add(Tools.createVExpandableSpacer());
@@ -33,5 +35,11 @@ public class DeepRadioButtonGroup extends DeepVInputArea {
 
     public DeepRadioButton getSelectedRadioButton() {
         return (DeepRadioButton) this.toggleGroup.getSelectedToggle();
+    }
+
+    public void setChildrenDisabled(boolean disabled){
+        for(DeepRadioButton radioButton: deepRadioButtons){
+            radioButton.setDisable(disabled);
+        }
     }
 }

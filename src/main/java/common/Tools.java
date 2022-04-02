@@ -1,12 +1,16 @@
 package common;
 
-import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import org.bytedeco.opencv.presets.opencv_core;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,7 +77,7 @@ public class Tools {
      * @param region le controle a encader
      */
     public static void addBorder(Region region, boolean bordered) {
-        if(bordered)
+        if (bordered)
             region.setStyle("-fx-border-color: black; -fx-background-color: transparent;");
         else
             region.setStyle("-fx-background-color: transparent;");
@@ -154,5 +158,49 @@ public class Tools {
             Tools.error(Message.CSV_READ_ERROR);
         }
         return count;
+    }
+
+    public static void setSceneBackground(Scene scene, Color top_left_color, Color bottom_right_color) {
+        scene.setFill(new LinearGradient(
+                0, 0, 1, 1, true,
+                CycleMethod.NO_CYCLE,
+                new Stop(0, top_left_color),
+                new Stop(1, bottom_right_color))
+        );
+    }
+
+    public static String stringFormatIndicator(double indicator) {
+        return String.format("%.3f", 100 * indicator) + Constants.PERCENT;
+    }
+
+    public static void turnsTextFieldNumericalOnly(TextField textField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[\\d.]*")) {
+                textField.setText(newValue.replaceAll("[^\\d.]", ""));
+            }
+        });
+    }
+
+    public static void addTextLimiter(TextField textField, int maxLength) {
+        textField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (textField.getText().length() > maxLength) {
+                String s = textField.getText().substring(0, maxLength);
+                textField.setText(s);
+            }
+        });
+
+    }
+
+    public static boolean checkNumericalTextField(TextField textField, double minValue, double maxValue) {
+        boolean answer = false;
+
+        String text = textField.getText().trim();
+
+        if (text.matches(Constants.DATA_REGEX)) {
+            double value = Double.parseDouble(text);
+            answer = (value > minValue) && (value < maxValue);
+        }
+
+        return answer;
     }
 }

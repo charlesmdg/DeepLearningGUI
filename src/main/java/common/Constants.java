@@ -13,6 +13,10 @@ public class Constants {
     public static final int MAIN_WINDOW_HEIGHT = 750;
     public static final String MAIN_WINDOW_TITLE = "Easy Deep Learning";
 
+    public static final Color SCENE_TOP_LEFT_COLOR = Color.WHITE;
+    public static final Color SCENE_BOTTOM_RIGHT_COLOR = Color.web("#7faaf0");
+
+    public static final int NUMERICAL_FIELD_MAX_LENGTH = 5;
     public static final int AREA_PADDING = 3;
     public static final int RADIO_BUTTON_INTERSPACE = 20;
     public static final int RADIO_BUTTON_GROUP_WIDTH = 150;
@@ -48,7 +52,6 @@ public class Constants {
     public static final String EDIT = "Éditer";
     public static final String HELP = "Aide";
 
-    public static final String VISUALIZE = "Visualiser";
     public static final String TRAIN = "Entraîner";
     public static final String EVALUATE = "Évaluer";
 
@@ -138,9 +141,12 @@ public class Constants {
 
     public static final String[] OPTIMIZERS = {STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
     public static final double DEFAULT_LEARNING_RATE = 0.1;
-    public static final int DEFAULT_ITERATION_COUNT = 100;
+    public static final int DEFAULT_ITERATION_COUNT = 50;
     public static final double DEFAULT_TRAINING = 0.75;
 
+    public static final String TRAINING_DISPLAY_INTRODUCTION = "Exactitude de l'itération n° ";
+    public static final String PERCENT = " %";
+    public static final int TRAINING_DELAY = 100;
     public static final int NEURON_RADIUS = 10;
     public static final int NEURON_STROKE_WIDTH = 1;
     public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.GRAY;
@@ -150,8 +156,8 @@ public class Constants {
     public static final Color NEURON_LINK_COLOR = Color.GRAY;
     public static final Color NETWORK_BACKGROUND_COLOR = Color.WHITE;
 
-    public static final String ACCURACY = "Accuracy";
-    public static final String PRECISION = "Precision";
-    public static final String RECALL = "Recall";
-    public static final String F1SCORE = "F1 Score";
+    public static final String ACCURACY = "Exactitude";
+    public static final String PRECISION = "Précision";
+    public static final String RECALL = "Sensibilité";
+    public static final String F1SCORE = "Score F1";
 }

@@ -1,7 +1,6 @@
 package ihm.areas;
 
 import common.Constants;
-import common.Message;
 import common.Tools;
 import data.CsvLoader;
 import ihm.controls.*;
@@ -13,7 +12,7 @@ public class DatasetArea extends DeepVInputArea {
 
     private final DeepTextField csvFileTextField = new DeepTextField(false);
     private final DeepComboBox targetVariableComboBox = new DeepComboBox(Constants.EMPTY_STRINGS);
-    private final DeepTextField trainingTextField = new DeepTextField(true);
+    private final DeepTextField trainingTextField = new DeepNumericalTextField(true);
     private final DeepComboBox pretreatmentComboBox = new DeepComboBox(Constants.PRETREATMENT_OPTIONS);
     private final DeepButton chooseButton;
     private CsvLoader csvLoader;
@@ -32,7 +31,6 @@ public class DatasetArea extends DeepVInputArea {
 
         Tools.setWidth(this.trainingTextField, Constants.NUM_TEXTFIELD_WIDTH);
 
-
         String[] labelTexts = {Constants.CSV_FILE, Constants.TARGET_VARIABLE, Constants.TRAINING_RATE, Constants.PRETREATMENT};
         Region[] regions = {hBox, this.targetVariableComboBox, this.trainingTextField, this.pretreatmentComboBox};
         this.fill(labelTexts, regions);
@@ -45,6 +43,7 @@ public class DatasetArea extends DeepVInputArea {
 
 
     public void setChildrenDisabled(boolean disabled) {
+        this.csvFileTextField.setDisable(disabled);
         this.chooseButton.setDisable(disabled);
         this.targetVariableComboBox.setDisable(disabled);
         this.trainingTextField.setDisable(disabled);
@@ -76,7 +75,7 @@ public class DatasetArea extends DeepVInputArea {
         return this.targetVariableComboBox.getSelectionModel().getSelectedItem();
     }
 
-    public double getTrainingProportion() {
+    public double getTrainingProportion(){
         return Double.parseDouble(this.trainingTextField.getText());
     }
 
@@ -86,5 +85,10 @@ public class DatasetArea extends DeepVInputArea {
 
     public CsvLoader getCsvLoader() {
         return this.csvLoader;
+    }
+
+
+    public DeepTextField getTrainingTextField() {
+        return this.trainingTextField;
     }
 }

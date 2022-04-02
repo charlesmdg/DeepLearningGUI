@@ -5,6 +5,6 @@ import ihm.controls.DeepDisplayArea;
 
 public class EvaluationArea extends DeepDisplayArea {
     public EvaluationArea() {
-        super(Constants.EVALUATION, Constants.DISPLAY_AREA_WIDTH, Constants.EVALUATION_AREA_HEIGHT);
+        super(Constants.EVALUATION, Constants.EVALUATION_AREA_HEIGHT);
     }
 }

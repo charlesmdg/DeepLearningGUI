@@ -27,10 +27,17 @@ import org.nd4j.linalg.lossfunctions.LossFunctions;
 import java.io.File;
 
 public class IaModel {
-    private final MultiLayerNetwork model;
+    private MultiLayerNetwork model;
+    private final String predictionType;
+    private final int inputCount;
     private final int outputCount;
-    final private String predictionType;
-
+    private final int hiddenLayerCount;
+    private final String activationFunction;
+    private final String lossFunction;
+    private final String optimizer;
+    private final double learningRate;
+    private int achievedInterationCount = 0;
+    private double achivedLatestIndicatorValue = -1;
     private DataSet trainingData;
     private DataSet evaluationData;
 
@@ -40,14 +47,22 @@ public class IaModel {
                    double learningRate) {
 
         this.predictionType = predictionType;
+        this.inputCount = inputCount;
         this.outputCount = outputCount;
+        this.hiddenLayerCount = hiddenLayerCount;
+        this.activationFunction = activationFunction;
+        this.lossFunction = lossFunction;
+        this.learningRate = learningRate;
+        this.optimizer = optimizer;
+        this.initModel();
+    }
 
+    private void initModel() {
         Activation hiddenLayerActivation = this.createHiddenLayerActivation(activationFunction);
         Activation outputLayerActivation = this.createOutputLayerActivation(predictionType);
         LossFunctions.LossFunction loss = this.createLossFunction(lossFunction);
 
-        NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder()
-                .activation(hiddenLayerActivation);
+        NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder().activation(hiddenLayerActivation);
 
         builder = this.addOptimizer(builder, learningRate, optimizer);
 
@@ -63,6 +78,7 @@ public class IaModel {
                         .nIn(inputCount).nOut(outputCount).build()).build();
 
         this.model = new MultiLayerNetwork(conf);
+        this.model.setListeners(new ScoreIterationListener(1));
         this.model.init();
     }
 
@@ -183,38 +199,49 @@ public class IaModel {
         }
     }
 
+    public double getAchivedLatestIndicatorValue() {
+        return achivedLatestIndicatorValue;
+    }
+
     public boolean dataReady() {
         return this.trainingData != null && this.evaluationData != null;
     }
 
-    public void train(int iterationCount) throws Exception {
-        this.model.setListeners(new ScoreIterationListener(1));
-
-        for (int i = 0; i < iterationCount; i++) {
-            Thread.sleep(10);
-            this.model.fit(trainingData);
-        }
+    public int getAchievedInterationCount() {
+        return this.achievedInterationCount;
     }
 
-    public data.Evaluation train1() throws Exception {
-        this.train(1);
+    public void resetModel() {
+        this.initModel();
+        this.achievedInterationCount = 0;
+    }
 
-        return this.evaluate(this.trainingData);
+    public boolean modelReady() {
+        return this.model != null;
+    }
+
+
+    public data.Evaluation train() {
+        this.model.fit(trainingData);
+        this.achievedInterationCount++;
+        data.Evaluation evaluation = this.evaluate(this.trainingData);
+        assert evaluation != null;
+        this.achivedLatestIndicatorValue = evaluation.getIndicatorValue();
+        return evaluation;
     }
 
     public data.Evaluation evaluate() {
-        return this.evaluate(this.trainingData);
+        return this.evaluate(this.evaluationData);
     }
 
     private data.Evaluation evaluate(DataSet dataset) {
         Evaluation eval = new Evaluation(this.outputCount);
         INDArray output = this.model.output(dataset.getFeatures());
-        if(this.predictionType.equals(Constants.CLASSIFICATION)){
+        if (this.predictionType.equals(Constants.CLASSIFICATION)) {
             eval.eval(dataset.getLabels(), output);
             return new data.ClassificationEvaluation(eval.accuracy(), eval.precision(),
                     eval.recall(), eval.f1());
-        }
-        else{
+        } else {
             return null;
         }
     }

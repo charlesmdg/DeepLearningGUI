@@ -6,7 +6,7 @@ import common.Tools;
 public class DeepDisplayArea extends DeepVInputArea {
     private final DeepTextArea textArea = new DeepTextArea();
 
-    public DeepDisplayArea(String title, double width, double height){
+    public DeepDisplayArea(String title, double height){
         super(Constants.DISPLAY_AREA_WIDTH, height, true);
 
         DeepTitleLabel titleLabel = new DeepTitleLabel(title);

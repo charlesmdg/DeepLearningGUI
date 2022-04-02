@@ -18,4 +18,9 @@ public class RegressionEvaluation extends Evaluation{
         return "Iteration # " + iteration + " : " + this.mape;
     }
 
+    @Override
+    public double getIndicatorValue() {
+        return 0;
+    }
+
 }

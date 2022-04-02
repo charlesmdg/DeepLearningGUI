@@ -8,9 +8,8 @@ import javafx.scene.layout.Region;
 public class OptimizationArea extends DeepVInputArea {
     private final DeepComboBox lossFunctionComboBox = new DeepComboBox(Constants.LOSS_FUNCTIONS);
     private final DeepComboBox optimizerComboBox = new DeepComboBox(Constants.OPTIMIZERS);
-    private final DeepTextField parameterTextField = new DeepTextField(true);
+    private final DeepTextField parameterTextField = new DeepNumericalTextField(true);
     private final DeepSpinner iterationSpinner;
-        ;
 
     public OptimizationArea(){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.OPTIMISATION_AREA_HEIGHT, true);
@@ -65,5 +64,13 @@ public class OptimizationArea extends DeepVInputArea {
 
     public void setIterationCount(int iterationCount){
         this.iterationSpinner.setValue(iterationCount);
+    }
+
+    public DeepSpinner getIterationSpinner() {
+        return this.iterationSpinner;
+    }
+
+    public DeepTextField getParameterTextField() {
+        return this.parameterTextField;
     }
 }

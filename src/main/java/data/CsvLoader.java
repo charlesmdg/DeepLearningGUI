@@ -12,7 +12,7 @@ import java.io.FileReader;
  */
 public class CsvLoader {
     private Dataset dataset;
-    private String filePath;
+    private final String filePath;
 
     public CsvLoader(String filePath) {
         this.filePath = filePath;

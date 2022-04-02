@@ -9,10 +9,15 @@ public class OptimizationArea extends DeepVInputArea {
     private final DeepComboBox lossFunctionComboBox = new DeepComboBox(Constants.LOSS_FUNCTIONS);
     private final DeepComboBox optimizerComboBox = new DeepComboBox(Constants.OPTIMIZERS);
     private final DeepTextField parameterTextField = new DeepTextField(true);
-    private final DeepSpinner iterationSpinner = new DeepSpinner(Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE);
+    private final DeepSpinner iterationSpinner;
+        ;
 
     public OptimizationArea(){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.OPTIMISATION_AREA_HEIGHT, true);
+        this.iterationSpinner = new DeepSpinner(Constants.ITERATIONS,
+                                    Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE,
+                                    null);
+
         this.add(new DeepTitleLabel(Constants.OPTIMIZATION));
 
         Tools.setWidth(this.parameterTextField, Constants.NUM_TEXTFIELD_WIDTH);
@@ -43,7 +48,7 @@ public class OptimizationArea extends DeepVInputArea {
     }
 
     public int getIterationCount(){
-        return this.iterationSpinner.getValue();
+        return this.iterationSpinner.getValue_();
     }
 
     public void setLossFunction(String lossFunction){

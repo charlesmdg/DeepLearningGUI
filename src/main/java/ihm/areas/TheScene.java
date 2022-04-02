@@ -10,6 +10,10 @@ import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -19,7 +23,7 @@ public class TheScene extends Scene {
 
     private final PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
     private final DatasetArea datasetArea = new DatasetArea(this);
-    private final ArchitectureArea architectureArea = new ArchitectureArea();
+    private final ArchitectureArea architectureArea;
     private final OptimizationArea optimizationArea = new OptimizationArea();
     private final VisualisationArea visualisationArea = new VisualisationArea();
     private final EvaluationArea evaluationArea = new EvaluationArea();
@@ -31,9 +35,15 @@ public class TheScene extends Scene {
 
     public TheScene(DeepHBox group) {
         super(group, Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
+        this.architectureArea = new ArchitectureArea(this);
 
         this.initScene(group);
-
+        this.setFill(new LinearGradient(
+                0, 0, 1, 1, true,
+                CycleMethod.NO_CYCLE,
+                new Stop(0, Color.WHITE),
+                new Stop(1, Color.web("#3498eb")))
+        );
         this.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.R) {
                 TheScene.this.reset();
@@ -44,7 +54,7 @@ public class TheScene extends Scene {
     private void reset() {
         this.iaModel = null;
         this.predictionTypeArea.getChildren().clear();
-        Tools.inform("JK", "jkljlk");
+        Tools.inform("RESET");
     }
 
     private void initScene(DeepHBox group) {
@@ -146,6 +156,29 @@ public class TheScene extends Scene {
         }
     }
 
+    public void spinnerValueChanged(String spinnerText, int newValue) {
+        //Attention fausse repetition, le newValue est positionne differemment
+        //d'un cas a l'autre
+        switch (spinnerText) {
+            case Constants.INPUTS:
+                this.visualisationArea.drawNetwork(newValue,
+                                                    this.architectureArea.getOutputCount(),
+                                                    this.architectureArea.getHiddenLayerCount());
+                break;
+            case Constants.OUTPUTS:
+                this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
+                                                    newValue,
+                                                    this.architectureArea.getHiddenLayerCount());
+                break;
+            case Constants.HIDDEN_LAYERS:
+                this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
+                                                    this.architectureArea.getOutputCount(),
+                                                    newValue);
+                break;
+            default:
+        }
+    }
+
     private void chooseCSVFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.FILE_CHOOSER_TITLE);
@@ -165,7 +198,7 @@ public class TheScene extends Scene {
         this.architectureArea.setChildrenDisabled(false);
         this.fillDatasetArea(file);
         this.fillArchitectureArea();
-        this.buttonArea.getVisualizeButton().setDisable(false);
+//        this.buttonArea.getVisualizeButton().setDisable(false);
         this.buttonArea.getTrainButton().setDisable(false);
     }
 
@@ -208,14 +241,14 @@ public class TheScene extends Scene {
         this.architectureArea.setActivationFunction(activationFunction);
     }
 
+
     private void visualizeButtonClicked() {
         this.visualisationArea.drawNetwork(this.architectureArea.getInputCount(),
-                this.architectureArea.getOutputCount(),
-                this.architectureArea.getHiddenLayerCount());
+                                            this.architectureArea.getOutputCount(),
+                                            this.architectureArea.getHiddenLayerCount());
     }
 
     private void trainButtonClicked() {
-        //Todo
         try {
             if (iaModel == null) {
                 this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
@@ -236,6 +269,7 @@ public class TheScene extends Scene {
             }
 
             new Thread(() -> {
+                this.trainingArea.clear();
                 int interationCount = this.optimizationArea.getIterationCount();
                 for (int ii = 1; ii <= interationCount; ii++) {
                     try {

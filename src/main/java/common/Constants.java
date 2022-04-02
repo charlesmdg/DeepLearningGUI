@@ -16,7 +16,7 @@ public class Constants {
     public static final int AREA_PADDING = 3;
     public static final int RADIO_BUTTON_INTERSPACE = 20;
     public static final int RADIO_BUTTON_GROUP_WIDTH = 150;
-    public static final int RADIO_BUTTON_GROUP_HEIGHT = 100;
+    public static final int RADIO_BUTTON_GROUP_HEIGHT = 94;
 
     public static final int SPINNER_WIDTH = 60;
     public static final int COMBOBOX_WIDTH = 190;
@@ -89,7 +89,7 @@ public class Constants {
     public static final String[] PRETREATMENT_OPTIONS = {NONE, STANDARD_SCALER, MIN_MAX_SCALER};
 
     public static final String ARCHITECTURE = "Architecture";
-    public static final String INPUTS = "Entrrée(s)";
+    public static final String INPUTS = "Entrée(s)";
     public static final String OUTPUTS = "Sortie(s)";
     public static final String HIDDEN_LAYERS = "Couche(s) cachée(s)";
     public static final String ACTIVATION_FUNCTION = "Fonction d'activation";
@@ -118,7 +118,7 @@ public class Constants {
     public static final int OUTPUT_MAX_VALUE = 10;
 
     public static final int HIDDEN_LAYER_MIN_VALUE = 1;
-    public static final int HIDDEN_LAYER_MAX_VALUE = 10;
+    public static final int HIDDEN_LAYER_MAX_VALUE = 20;
 
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";
     public static final String HINGE_ERROR = "Hinge error";

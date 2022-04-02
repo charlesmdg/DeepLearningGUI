@@ -72,8 +72,11 @@ public class Tools {
     /**
      * @param region le controle a encader
      */
-    public static void addBorder(Region region) {
-        region.setStyle("-fx-border-color: black");
+    public static void addBorder(Region region, boolean bordered) {
+        if(bordered)
+            region.setStyle("-fx-border-color: black; -fx-background-color: transparent;");
+        else
+            region.setStyle("-fx-background-color: transparent;");
     }
 
     public static void addClearBorder(Region region) {
@@ -89,6 +92,10 @@ public class Tools {
 
     public static void error(String message, int number) {
         Tools.alert(Alert.AlertType.ERROR, message.replace(Constants.STRING_TO_REPLACE, String.valueOf(number)));
+    }
+
+    public static void inform(String message) {
+        Tools.alert(Alert.AlertType.INFORMATION, message);
     }
 
     public static void inform(String message, String text) {
@@ -132,16 +139,6 @@ public class Tools {
         }
 
         return Constants.IMPOSSIBLE_INDEX;
-    }
-
-    /**
-     * @param nodes    les nodes a activer/desactiver
-     * @param disabled le statut d'activation final
-     */
-    public static void setDisableNodes(Node[] nodes, boolean disabled) {
-        for (Node node : nodes) {
-            node.setDisable(disabled);
-        }
     }
 
     public static int filelineCount(String path) {

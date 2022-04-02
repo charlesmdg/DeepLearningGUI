@@ -12,7 +12,7 @@ import javafx.scene.shape.Shape;
 import java.util.ArrayList;
 
 public class VisualisationArea extends DeepPane {
-    private DeepPane drawPane = new DeepPane(true);
+    private final DeepPane drawPane = new DeepPane(true);
 
     public Network network;
 

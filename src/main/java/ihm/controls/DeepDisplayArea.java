@@ -19,7 +19,7 @@ public class DeepDisplayArea extends DeepVInputArea {
     }
 
     public void println(String text){
-        this.textArea.setText(this.textArea.getText() + Constants.CR + text);
+        this.textArea.appendText(text + Constants.CR);
     }
 
     public void println(Object o){

@@ -7,8 +7,7 @@ import javafx.scene.shape.Shape;
 public class DeepPane extends Pane {
     public DeepPane(boolean bordered){
         super();
-        if(bordered)
-            Tools.addBorder(this);
+        Tools.addBorder(this, bordered);
     }
 
     public void draw(Shape shape) {

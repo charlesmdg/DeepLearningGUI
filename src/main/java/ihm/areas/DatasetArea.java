@@ -20,7 +20,7 @@ public class DatasetArea extends DeepVInputArea {
 
     public DatasetArea(TheScene scene) {
         super(Constants.PARAMETER_AREA_WIDTH, Constants.DATASET_AREA_HEIGHT, true);
-
+        this.csvFileTextField.editableProperty().setValue(false);
         this.chooseButton = new DeepButton(Constants.CHOOSE_AND_DOTS, scene);
 
         this.add(new DeepTitleLabel(Constants.DATASET));

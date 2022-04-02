@@ -8,13 +8,16 @@ import ihm.controls.DeepVInputArea;
 import javafx.scene.layout.Region;
 
 public class ArchitectureArea extends DeepVInputArea {
-    private final DeepSpinner inputCountSpinner = new DeepSpinner(Constants.INPUT_MIN_VALUE, Constants.INPUT_MAX_VALUE);
-    private final DeepSpinner outputCountSpinner = new DeepSpinner(Constants.OUTPUT_MIN_VALUE, Constants.OUTPUT_MAX_VALUE);
-    private final DeepSpinner hiddenLayerCountSpinner = new DeepSpinner(Constants.HIDDEN_LAYER_MIN_VALUE, Constants.HIDDEN_LAYER_MAX_VALUE);
+    private final DeepSpinner inputCountSpinner;
+    private final DeepSpinner outputCountSpinner;
+    private final DeepSpinner hiddenLayerCountSpinner;
     private final DeepComboBox activationFunctionComboBox = new DeepComboBox(Constants.ACTIVATION_FUNCTIONS);
 
-    public ArchitectureArea() {
+    public ArchitectureArea(TheScene scene) {
         super(Constants.PARAMETER_AREA_WIDTH, Constants.ARCHITECTURE_AREA_HEIGHT, true);
+        inputCountSpinner = new DeepSpinner(Constants.INPUTS, Constants.INPUT_MIN_VALUE, Constants.INPUT_MAX_VALUE, scene);
+        outputCountSpinner = new DeepSpinner(Constants.OUTPUTS, Constants.OUTPUT_MIN_VALUE, Constants.OUTPUT_MAX_VALUE, scene);
+        hiddenLayerCountSpinner = new DeepSpinner(Constants.HIDDEN_LAYERS, Constants.HIDDEN_LAYER_MIN_VALUE, Constants.HIDDEN_LAYER_MAX_VALUE, scene);
 
         this.add(new DeepTitleLabel(Constants.ARCHITECTURE));
 
@@ -31,15 +34,15 @@ public class ArchitectureArea extends DeepVInputArea {
     }
 
     public int getInputCount(){
-        return this.inputCountSpinner.getValue();
+        return this.inputCountSpinner.getValue_();
     }
 
     public int getOutputCount(){
-        return this.outputCountSpinner.getValue();
+        return this.outputCountSpinner.getValue_();
     }
 
     public int getHiddenLayerCount(){
-        return this.hiddenLayerCountSpinner.getValue();
+        return this.hiddenLayerCountSpinner.getValue_();
     }
 
     public String getActivationFunction(){

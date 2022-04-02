@@ -5,14 +5,12 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class DeepVBox extends VBox {
-    public DeepVBox(boolean bordered){
+    public DeepVBox(boolean bordered) {
         super();
-        if(bordered)
-            Tools.addBorder(this);
+        Tools.addBorder(this, bordered);
     }
 
-    public void add(Region region){
+    public void add(Region region) {
         this.getChildren().add(region);
     }
-
 }

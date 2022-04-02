@@ -2,6 +2,7 @@ package common;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -15,6 +16,7 @@ import javafx.scene.paint.Stop;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * C'es la boîte a outils de l'application
@@ -107,6 +109,17 @@ public class Tools {
 
     public static void inform(String message, String text) {
         Tools.alert(Alert.AlertType.INFORMATION, message.replace(Constants.STRING_TO_REPLACE, text));
+    }
+
+    public static Optional<ButtonType> confirm(String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(Constants.CONFIRMATION);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(Constants.DELETE, Constants.DO_NOT_DELETE);
+
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        return alert.showAndWait();
     }
 
     /**

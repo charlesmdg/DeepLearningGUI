@@ -23,13 +23,13 @@ public class DeepSpinner extends Spinner<Integer> {
 
         this.valueProperty().addListener(
                 (observableValue, oldValue, newValue) -> {
-                    if(scene != null)
+                    if (scene != null)
                         scene.spinnerValueChanged(DeepSpinner.this.text, newValue);
                 });
     }
 
-    public int getValue_(){
-        if(this.getValueFactory() == null)
+    public int getValue_() {
+        if (this.getValueFactory() == null)
             return 1;
         else
             return this.getValue();
@@ -43,9 +43,16 @@ public class DeepSpinner extends Spinner<Integer> {
     }
 
     public void setValue(int value) {
-        if(this.getValueFactory()==null)
+        if (this.getValueFactory() == null)
             this.setValueFactory();
 
         this.getValueFactory().setValue(value);
+    }
+
+    public void decrement() {
+        int value = this.getValue_();
+        if (value > this.minValue) {
+            this.setValue(value - 1);
+        }
     }
 }

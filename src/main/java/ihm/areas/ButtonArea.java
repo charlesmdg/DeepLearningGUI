@@ -8,30 +8,30 @@ import javafx.scene.layout.Region;
 
 public class ButtonArea extends DeepHInputArea {
     private final DeepButton trainButton;
-    private final DeepButton evaluateButton;
+    private final DeepButton cancelTrainingButton;
 
     public ButtonArea(TheScene scene){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.BUTTON_AREA_HEIGHT, false);
 
+        this.cancelTrainingButton = new DeepButton(Constants.CANCEL_TRAINING, scene);
+        Tools.setSize(this.cancelTrainingButton, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
         this.trainButton = new DeepButton(Constants.START_TRAINING, scene);
         Tools.setSize(this.trainButton, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
-        this.evaluateButton = new DeepButton(Constants.EVALUATE, scene);
-        Tools.setSize(this.evaluateButton, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
 
-        Region[] regions = {trainButton, evaluateButton};
+        Region[] regions = {this.cancelTrainingButton, this.trainButton};
         this.fill(regions);
     }
 
     public void setChildrenDisabled(boolean disabled){
         this.trainButton.setDisable(disabled);
-        this.evaluateButton.setDisable(disabled);
+        this.cancelTrainingButton.setDisable(disabled);
     }
 
     public DeepButton getTrainButton() {
-        return trainButton;
+        return this.trainButton;
     }
 
-    public DeepButton getEvaluateButton() {
-        return evaluateButton;
+    public DeepButton getcancelTrainingButton() {
+        return this.cancelTrainingButton;
     }
 }

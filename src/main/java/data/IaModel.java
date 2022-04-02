@@ -28,6 +28,8 @@ import java.io.File;
 
 public class IaModel {
     private MultiLayerNetwork model;
+    private DataSet trainingData;
+    private DataSet evaluationData;
     private final String predictionType;
     private final int inputCount;
     private final int outputCount;
@@ -37,9 +39,7 @@ public class IaModel {
     private final String optimizer;
     private final double learningRate;
     private int achievedInterationCount = 0;
-    private double achivedLatestIndicatorValue = -1;
-    private DataSet trainingData;
-    private DataSet evaluationData;
+    private double achivedLatestIndicatorValue = Constants.IMPOSSIBLE_INDEX;
 
     public IaModel(String predictionType,
                    int inputCount, int outputCount, int hiddenLayerCount,
@@ -60,29 +60,30 @@ public class IaModel {
     /**
      * initialise le modele d'ia de la librairie Deeplearning4J
      */
-    private void initModel() {
-        Activation hiddenLayerActivation = this.createHiddenLayerActivation(activationFunction);
-        Activation outputLayerActivation = this.createOutputLayerActivation(predictionType);
-        LossFunctions.LossFunction loss = this.createLossFunction(lossFunction);
+    public void initModel() {
+        Activation hiddenLayerActivation = this.createHiddenLayerActivation(this.activationFunction);
+        Activation outputLayerActivation = this.createOutputLayerActivation(this.predictionType);
+        LossFunctions.LossFunction loss = this.createLossFunction(this.lossFunction);
 
         NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder().activation(hiddenLayerActivation);
 
-        builder = this.addOptimizer(builder, learningRate, optimizer);
+        builder = this.addOptimizer(builder, this.learningRate, this.optimizer);
 
         NeuralNetConfiguration.ListBuilder listBuilder = builder.list();
 
-        for (int ii = 0; ii < hiddenLayerCount; ii++) {
-            listBuilder = listBuilder.layer(new DenseLayer.Builder().nIn(inputCount).nOut(inputCount).build());
+        for (int ii = 0; ii < this.hiddenLayerCount; ii++) {
+            listBuilder = listBuilder.layer(new DenseLayer.Builder().nIn(this.inputCount).nOut(this.inputCount).build());
         }
 
         MultiLayerConfiguration conf = listBuilder
                 .layer(new OutputLayer.Builder(loss)
                         .activation(outputLayerActivation)
-                        .nIn(inputCount).nOut(outputCount).build()).build();
+                        .nIn(this.inputCount).nOut(this.outputCount).build()).build();
 
         this.model = new MultiLayerNetwork(conf);
         this.model.setListeners(new ScoreIterationListener(1));
         this.model.init();
+        this.achievedInterationCount = 0;
     }
 
     /**
@@ -117,7 +118,7 @@ public class IaModel {
     /**
      * cree les couches cachees du modele
      * @param activationFunction la fonction d'activation du modele
-     * @return
+     * @return la fonction d'activation
      */
     private Activation createHiddenLayerActivation(String activationFunction) {
         Activation activation;
@@ -232,11 +233,6 @@ public class IaModel {
 
     public int getAchievedInterationCount() {
         return this.achievedInterationCount;
-    }
-
-    public void resetModel() {
-        this.initModel();
-        this.achievedInterationCount = 0;
     }
 
     public boolean modelReady() {

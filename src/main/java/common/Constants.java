@@ -1,5 +1,6 @@
 package common;
 
+import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -46,6 +47,7 @@ public class Constants {
 
     public static final String INFORMATION = "Information";
     public static final String ERROR = "Erreur";
+    public static final String CONFIRMATION = "Confirmation";
     public static final String STRING_TO_REPLACE = "@@@";
 
     public static final String FILE = "Fichier";
@@ -54,7 +56,7 @@ public class Constants {
 
     public static final String START_TRAINING = "    Démarrer\nl'entraînement";
     public static final String STOP_TRAINING = "      Arrêter\nl'entraînement";
-    public static final String EVALUATE = "Évaluer";
+    public static final String CANCEL_TRAINING = "     Supprimer\nl'entraînement";
     public static final int BUTTON_WIDTH = 110;
     public static final int BUTTON_HEIGHT = 50;
 
@@ -114,7 +116,7 @@ public class Constants {
     public static final String PARAMETERS = "Paramètre(s)";
     public static final String ITERATIONS = "Itérations";
 
-    public static final int ITERATION_MIN_VALUE = 1;
+    public static final int ITERATION_MIN_VALUE = 0;
     public static final int ITERATION_MAX_VALUE = 1000;
 
     public static final int INPUT_MIN_VALUE = 1;
@@ -160,4 +162,7 @@ public class Constants {
     public static final String PRECISION = "Précision";
     public static final String RECALL = "Sensibilité";
     public static final String F1SCORE = "Score F1";
+    public static final ButtonType DELETE = new ButtonType("Supprimer");
+    public static final ButtonType DO_NOT_DELETE = new ButtonType("Ne pas supprimer");
+
 }

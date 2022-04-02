@@ -10,11 +10,12 @@ import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.Optional;
 
 public class TheScene extends Scene {
 
@@ -39,16 +40,6 @@ public class TheScene extends Scene {
         Tools.setSceneBackground(this, Constants.SCENE_TOP_LEFT_COLOR, Constants.SCENE_BOTTOM_RIGHT_COLOR);
 
         this.initScene(group);
-
-        this.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.R) {
-                TheScene.this.resetModel();
-            }
-        });
-    }
-
-    //todo
-    private void resetModel() {
     }
 
     /**
@@ -172,8 +163,8 @@ public class TheScene extends Scene {
             case Constants.STOP_TRAINING:
                 this.stopTrainingButtonClicked();
                 break;
-            case Constants.EVALUATE:
-                this.evaluateButtonClicked();
+            case Constants.CANCEL_TRAINING:
+                this.cancelTraining();
                 break;
             case Constants.CHOOSE_AND_DOTS:
                 this.chooseCSVFile();
@@ -305,7 +296,7 @@ public class TheScene extends Scene {
         }
 
         if (!this.iaModel.modelReady()) {
-            this.iaModel.resetModel();
+            this.iaModel.initModel();
         }
     }
 
@@ -356,17 +347,21 @@ public class TheScene extends Scene {
         this.datasetArea.setChildrenDisabled(true);
         this.architectureArea.setChildrenDisabled(true);
         this.optimizationArea.setChildrenDisabled(true);
-        this.buttonArea.getEvaluateButton().setDisable(true);
+        this.buttonArea.getcancelTrainingButton().setDisable(true);
         this.evaluationArea.clear();
     }
 
     private void enableControlsAfterTraining() {
         this.buttonArea.getTrainButton().setText(Constants.START_TRAINING);
         this.optimizationArea.getIterationSpinner().setDisable(false);
-        this.buttonArea.getEvaluateButton().setDisable(false);
+        this.buttonArea.getcancelTrainingButton().setDisable(false);
     }
 
     private void startTrainingButtonClicked() {
+        if (this.optimizationArea.getIterationCount() == 0) {
+            Tools.inform(Message.ITERATION_COUNT_ZERO);
+            return;
+        }
         this.startTrainingThread();
     }
 
@@ -396,9 +391,11 @@ public class TheScene extends Scene {
                         if (this.stopTrainingThread) break;
                         Thread.sleep(Constants.TRAINING_DELAY);
                         data.Evaluation evaluation = this.iaModel.train();
+                        this.optimizationArea.getIterationSpinner().decrement();
                         this.trainingArea.println(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
                     }
 
+                    this.evaluateModel();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -415,7 +412,7 @@ public class TheScene extends Scene {
         }
     }
 
-    private void evaluateButtonClicked() {
+    private void evaluateModel() {
         try {
             Evaluation evaluation = this.iaModel.evaluate();
             this.evaluationArea.clear();
@@ -427,6 +424,22 @@ public class TheScene extends Scene {
         } catch (Exception e) {
             e.printStackTrace();
             Tools.error(Message.TRAINING_ERROR);
+        }
+    }
+
+    private void cancelTraining() {
+        Optional<ButtonType> option = Tools.confirm(Message.CANCEL_TRAINING_CONFIRMATION);
+
+        if (option.get() == Constants.DELETE) {
+            this.iaModel = null;
+            this.trainingArea.clear();
+            this.evaluationArea.clear();
+            this.predictionTypeArea.setChildrenDisabled(false);
+            this.datasetArea.setChildrenDisabled(false);
+            this.architectureArea.setChildrenDisabled(false);
+            this.optimizationArea.setChildrenDisabled(false);
+            this.optimizationArea.setIterationCount(Constants.DEFAULT_ITERATION_COUNT);
+            this.buttonArea.getcancelTrainingButton().setDisable(true);
         }
     }
 }

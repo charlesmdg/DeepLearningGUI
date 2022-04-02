@@ -184,7 +184,7 @@ public class Tools {
     }
 
     public static String stringFormatIndicator(double indicator) {
-        return String.format("%.3f", 100 * indicator) + Constants.PERCENT;
+        return String.format("%.4f", 100 * indicator) + Constants.PERCENT;
     }
 
     public static void turnsTextFieldNumericalOnly(TextField textField) {

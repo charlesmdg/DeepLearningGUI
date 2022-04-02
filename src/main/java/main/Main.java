@@ -3,6 +3,7 @@ package main;
 import ihm.controls.DeepHBox;
 import ihm.areas.TheScene;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import common.Constants;
 
@@ -18,5 +19,6 @@ public class Main extends Application {
         scene.setStage(stage);
         stage.show();
         stage.setTitle(Constants.MAIN_WINDOW_TITLE);
+        stage.setOnCloseRequest(e -> {Platform.exit(); System.exit(0);});
     }
 }

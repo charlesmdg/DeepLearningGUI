@@ -149,12 +149,9 @@ public class Constants {
     public static final String PERCENT = " %";
     public static final int TRAINING_DELAY = 100;
     public static final int NEURON_RADIUS = 10;
-    public static final int NEURON_STROKE_WIDTH = 1;
-    public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.GRAY;
-    public static final Color INPUT_OUPUT_NEURON_STROKE_COLOR = Color.GRAY;
+    public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLUE;
     public static final Color HIDDEN_NEURON_FILL_COLOR = Color.RED;
-    public static final Color HIDDEN_NEURON_STROKE_COLOR = Color.GRAY;
-    public static final Color NEURON_LINK_COLOR = Color.GRAY;
+    public static final Color NEURON_LINK_COLOR = Color.ORANGE;
     public static final Color NETWORK_BACKGROUND_COLOR = Color.WHITE;
 
     public static final String ACCURACY = "Exactitude";

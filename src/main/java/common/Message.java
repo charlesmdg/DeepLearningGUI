@@ -18,7 +18,7 @@ public class Message {
     public static final String ARCHITECTURE_AND_DATASET_DISCORDANCY = "Incompatiblité entre le type de prédiction, le jeu de données et l'architecture.";
     public static final String WRONG_PROPORTION = "Le champ suivant doit être un nombre décimal " +
                                                     "strictement compris ente 0 et 1 : " + Constants.STRING_TO_REPLACE + ".";
-    public static final String OVERFITTING_MODEL = "Le modéle surajuste le jeu de données d'entraînement.";
+    public static final String OVERFITTING_MODEL = "LE MODÈLE SURAJUSTE LE JEU D'ENTRAÎNEMENT.";
     public static final String NOT_IMPLEMENTED = "La fonctionnalité suivante n'est encore encore implémentée : " + Constants.STRING_TO_REPLACE + ".";
-    public static final String TRAINING_IS_RUNNING = "L'entraînemement est en cours.";
+    public static final String TRAINING_STARTED = "DÉMARRAGE DE L'ENTRAÎNEMENT";
 }

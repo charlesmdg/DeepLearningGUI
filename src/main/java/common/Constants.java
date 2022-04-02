@@ -39,9 +39,9 @@ public class Constants {
     public static final String TRAINING = "Entraînement";
     public static final String EVALUATION = "Évaluation";
     public static final int DISPLAY_AREA_WIDTH = 600;
-    public static final int VISUALIZATION_AREA_HEIGHT = 255;
-    public static final int TRAINING_AREA_HEIGHT = 280;
-    public static final int EVALUATION_AREA_HEIGHT = 120;
+    public static final int VISUALIZATION_AREA_HEIGHT = 240;
+    public static final int TRAINING_AREA_HEIGHT = 275;
+    public static final int EVALUATION_AREA_HEIGHT = 140;
     public static final int DISPLAY_AREA_TOP_MARGIN = 20;
 
     public static final String INFORMATION = "Information";
@@ -52,9 +52,11 @@ public class Constants {
     public static final String EDIT = "Éditer";
     public static final String HELP = "Aide";
 
-    public static final String START_TRAINING = "Entraîner";
-    public static final String STOP_TRAINING = "Stopper l'entraînement";
+    public static final String START_TRAINING = "    Démarrer\nl'entraînement";
+    public static final String STOP_TRAINING = "      Arrêter\nl'entraînement";
     public static final String EVALUATE = "Évaluer";
+    public static final int BUTTON_WIDTH = 110;
+    public static final int BUTTON_HEIGHT = 50;
 
     public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
     public static final Font TITLE_FONT = Font.font("Arial", FontWeight.BLACK, FontPosture.ITALIC, 16);
@@ -151,7 +153,7 @@ public class Constants {
     public static final int NEURON_RADIUS = 10;
     public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLUE;
     public static final Color HIDDEN_NEURON_FILL_COLOR = Color.RED;
-    public static final Color NEURON_LINK_COLOR = Color.ORANGE;
+    public static final Color NEURON_LINK_COLOR = Color.GRAY;
     public static final Color NETWORK_BACKGROUND_COLOR = Color.WHITE;
 
     public static final String ACCURACY = "Exactitude";

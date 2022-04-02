@@ -5,15 +5,13 @@ import ihm.areas.TheScene;
 import javafx.scene.control.Button;
 
 public class DeepButton extends Button {
-    private final String text;
     private final TheScene scene;
 
     public DeepButton(String text, TheScene scene){
         super(text);
-        this.text = text;
         this.scene = scene;
         this.setFont(Constants.NORMAL_FONT);
 
-        this.setOnMouseClicked(mouseEvent -> DeepButton.this.scene.buttonClicked(DeepButton.this.text));
+        this.setOnMouseClicked(mouseEvent -> DeepButton.this.scene.buttonClicked(DeepButton.this.getText()));
     }
 }

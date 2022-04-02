@@ -96,7 +96,6 @@ public class VisualisationArea extends DeepPane {
     }
 
     private void drawLayerLinks(Layer downstreamLayer, Layer upstreamLayer) {
-
         for (Neuron downstreamNeuron : downstreamLayer) {
             for (Neuron uptreamNeuron : upstreamLayer) {
                 this.draw(new NeuronLink(
@@ -107,7 +106,6 @@ public class VisualisationArea extends DeepPane {
             }
         }
     }
-
 
     public void clear() {
         //decalage de 1 pixel pour ne pas faire disparaitre le cadre gris
@@ -148,4 +146,3 @@ public class VisualisationArea extends DeepPane {
     }
 
 }
-

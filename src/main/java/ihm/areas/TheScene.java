@@ -8,6 +8,7 @@ import data.Evaluation;
 import data.IaModel;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
@@ -27,6 +28,7 @@ public class TheScene extends Scene {
     private final ButtonArea buttonArea = new ButtonArea(this);
 
     private Thread trainingThread;
+    private boolean stopTrainingThread = false;
     private Stage stage;
     private IaModel iaModel;
 
@@ -51,6 +53,7 @@ public class TheScene extends Scene {
 
     /**
      * Construit le contenu de la scene
+     *
      * @param group le group principal de la scene
      */
     private void initScene(DeepHBox group) {
@@ -69,8 +72,9 @@ public class TheScene extends Scene {
 
     /**
      * ajoute a la scene les deux box
-     * @param group le groupe principal
-     * @param parameterBox le box de gauche
+     *
+     * @param group            le groupe principal
+     * @param parameterBox     le box de gauche
      * @param visualisationBox le box de droite
      */
     private void fillGroup(DeepHBox group, DeepVBox parameterBox, DeepVBox visualisationBox) {
@@ -83,6 +87,7 @@ public class TheScene extends Scene {
 
     /**
      * remplit le box de gauche dedie aux parametres
+     *
      * @param parameterBox le box des parametres
      */
     private void fillParameterBox(DeepVBox parameterBox) {
@@ -101,6 +106,7 @@ public class TheScene extends Scene {
 
     /**
      * remplit le cadre Visualisation
+     *
      * @param visualisationBox le cadre de visualisation
      */
     private void fillVisualisationBox(DeepVBox visualisationBox) {
@@ -119,6 +125,7 @@ public class TheScene extends Scene {
 
     /**
      * declenchee quand on selectionne un bouton radio
+     *
      * @param text le texte du bouton radion selectionne
      */
     public void radioButtonGoupChanged(String text) {
@@ -154,6 +161,7 @@ public class TheScene extends Scene {
 
     /**
      * declenchee quand on appuie sur un boutton
+     *
      * @param buttonText le texte du bouton appuye
      */
     public void buttonClicked(String buttonText) {
@@ -176,8 +184,9 @@ public class TheScene extends Scene {
 
     /**
      * declenche quann on change un spinner du cadre architecture
+     *
      * @param spinnerText le spinner modifie
-     * @param newValue la nouvelle valeur du spinner
+     * @param newValue    la nouvelle valeur du spinner
      */
     public void spinnerValueChanged(String spinnerText, int newValue) {
         //Attention fausse repetition, le newValue est positionne differemment
@@ -309,22 +318,9 @@ public class TheScene extends Scene {
         }
     }
 
-    private void disableControlsDuringTraining() {
-        this.predictionTypeArea.setChildrenDisabled(true);
-        this.datasetArea.setChildrenDisabled(true);
-        this.architectureArea.setChildrenDisabled(true);
-        this.optimizationArea.setChildrenDisabled(true);
-        this.buttonArea.getEvaluateButton().setDisable(true);
-        this.evaluationArea.clear();
-    }
-
-    private void enableControlsAfterTraining() {
-        this.optimizationArea.getIterationSpinner().setDisable(false);
-        this.buttonArea.getEvaluateButton().setDisable(false);
-    }
-
     /**
      * procede aux verifications avant de lancer l'entrainement du modele
+     *
      * @return le statut de la verification
      */
     private boolean checkBeforeTraining() {
@@ -354,27 +350,35 @@ public class TheScene extends Scene {
         return true;
     }
 
+    private void disableControlsDuringTraining() {
+        this.buttonArea.getTrainButton().setText(Constants.STOP_TRAINING);
+        this.predictionTypeArea.setChildrenDisabled(true);
+        this.datasetArea.setChildrenDisabled(true);
+        this.architectureArea.setChildrenDisabled(true);
+        this.optimizationArea.setChildrenDisabled(true);
+        this.buttonArea.getEvaluateButton().setDisable(true);
+        this.evaluationArea.clear();
+    }
+
+    private void enableControlsAfterTraining() {
+        this.buttonArea.getTrainButton().setText(Constants.START_TRAINING);
+        this.optimizationArea.getIterationSpinner().setDisable(false);
+        this.buttonArea.getEvaluateButton().setDisable(false);
+    }
 
     private void startTrainingButtonClicked() {
-        if(!this.isTraining()) {
-            this.startTraining();
-        }else {
-            Tools.inform(Message.TRAINING_IS_RUNNING);
-        }
+        this.startTrainingThread();
     }
 
-    //todo
     private void stopTrainingButtonClicked() {
-    }
-
-    private boolean isTraining() {
-        return this.trainingThread != null;
+        this.stopTrainingThread = true;
     }
 
     /**
      * lance le thread de l'entrainement du modele
      */
-    private void startTraining() {
+    private void startTrainingThread() {
+
         try {
             if (!checkBeforeTraining()) {
                 return;
@@ -382,23 +386,26 @@ public class TheScene extends Scene {
 
             this.trainingThread = new Thread(() -> {
                 try {
-                    this.disableControlsDuringTraining();
+                    Platform.runLater(this::disableControlsDuringTraining);
+
                     this.initModelIfNecessary();
                     this.splitDataIfNecessary();
-
                     int interationCount = this.optimizationArea.getIterationCount();
 
                     for (int ii = 1; ii <= interationCount; ii++) {
+                        if (this.stopTrainingThread) break;
                         Thread.sleep(Constants.TRAINING_DELAY);
                         data.Evaluation evaluation = this.iaModel.train();
                         this.trainingArea.println(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
                     }
 
-                    this.enableControlsAfterTraining();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                Platform.runLater(this::enableControlsAfterTraining);
                 this.trainingThread = null;
+                this.stopTrainingThread = false;
             });
 
             this.trainingThread.start();
@@ -406,7 +413,6 @@ public class TheScene extends Scene {
             e.printStackTrace();
             Tools.error(Message.TRAINING_ERROR);
         }
-
     }
 
     private void evaluateButtonClicked() {
@@ -415,7 +421,7 @@ public class TheScene extends Scene {
             this.evaluationArea.clear();
             this.evaluationArea.println(evaluation);
             if (evaluation.getIndicatorValue() < this.iaModel.getAchivedLatestIndicatorValue()) {
-                Tools.inform(Message.OVERFITTING_MODEL);
+                this.evaluationArea.println(Message.OVERFITTING_MODEL);
             }
 
         } catch (Exception e) {

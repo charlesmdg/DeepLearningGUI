@@ -26,6 +26,7 @@ public class TheScene extends Scene {
     private final TrainingArea trainingArea = new TrainingArea();
     private final ButtonArea buttonArea = new ButtonArea(this);
 
+    private Thread trainingThread;
     private Stage stage;
     private IaModel iaModel;
 
@@ -44,12 +45,14 @@ public class TheScene extends Scene {
         });
     }
 
+    //todo
     private void resetModel() {
-        this.iaModel.resetModel();
-
-        Tools.inform("RESET MODEL");
     }
 
+    /**
+     * Construit le contenu de la scene
+     * @param group le group principal de la scene
+     */
     private void initScene(DeepHBox group) {
         DeepVBox parameterBox = new DeepVBox(false);
         DeepVBox visualisationBox = new DeepVBox(false);
@@ -64,6 +67,12 @@ public class TheScene extends Scene {
         this.buttonArea.setChildrenDisabled(true);
     }
 
+    /**
+     * ajoute a la scene les deux box
+     * @param group le groupe principal
+     * @param parameterBox le box de gauche
+     * @param visualisationBox le box de droite
+     */
     private void fillGroup(DeepHBox group, DeepVBox parameterBox, DeepVBox visualisationBox) {
         group.add(Tools.createHExpandableSpacer());
         group.add(parameterBox);
@@ -72,6 +81,10 @@ public class TheScene extends Scene {
         group.add(Tools.createHExpandableSpacer());
     }
 
+    /**
+     * remplit le box de gauche dedie aux parametres
+     * @param parameterBox le box des parametres
+     */
     private void fillParameterBox(DeepVBox parameterBox) {
         parameterBox.add(Tools.createVExpandableSpacer());
         parameterBox.add(this.predictionTypeArea.getBox());
@@ -86,6 +99,10 @@ public class TheScene extends Scene {
         parameterBox.add(Tools.createVExpandableSpacer());
     }
 
+    /**
+     * remplit le cadre Visualisation
+     * @param visualisationBox le cadre de visualisation
+     */
     private void fillVisualisationBox(DeepVBox visualisationBox) {
         visualisationBox.add(Tools.createVExpandableSpacer());
         visualisationBox.add(this.visualisationArea);
@@ -100,6 +117,10 @@ public class TheScene extends Scene {
         this.stage = stage;
     }
 
+    /**
+     * declenchee quand on selectionne un bouton radio
+     * @param text le texte du bouton radion selectionne
+     */
     public void radioButtonGoupChanged(String text) {
         switch (text) {
             case Constants.CLASSIFICATION:
@@ -131,10 +152,17 @@ public class TheScene extends Scene {
         this.optimizationArea.setIterationCount(Constants.DEFAULT_ITERATION_COUNT);
     }
 
+    /**
+     * declenchee quand on appuie sur un boutton
+     * @param buttonText le texte du bouton appuye
+     */
     public void buttonClicked(String buttonText) {
         switch (buttonText) {
-            case Constants.TRAIN:
-                this.trainButtonClicked();
+            case Constants.START_TRAINING:
+                this.startTrainingButtonClicked();
+                break;
+            case Constants.STOP_TRAINING:
+                this.stopTrainingButtonClicked();
                 break;
             case Constants.EVALUATE:
                 this.evaluateButtonClicked();
@@ -146,6 +174,11 @@ public class TheScene extends Scene {
         }
     }
 
+    /**
+     * declenche quann on change un spinner du cadre architecture
+     * @param spinnerText le spinner modifie
+     * @param newValue la nouvelle valeur du spinner
+     */
     public void spinnerValueChanged(String spinnerText, int newValue) {
         //Attention fausse repetition, le newValue est positionne differemment
         //d'un cas a l'autre
@@ -169,6 +202,9 @@ public class TheScene extends Scene {
         }
     }
 
+    /**
+     * declenche l'ouverture du file chooser pour choisir le fichier csv
+     */
     private void chooseCSVFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.FILE_CHOOSER_TITLE);
@@ -247,7 +283,7 @@ public class TheScene extends Scene {
         return answer;
     }
 
-    public void initModelIfNecessary(){
+    public void initModelIfNecessary() {
         if (this.iaModel == null) {
             this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
                     this.architectureArea.getInputCount(),
@@ -264,7 +300,7 @@ public class TheScene extends Scene {
         }
     }
 
-    public void splitDataIfNecessary() throws Exception{
+    public void splitDataIfNecessary() throws Exception {
         if (!this.iaModel.dataReady()) {
             this.iaModel.splitData(this.datasetArea.getCsvLoader(),
                     this.datasetArea.getTargetVariableName(),
@@ -273,7 +309,7 @@ public class TheScene extends Scene {
         }
     }
 
-    private void disableControlsDuringTraining(){
+    private void disableControlsDuringTraining() {
         this.predictionTypeArea.setChildrenDisabled(true);
         this.datasetArea.setChildrenDisabled(true);
         this.architectureArea.setChildrenDisabled(true);
@@ -282,14 +318,18 @@ public class TheScene extends Scene {
         this.evaluationArea.clear();
     }
 
-    private void enableControlsAfterTraining(){
+    private void enableControlsAfterTraining() {
         this.optimizationArea.getIterationSpinner().setDisable(false);
         this.buttonArea.getEvaluateButton().setDisable(false);
     }
 
-    private boolean checkBeforeTraining(){
+    /**
+     * procede aux verifications avant de lancer l'entrainement du modele
+     * @return le statut de la verification
+     */
+    private boolean checkBeforeTraining() {
 
-        if(this.predictionTypeArea.getPredictionType().equals(Constants.REGRESSION)){
+        if (this.predictionTypeArea.getPredictionType().equals(Constants.REGRESSION)) {
             Tools.inform(Message.NOT_IMPLEMENTED, Constants.REGRESSION);
             return false;
         }
@@ -299,13 +339,13 @@ public class TheScene extends Scene {
             return false;
         }
 
-        if (!Tools.checkNumericalTextField(this.datasetArea.getTrainingTextField(), 0, 1)){
+        if (!Tools.checkNumericalTextField(this.datasetArea.getTrainingTextField(), 0, 1)) {
             Tools.inform(Message.WRONG_PROPORTION, Constants.TRAINING);
             this.datasetArea.getTrainingTextField().requestFocus();
             return false;
         }
 
-        if (!Tools.checkNumericalTextField(this.optimizationArea.getParameterTextField(), 0, 1)){
+        if (!Tools.checkNumericalTextField(this.optimizationArea.getParameterTextField(), 0, 1)) {
             Tools.inform(Message.WRONG_PROPORTION, Constants.PARAMETERS);
             this.optimizationArea.getParameterTextField().requestFocus();
             return false;
@@ -314,21 +354,40 @@ public class TheScene extends Scene {
         return true;
     }
 
-    private void trainButtonClicked() {
 
+    private void startTrainingButtonClicked() {
+        if(!this.isTraining()) {
+            this.startTraining();
+        }else {
+            Tools.inform(Message.TRAINING_IS_RUNNING);
+        }
+    }
+
+    //todo
+    private void stopTrainingButtonClicked() {
+    }
+
+    private boolean isTraining() {
+        return this.trainingThread != null;
+    }
+
+    /**
+     * lance le thread de l'entrainement du modele
+     */
+    private void startTraining() {
         try {
-            if (! checkBeforeTraining()){
+            if (!checkBeforeTraining()) {
                 return;
             }
 
-            this.initModelIfNecessary();
-            this.splitDataIfNecessary();
-
-            new Thread(() -> {
-                this.disableControlsDuringTraining();
-                int interationCount = this.optimizationArea.getIterationCount();
-
+            this.trainingThread = new Thread(() -> {
                 try {
+                    this.disableControlsDuringTraining();
+                    this.initModelIfNecessary();
+                    this.splitDataIfNecessary();
+
+                    int interationCount = this.optimizationArea.getIterationCount();
+
                     for (int ii = 1; ii <= interationCount; ii++) {
                         Thread.sleep(Constants.TRAINING_DELAY);
                         data.Evaluation evaluation = this.iaModel.train();
@@ -339,10 +398,15 @@ public class TheScene extends Scene {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }).start();
+                this.trainingThread = null;
+            });
+
+            this.trainingThread.start();
         } catch (Exception e) {
+            e.printStackTrace();
             Tools.error(Message.TRAINING_ERROR);
         }
+
     }
 
     private void evaluateButtonClicked() {
@@ -350,11 +414,12 @@ public class TheScene extends Scene {
             Evaluation evaluation = this.iaModel.evaluate();
             this.evaluationArea.clear();
             this.evaluationArea.println(evaluation);
-            if(evaluation.getIndicatorValue() < this.iaModel.getAchivedLatestIndicatorValue()){
+            if (evaluation.getIndicatorValue() < this.iaModel.getAchivedLatestIndicatorValue()) {
                 Tools.inform(Message.OVERFITTING_MODEL);
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             Tools.error(Message.TRAINING_ERROR);
         }
     }

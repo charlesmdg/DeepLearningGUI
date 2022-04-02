@@ -1,5 +1,7 @@
 package data;
 
+import common.Constants;
+
 public class RegressionEvaluation extends Evaluation{
     private double mse;
     private double mape;
@@ -15,7 +17,7 @@ public class RegressionEvaluation extends Evaluation{
         return mape;
     }
     public String toStringWithIteration(int iteration) {
-        return "Iteration # " + iteration + " : " + this.mape;
+        return Constants.TRAINING_DISPLAY_INTRODUCTION + iteration + Constants.SPACED_COLON + this.mape;
     }
 
     @Override

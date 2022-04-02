@@ -20,9 +20,9 @@ public class Dataset {
     }
 
     /**
-     *
+     * ajoute un ligne de donnee au dataset
      * @param row la ligne a rajouter
-     * @throws Exception
+     * @throws Exception declenchee quand le nombre de champs est incorrect
      */
     public void addRow(double[] row) throws Exception{
         if (row == null || row.length != columnNames.length)
@@ -36,7 +36,7 @@ public class Dataset {
     }
 
     /**
-     *
+     * calcule le nombre de valeur differente d'une colonne de donnee
      * @param columnName : nom de la colonne
      * @return le nombre de valeur differente dans la colonne
      */

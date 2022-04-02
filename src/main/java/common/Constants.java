@@ -52,7 +52,8 @@ public class Constants {
     public static final String EDIT = "Éditer";
     public static final String HELP = "Aide";
 
-    public static final String TRAIN = "Entraîner";
+    public static final String START_TRAINING = "Entraîner";
+    public static final String STOP_TRAINING = "Stopper l'entraînement";
     public static final String EVALUATE = "Évaluer";
 
     public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
@@ -141,7 +142,7 @@ public class Constants {
 
     public static final String[] OPTIMIZERS = {STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
     public static final double DEFAULT_LEARNING_RATE = 0.1;
-    public static final int DEFAULT_ITERATION_COUNT = 50;
+    public static final int DEFAULT_ITERATION_COUNT = 100;
     public static final double DEFAULT_TRAINING = 0.75;
 
     public static final String TRAINING_DISPLAY_INTRODUCTION = "Exactitude de l'itération n° ";

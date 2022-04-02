@@ -10,9 +10,20 @@ import javafx.geometry.Insets;
 import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class VisualisationArea extends DeepPane {
     private final DeepPane drawPane = new DeepPane(true);
+
+    private int inputCount;
+    private int outputCount;
+    private int hiddenLayerCount;
+
+    //todo
+    private Timer blinkingTimer;
+
+    private boolean isNetworkDrawn = false;
 
     public Network network;
 
@@ -32,25 +43,34 @@ public class VisualisationArea extends DeepPane {
                 Constants.VISUALIZATION_AREA_HEIGHT - 2 * Constants.AREA_PADDING - Constants.DISPLAY_AREA_TOP_MARGIN);
 
         Tools.addClearBorder(this.drawPane);
+
+        //todo
+        this.blinkingTimer = new Timer();
     }
 
-    public void draw(Shape shape){
+    public void draw(Shape shape) {
         this.drawPane.draw(shape);
     }
 
     public void drawNetwork(int inputCount, int outputCount, int hiddenLayerCount) {
         this.clear();
 
-        this.initizeNetwork(inputCount,outputCount, hiddenLayerCount);
+        this.inputCount = inputCount;
+        this.outputCount = outputCount;
+        this.hiddenLayerCount = hiddenLayerCount;
+
+        this.initizeNetwork(inputCount, outputCount, hiddenLayerCount);
 
         for (Layer layer : this.network) {
             this.drawLayer(layer);
         }
 
         this.drawLayerLinks(this.network);
+
+        this.isNetworkDrawn = true;
     }
 
-    private void initizeNetwork(int inputCount, int outputCount, int hiddenLayerCount){
+    private void initizeNetwork(int inputCount, int outputCount, int hiddenLayerCount) {
         //Tous les neurones des couches cachees ont
         //le meme neme nombre de neurones que la couche d'entree
         ArrayList<Integer> hiddenLayerNeuronCounts = new ArrayList<>();
@@ -63,7 +83,7 @@ public class VisualisationArea extends DeepPane {
         this.network.pack(this.drawPane.getWidth(), this.drawPane.getHeight());
     }
 
-    private void drawLayer(Layer layer){
+    private void drawLayer(Layer layer) {
         for (Neuron neuron : layer) {
             this.draw(neuron);
         }
@@ -94,6 +114,38 @@ public class VisualisationArea extends DeepPane {
         //de la zone de dessin
         this.draw(new NetworkBackgroung(1, 1,
                 this.drawPane.getWidth() - 2, this.drawPane.getHeight() - 2));
+        this.isNetworkDrawn = false;
+
     }
+
+    //todo
+    private void commute() {
+        if (this.isNetworkDrawn) {
+            this.clear();
+        } else {
+            this.drawNetwork(this.inputCount,
+                            this.outputCount,
+                            this.hiddenLayerCount);
+        }
+    }
+
+    //todo
+    public void startBlinking() {
+        this.blinkingTimer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                VisualisationArea.this.commute();
+            }
+        }, 0, 1000);
+    }
+
+    //todo
+    public void stopBlinking() {
+        this.blinkingTimer.cancel();
+
+        this.drawNetwork(this.inputCount,
+                this.outputCount,
+                this.hiddenLayerCount);
+    }
+
 }
 

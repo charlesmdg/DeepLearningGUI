@@ -8,8 +8,10 @@ public class DeepDisplayArea extends DeepVInputArea {
 
     public DeepDisplayArea(String title, double height){
         super(Constants.DISPLAY_AREA_WIDTH, height, true);
+        this.textArea.setFont(Constants.NORMAL_FONT);
 
         DeepTitleLabel titleLabel = new DeepTitleLabel(title);
+
         this.box.getChildren().add(titleLabel);
 
         this.box.getChildren().add(Tools.createVExpandableSpacer());

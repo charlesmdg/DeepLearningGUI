@@ -16,6 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * C'es la boîte a outils de l'application
+ */
 public class Tools {
     /**
      * @param region le controle a retailler
@@ -145,6 +148,11 @@ public class Tools {
         return Constants.IMPOSSIBLE_INDEX;
     }
 
+    /**
+     * compte le nombre del lignes d'un fichier
+     * @param path le chemin absolu du fichier
+     * @return le nombre de ligne du fichier
+     */
     public static int filelineCount(String path) {
         int count = -1;
         try {
@@ -160,6 +168,12 @@ public class Tools {
         return count;
     }
 
+    /**
+     * modifie l'arriere plan de la scene en creant un degrade diagonal
+     * @param scene la scene dont on veut modifier le fond
+     * @param top_left_color la couleur du coin haut gauche
+     * @param bottom_right_color la couleur du coin bas droit
+     */
     public static void setSceneBackground(Scene scene, Color top_left_color, Color bottom_right_color) {
         scene.setFill(new LinearGradient(
                 0, 0, 1, 1, true,
@@ -181,6 +195,11 @@ public class Tools {
         });
     }
 
+    /**
+     * impose une longueur limite a un textfield
+     * @param textField le textfield a limiter
+     * @param maxLength la longueur maximale
+     */
     public static void addTextLimiter(TextField textField, int maxLength) {
         textField.textProperty().addListener((observableValue, oldValue, newValue) -> {
             if (textField.getText().length() > maxLength) {

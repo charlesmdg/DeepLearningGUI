@@ -12,7 +12,7 @@ public class ButtonArea extends DeepHInputArea {
     public ButtonArea(TheScene scene){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.BUTTON_AREA_HEIGHT, false);
 
-        this.trainButton = new DeepButton(Constants.TRAIN, scene);
+        this.trainButton = new DeepButton(Constants.START_TRAINING, scene);
         this.evaluateButton = new DeepButton(Constants.EVALUATE, scene);
 
         Region[] regions = {trainButton, evaluateButton};

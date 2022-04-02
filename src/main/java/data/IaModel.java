@@ -57,6 +57,9 @@ public class IaModel {
         this.initModel();
     }
 
+    /**
+     * initialise le modele d'ia de la librairie Deeplearning4J
+     */
     private void initModel() {
         Activation hiddenLayerActivation = this.createHiddenLayerActivation(activationFunction);
         Activation outputLayerActivation = this.createOutputLayerActivation(predictionType);
@@ -82,6 +85,13 @@ public class IaModel {
         this.model.init();
     }
 
+    /**
+     * construit l'objet de configuration du modele d'ia de la librairie Deeplearning4J
+     * @param builder la structure de l'objet de configuraition
+     * @param learningRate le taux d'apprentissage de l'algorithme d'optimisation
+     * @param optimizer l'algorithme d'optimisation choisi
+     * @return l'objet d'optimisation pour le modele
+     */
     private NeuralNetConfiguration.Builder addOptimizer(NeuralNetConfiguration.Builder builder,
                                                         double learningRate,
                                                         String optimizer) {
@@ -104,6 +114,11 @@ public class IaModel {
         return builder;
     }
 
+    /**
+     * cree les couches cachees du modele
+     * @param activationFunction la fonction d'activation du modele
+     * @return
+     */
     private Activation createHiddenLayerActivation(String activationFunction) {
         Activation activation;
 
@@ -165,6 +180,14 @@ public class IaModel {
         return loss;
     }
 
+    /**
+     * repartit le jeu de donnees en jeu d'entrainement et jeu d'evaluation
+     * @param csvLoader le loader de fichier csn
+     * @param targetVariableName le nom de la variable cible
+     * @param trainingProportion la proportion du jeu d'entrainement a consacrer a l'entrainemnent
+     * @param pretreatment l'algorithme de pretraitement des donnees
+     * @throws Exception declenchee quand la lecture du fichier csv pose probleme
+     */
     public void splitData(CsvLoader csvLoader, String targetVariableName, double trainingProportion,
                           String pretreatment) throws Exception {
         int numLinesToSkip = 1;
@@ -221,6 +244,10 @@ public class IaModel {
     }
 
 
+    /**
+     * effectue une iteration de l'entrainement du modele sur tout le jeu d'entrainement
+     * @return l'objet qui regroupe les indicateurs de qualite des predictions
+     */
     public data.Evaluation train() {
         this.model.fit(trainingData);
         this.achievedInterationCount++;
@@ -230,6 +257,10 @@ public class IaModel {
         return evaluation;
     }
 
+    /**
+     * lance l'evaluation du modele sur le jeu d'evaluation
+     * @return l'objet qui regroupe les indicateurs de qualite des predictions
+     */
     public data.Evaluation evaluate() {
         return this.evaluate(this.evaluationData);
     }

@@ -8,6 +8,14 @@ public class Network extends ArrayList<Layer> {
         super();
     }
 
+    /**
+     * fabrique les objets graphiques d'un reseau de neurones
+     * @param inputCount le nombre de neurones d'entree
+     * @param outputCount le nombre de neurones de sorie
+     * @param hiddenLayerCount le nombre de couches cachees
+     * @param hiddenLayerNeuronCounts le nombre de neurones de chaque couche
+     * @return le reseau graphique
+     */
     public static Network createNetwork(int inputCount, int outputCount,
                                         int hiddenLayerCount, ArrayList<Integer> hiddenLayerNeuronCounts) {
         Network network = new Network();
@@ -23,6 +31,12 @@ public class Network extends ArrayList<Layer> {
     }
 
 
+    /**
+     * calcule les coordonnes de tous les centres du reseau de neurone en fonction des
+     * dimensions du cardre d'affichage
+     * @param width la largeur du cadre d'affichage
+     * @param height la hauteur du cadre d'affichage
+     */
     public void pack(double width, double height) {
         // ecart horizontal entre les couches
         double hspace = width / (this.size() + 1);

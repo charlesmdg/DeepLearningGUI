@@ -355,6 +355,7 @@ public class TheScene extends Scene {
         this.buttonArea.getTrainButton().setText(Constants.START_TRAINING);
         this.optimizationArea.getIterationSpinner().setDisable(false);
         this.buttonArea.getcancelTrainingButton().setDisable(false);
+        this.visualisationArea.stopBlinking();
     }
 
     private void startTrainingButtonClicked() {
@@ -362,6 +363,7 @@ public class TheScene extends Scene {
             Tools.inform(Message.ITERATION_COUNT_ZERO);
             return;
         }
+        this.visualisationArea.startBlinking();
         this.startTrainingThread();
     }
 
@@ -382,7 +384,6 @@ public class TheScene extends Scene {
             this.trainingThread = new Thread(() -> {
                 try {
                     Platform.runLater(this::disableControlsDuringTraining);
-
                     this.initModelIfNecessary();
                     this.splitDataIfNecessary();
                     int interationCount = this.optimizationArea.getIterationCount();

@@ -6,6 +6,7 @@ import ihm.controls.DeepPane;
 import ihm.controls.DeepTitleLabel;
 import ihm.controls.DeepVBox;
 import ihm.network.*;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.shape.Shape;
 
@@ -19,12 +20,8 @@ public class VisualisationArea extends DeepPane {
     private int inputCount;
     private int outputCount;
     private int hiddenLayerCount;
-
-    //todo
     private Timer blinkingTimer;
-
-    private boolean isNetworkDrawn = false;
-
+    private boolean networkDrawn = false;
     public Network network;
 
     public VisualisationArea() {
@@ -43,9 +40,6 @@ public class VisualisationArea extends DeepPane {
                 Constants.VISUALIZATION_AREA_HEIGHT - 2 * Constants.AREA_PADDING - Constants.DISPLAY_AREA_TOP_MARGIN);
 
         Tools.addClearBorder(this.drawPane);
-
-        //todo
-        this.blinkingTimer = new Timer();
     }
 
     public void draw(Shape shape) {
@@ -67,7 +61,7 @@ public class VisualisationArea extends DeepPane {
 
         this.drawLayerLinks(this.network);
 
-        this.isNetworkDrawn = true;
+        this.networkDrawn = true;
     }
 
     private void initizeNetwork(int inputCount, int outputCount, int hiddenLayerCount) {
@@ -112,13 +106,13 @@ public class VisualisationArea extends DeepPane {
         //de la zone de dessin
         this.draw(new NetworkBackgroung(1, 1,
                 this.drawPane.getWidth() - 2, this.drawPane.getHeight() - 2));
-        this.isNetworkDrawn = false;
+        this.networkDrawn = false;
 
     }
 
     //todo
     private void commute() {
-        if (this.isNetworkDrawn) {
+        if (this.networkDrawn) {
             this.clear();
         } else {
             this.drawNetwork(this.inputCount,
@@ -129,11 +123,12 @@ public class VisualisationArea extends DeepPane {
 
     //todo
     public void startBlinking() {
+        this.blinkingTimer = new Timer();
         this.blinkingTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                VisualisationArea.this.commute();
+                Platform.runLater(VisualisationArea.this::commute);
             }
-        }, 0, 1000);
+        }, 0, 700);
     }
 
     //todo

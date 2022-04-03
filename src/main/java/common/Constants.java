@@ -56,7 +56,7 @@ public class Constants {
 
     public static final String START_TRAINING = "    Démarrer\nl'entraînement";
     public static final String STOP_TRAINING = "      Arrêter\nl'entraînement";
-    public static final String CANCEL_TRAINING = "     Supprimer\nl'entraînement";
+    public static final String CANCEL_TRAINING = "   Supprimer\nl'entraînement";
     public static final int BUTTON_WIDTH = 110;
     public static final int BUTTON_HEIGHT = 50;
 

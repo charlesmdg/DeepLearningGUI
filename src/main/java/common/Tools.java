@@ -3,16 +3,15 @@ package common;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,15 +77,6 @@ public class Tools {
         return region;
     }
 
-    /**
-     * @param region le controle a encader
-     */
-    public static void addBorder(Region region, boolean bordered) {
-        if (bordered)
-            region.setStyle("-fx-border-color: black; -fx-background-color: transparent;");
-        else
-            region.setStyle("-fx-background-color: transparent;");
-    }
 
     public static void addClearBorder(Region region) {
         region.setStyle("-fx-border-color: lightgray; -fx-background-color: white;");
@@ -119,6 +109,7 @@ public class Tools {
 
         alert.setHeaderText(null);
         alert.setContentText(message);
+        Tools.setStyle(alert.getDialogPane());
         return alert.showAndWait();
     }
 
@@ -141,6 +132,7 @@ public class Tools {
         alert.setHeaderText(null);
         alert.setContentText(message);
 
+        Tools.setStyle(alert.getDialogPane());
         alert.showAndWait();
     }
 
@@ -196,8 +188,11 @@ public class Tools {
         );
     }
 
-    public static String stringFormatIndicator(double indicator) {
-        return String.format("%.4f", 100 * indicator) + Constants.PERCENT;
+    public static String stringFormatRelativeIndicator(double indicator) {
+        return String.format("%.2f", 100 * indicator) + Constants.PERCENT;
+    }
+    public static String stringFormatAbsoluteIndicator(double indicator) {
+        return String.format("%.2f", indicator);
     }
 
     public static void turnsTextFieldNumericalOnly(TextField textField) {
@@ -234,5 +229,38 @@ public class Tools {
         }
 
         return answer;
+    }
+
+    public static void serialize (Object object, String filePath) throws Exception{
+        File fichier =  new File(filePath) ;
+        ObjectOutputStream objectOutputStream =  new ObjectOutputStream(new FileOutputStream(fichier)) ;
+        objectOutputStream.writeObject(object) ;
+        objectOutputStream.flush();
+        objectOutputStream.close();
+
+    }
+
+    public static Object deSerialize (String filePath) throws Exception{
+        File fichier =  new File(filePath) ;
+        ObjectInputStream objectInputStream =  new ObjectInputStream(new FileInputStream(fichier)) ;
+        return objectInputStream.readObject() ;
+    }
+
+    /**
+     * @param region le controle a encader
+     */
+    public static void addBorder(Region region, boolean bordered) {
+        if (bordered)
+            region.setStyle("-fx-border-color: #021a57; -fx-border-width: 1px; -fx-background-color: transparent;");
+        else
+            region.setStyle("-fx-background-color: transparent;");
+    }
+
+    public static void setStyle(Control control){
+        control.setStyle("-fx-text-inner-color: #021a57; -fx-font: 14px Tahoma; -fx-text-alignment: center");
+    }
+
+    public static void setStyle(Pane pane){
+        pane.setStyle("-fx-text-inner-color: #021a57; -fx-font: 14px Tahoma");
     }
 }

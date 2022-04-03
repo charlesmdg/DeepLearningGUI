@@ -19,7 +19,6 @@ public class Message {
     public static final String WRONG_PROPORTION = "Le champ suivant doit être un nombre décimal " +
                                                     "strictement compris ente 0 et 1 : " + Constants.STRING_TO_REPLACE + ".";
     public static final String OVERFITTING_MODEL = "LE MODÈLE SURAJUSTE LE JEU D'ENTRAÎNEMENT.";
-    public static final String NOT_IMPLEMENTED = "La fonctionnalité suivante n'est encore encore implémentée : " + Constants.STRING_TO_REPLACE + ".";
     public static final String ITERATION_COUNT_ZERO = "Le nombre d'itérations est revenu à zéro.";
-    public static final String CANCEL_TRAINING_CONFIRMATION = "Souhaitez-vous vraiment supprimer l'entraînement du modèle ?";
+    public static final String CANCEL_TRAINING_CONFIRMATION = "Souhaitez-vous vraiment recommencer l'entraînement du modèle depuis le début ?";
 }

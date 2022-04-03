@@ -321,11 +321,6 @@ public class TheScene extends Scene {
             return false;
         }
 
-        if (this.predictionTypeArea.getPredictionType().equals(Constants.REGRESSION)) {
-            Tools.inform(Message.NOT_IMPLEMENTED, Constants.REGRESSION);
-            return false;
-        }
-
         if (!this.checkTrainingOptions()) {
             Tools.inform(Message.ARCHITECTURE_AND_DATASET_DISCORDANCY);
             return false;
@@ -360,7 +355,7 @@ public class TheScene extends Scene {
         this.buttonArea.getTrainButton().setText(Constants.START_TRAINING);
         this.optimizationArea.getIterationSpinner().setDisable(false);
         this.buttonArea.getcancelTrainingButton().setDisable(false);
-        this.visualisationArea.stopBlinking();
+        this.visualisationArea.stopTrainingAnimation();
     }
 
     private void startTrainingButtonClicked() {
@@ -380,7 +375,7 @@ public class TheScene extends Scene {
                 return;
             }
             //Doit etre en dehors du thread d'entrainement
-            this.visualisationArea.startBlinking();
+            this.visualisationArea.startTrainingAnimation();
 
             this.trainingThread = new Thread(() -> {
                 try {

@@ -15,7 +15,7 @@ public class Constants {
     public static final String MAIN_WINDOW_TITLE = "Easy Deep Learning";
 
     public static final Color SCENE_TOP_LEFT_COLOR = Color.WHITE;
-    public static final Color SCENE_BOTTOM_RIGHT_COLOR = Color.web("#7faaf0");
+    public static final Color SCENE_BOTTOM_RIGHT_COLOR = Color.web("#8cb8ff");//7faaf0
 
     public static final int NUMERICAL_FIELD_MAX_LENGTH = 5;
     public static final int AREA_PADDING = 3;
@@ -23,11 +23,11 @@ public class Constants {
     public static final int RADIO_BUTTON_GROUP_WIDTH = 150;
     public static final int RADIO_BUTTON_GROUP_HEIGHT = 94;
 
-    public static final int SPINNER_WIDTH = 60;
+    public static final int SPINNER_WIDTH = 70;
     public static final int COMBOBOX_WIDTH = 190;
     public static final int TEXT_TEXTFIELD_WIDTH = 115;
-    public static final int NUM_TEXTFIELD_WIDTH = 50;
-    public static final int INPUT_FIELD_MAX_WIDTH = 195;
+    public static final int NUM_TEXTFIELD_WIDTH = 60;
+    public static final int INPUT_FIELD_MAX_WIDTH = 210;
 
     public static final int PARAMETER_AREA_WIDTH = 360;
     public static final int DATASET_AREA_HEIGHT = 150;
@@ -54,14 +54,15 @@ public class Constants {
     public static final String EDIT = "Éditer";
     public static final String HELP = "Aide";
 
-    public static final String START_TRAINING = "    Démarrer\nl'entraînement";
-    public static final String STOP_TRAINING = "      Arrêter\nl'entraînement";
-    public static final String CANCEL_TRAINING = "   Supprimer\nl'entraînement";
-    public static final int BUTTON_WIDTH = 110;
+    public static final String START_TRAINING = "   Démarrer\nl'entraînement";
+    public static final String STOP_TRAINING = "    Arrêter\nl'entraînement";
+    public static final String CANCEL_TRAINING = "Recommencer\nl'entraînement";
+    public static final int BUTTON_WIDTH = 120;
     public static final int BUTTON_HEIGHT = 50;
 
-    public static final Font NORMAL_FONT = Font.font("Arial", FontWeight.NORMAL, 14);
-    public static final Font TITLE_FONT = Font.font("Arial", FontWeight.BLACK, FontPosture.ITALIC, 16);
+
+    public static final Font NORMAL_FONT = Font.font("Tahoma", FontWeight.NORMAL, 14);
+    public static final Font TITLE_FONT = Font.font("Tahoma", FontWeight.BLACK, FontPosture.ITALIC, 16);
     public static final String COMMA = ",";
     public static final String CR = "\n";
     public static final String SPACED_COLON = " : ";
@@ -149,9 +150,11 @@ public class Constants {
     public static final int DEFAULT_ITERATION_COUNT = 100;
     public static final double DEFAULT_TRAINING = 0.75;
 
-    public static final String TRAINING_DISPLAY_INTRODUCTION = "Exactitude de l'itération n° ";
+    public static final String CLASSIFICATION_TRAINING_DISPLAY_INTRODUCTION = "Exactitude de l'itération n° ";
+    public static final String REGRESSION_TRAINING_DISPLAY_INTRODUCTION = "Erreur relative moyenne de l'itération n° ";
     public static final String PERCENT = " %";
-    public static final int TRAINING_DELAY = 100;
+    public static final int TRAINING_DELAY = 300;
+    public static final int ANIMATION_PERIOD = 600;
     public static final int NEURON_RADIUS = 10;
     public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLUE;
     public static final Color HIDDEN_NEURON_FILL_COLOR = Color.RED;
@@ -162,7 +165,11 @@ public class Constants {
     public static final String PRECISION = "Précision";
     public static final String RECALL = "Sensibilité";
     public static final String F1SCORE = "Score F1";
-    public static final ButtonType DELETE = new ButtonType("Supprimer");
-    public static final ButtonType DO_NOT_DELETE = new ButtonType("Ne pas supprimer");
+    public static final ButtonType DELETE = new ButtonType("Recommencer");
+    public static final ButtonType DO_NOT_DELETE = new ButtonType("Ne pas recommencer");
+
+    public static final String MEAN_ABSOLUTE_ERROR = "Erreur abslolue moyenne";
+    public static final String MEAN_SQUARED_ERROR_ = "Erreur quadriatique moyenne";
+    public static final String MEAN_ABSOLUTE_PRECENTAGE_ERROR = "Erreur relative moyenne";
 
 }

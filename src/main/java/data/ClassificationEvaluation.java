@@ -19,15 +19,15 @@ public class ClassificationEvaluation extends Evaluation {
 
     @Override
     public String toString() {
-        return Constants.ACCURACY + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.accuracy) + Constants.CR +
-                Constants.PRECISION + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.precision) + Constants.CR +
-                Constants.RECALL + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.recall) + Constants.CR +
-                Constants.F1SCORE + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.f1Score);
+        return Constants.ACCURACY + Constants.SPACED_COLON + Tools.stringFormatRelativeIndicator(this.accuracy) + Constants.CR +
+                Constants.PRECISION + Constants.SPACED_COLON + Tools.stringFormatRelativeIndicator(this.precision) + Constants.CR +
+                Constants.RECALL + Constants.SPACED_COLON + Tools.stringFormatRelativeIndicator(this.recall) + Constants.CR +
+                Constants.F1SCORE + Constants.SPACED_COLON + Tools.stringFormatRelativeIndicator(this.f1Score);
     }
 
     public String toStringWithIteration(int iteration) {
-        return Constants.TRAINING_DISPLAY_INTRODUCTION + iteration
-                + Constants.SPACED_COLON + Tools.stringFormatIndicator(this.accuracy);
+        return Constants.CLASSIFICATION_TRAINING_DISPLAY_INTRODUCTION + iteration
+                + Constants.SPACED_COLON + Tools.stringFormatRelativeIndicator(this.accuracy);
     }
 
     @Override

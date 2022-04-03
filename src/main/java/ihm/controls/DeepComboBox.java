@@ -12,5 +12,6 @@ public class DeepComboBox extends ComboBox<String> {
         this.getEditor().setFont(Constants.NORMAL_FONT);
         Tools.setWidth(this, Constants.COMBOBOX_WIDTH);
         this.setEditable(false);
+        Tools.setStyle(this);
     }
 }

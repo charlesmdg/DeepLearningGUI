@@ -1,28 +1,37 @@
 package data;
 
 import common.Constants;
+import common.Tools;
 
-public class RegressionEvaluation extends Evaluation{
-    private double mse;
-    private double mape;
+public class RegressionEvaluation extends Evaluation {
+    private final double mse;
+    private final double mae;
+    private final double mape;
 
-    public RegressionEvaluation(){
+    public RegressionEvaluation(double mse, double mae, double mape) {
+        this.mse = mse;
+        this.mae = mae;
+        this.mape = mape;
     }
 
-    public double getMse() {
-        return mse;
+    @Override
+    public String toString() {
+        return Constants.MEAN_SQUARED_ERROR_ + Constants.SPACED_COLON +
+                Tools.stringFormatAbsoluteIndicator(this.mse) + Constants.CR +
+                Constants.MEAN_ABSOLUTE_ERROR + Constants.SPACED_COLON +
+                Tools.stringFormatAbsoluteIndicator(this.mae) + Constants.CR +
+                Constants.MEAN_ABSOLUTE_PRECENTAGE_ERROR + Constants.SPACED_COLON +
+                Tools.stringFormatRelativeIndicator(this.mape) + Constants.CR;
     }
 
-    public double getMape() {
-        return mape;
-    }
     public String toStringWithIteration(int iteration) {
-        return Constants.TRAINING_DISPLAY_INTRODUCTION + iteration + Constants.SPACED_COLON + this.mape;
+        return Constants.REGRESSION_TRAINING_DISPLAY_INTRODUCTION + iteration + Constants.SPACED_COLON +
+                                Tools.stringFormatRelativeIndicator(this.mape);
     }
 
     @Override
     public double getIndicatorValue() {
-        return 0;
+        return this.mape;
     }
 
 }

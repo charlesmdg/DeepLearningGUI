@@ -25,8 +25,9 @@ import org.nd4j.linalg.learning.config.*;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class IaModel {
+public class IaModel implements Serializable {
     private MultiLayerNetwork model;
     private DataSet trainingData;
     private DataSet evaluationData;
@@ -248,7 +249,6 @@ public class IaModel {
         this.model.fit(trainingData);
         this.achievedInterationCount++;
         data.Evaluation evaluation = this.evaluate(this.trainingData);
-        assert evaluation != null;
         this.achivedLatestIndicatorValue = evaluation.getIndicatorValue();
         return evaluation;
     }
@@ -264,12 +264,16 @@ public class IaModel {
     private data.Evaluation evaluate(DataSet dataset) {
         Evaluation eval = new Evaluation(this.outputCount);
         INDArray output = this.model.output(dataset.getFeatures());
+
         if (this.predictionType.equals(Constants.CLASSIFICATION)) {
             eval.eval(dataset.getLabels(), output);
             return new data.ClassificationEvaluation(eval.accuracy(), eval.precision(),
                     eval.recall(), eval.f1());
         } else {
-            return null;
+            double mse = data.Evaluation.mse(dataset.getLabels(), output);
+            double mae = data.Evaluation.mae(dataset.getLabels(), output);
+            double mape = data.Evaluation.mape(dataset.getLabels(), output);
+            return new data.RegressionEvaluation(mae, mse, mape);
         }
     }
 

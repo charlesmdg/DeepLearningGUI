@@ -11,6 +11,7 @@ public class DeepSpinner extends Spinner<Integer> {
     private final int minValue;
     private final int maxValue;
     private final String text;
+    private int stepValue = 50;
 
     public DeepSpinner(String text, int minValue, int maxValue, TheScene scene) {
         super();
@@ -26,6 +27,22 @@ public class DeepSpinner extends Spinner<Integer> {
                     if (scene != null)
                         scene.spinnerValueChanged(DeepSpinner.this.text, newValue);
                 });
+
+        Tools.setStyle(this);
+        this.setEventHandlers();
+    }
+
+    public void setEventHandlers() {
+        this.getEditor().setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP:
+                    this.increment(this.stepValue);
+                    break;
+                case DOWN:
+                    this.decrement(this.stepValue);
+                    break;
+            }
+        });
     }
 
     public int getValue_() {

@@ -122,17 +122,17 @@ public class VisualisationArea extends DeepPane {
     }
 
     //todo
-    public void startBlinking() {
+    public void startTrainingAnimation() {
         this.blinkingTimer = new Timer();
         this.blinkingTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 Platform.runLater(VisualisationArea.this::commute);
             }
-        }, 0, 700);
+        }, 0, Constants.ANIMATION_PERIOD);
     }
 
     //todo
-    public void stopBlinking() {
+    public void stopTrainingAnimation() {
         this.blinkingTimer.cancel();
 
         this.drawNetwork(this.inputCount,

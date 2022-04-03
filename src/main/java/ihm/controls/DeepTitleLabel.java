@@ -7,5 +7,7 @@ public class DeepTitleLabel extends DeepLabel{
     public DeepTitleLabel(String text){
         super(text);
         this.setFont(Constants.TITLE_FONT);
+        this.getStyleClass().clear();
+        this.getStyleClass().addAll("text-field");
     }
 }

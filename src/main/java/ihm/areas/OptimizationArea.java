@@ -11,11 +11,11 @@ public class OptimizationArea extends DeepVInputArea {
     private final DeepTextField parameterTextField = new DeepNumericalTextField(true);
     private final DeepSpinner iterationSpinner;
 
-    public OptimizationArea(){
+    public OptimizationArea(TheScene scene){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.OPTIMISATION_AREA_HEIGHT, true);
         this.iterationSpinner = new DeepSpinner(Constants.ITERATIONS,
                                     Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE,
-                                    null);
+                                    scene);
 
         this.add(new DeepTitleLabel(Constants.OPTIMIZATION));
 

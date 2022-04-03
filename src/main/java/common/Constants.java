@@ -11,7 +11,7 @@ import javafx.scene.text.FontWeight;
  */
 public class Constants {
     public static final int MAIN_WINDOW_WIDTH = 1100;
-    public static final int MAIN_WINDOW_HEIGHT = 750;
+    public static final int MAIN_WINDOW_HEIGHT = 770;
     public static final String MAIN_WINDOW_TITLE = "Easy Deep Learning";
 
     public static final Color SCENE_TOP_LEFT_COLOR = Color.WHITE;
@@ -41,9 +41,10 @@ public class Constants {
     public static final String EVALUATION = "Évaluation";
     public static final int DISPLAY_AREA_WIDTH = 600;
     public static final int VISUALIZATION_AREA_HEIGHT = 240;
-    public static final int TRAINING_AREA_HEIGHT = 275;
+    public static final int TRAINING_AREA_HEIGHT = 280;
     public static final int EVALUATION_AREA_HEIGHT = 140;
     public static final int DISPLAY_AREA_TOP_MARGIN = 20;
+    public static final int DISPLAY_AREA_INTER_SPACE = 20;
 
     public static final String INFORMATION = "Information";
     public static final String ERROR = "Erreur";
@@ -53,11 +54,17 @@ public class Constants {
     public static final String FILE = "Fichier";
     public static final String EDIT = "Éditer";
     public static final String HELP = "Aide";
+    public static final String OPEN = "Ouvrir";
+    public static final String NEW = "Nouveau";
+    public static final String SAVE = "Enregistrer";
+    public static final String SAVE_AS = "Enregistrer sous...";
+
+
 
     public static final String START_TRAINING = "   Démarrer\nl'entraînement";
     public static final String STOP_TRAINING = "    Arrêter\nl'entraînement";
-    public static final String CANCEL_TRAINING = "Recommencer\nl'entraînement";
-    public static final int BUTTON_WIDTH = 120;
+    public static final String CANCEL_TRAINING = "   Recommencer\ntout l'entraînement";
+    public static final int BUTTON_WIDTH = 140;
     public static final int BUTTON_HEIGHT = 50;
 
 
@@ -88,7 +95,8 @@ public class Constants {
     public static final String TRAINING_RATE = "Entraînement";
     public static final String CSV_FILE = "Fichier cvs";
     public static final String CHOOSE_AND_DOTS = "Choisir...";
-    public static final String FILE_CHOOSER_TITLE = "Choix d'un fichier CSV";
+    public static final String CSV_FILE_CHOOSER_TITLE = "Choix d'un fichier CSV";
+    public static final String MODEL_FILE_CHOOSER_TITLE = "Choix d'un modèle";
     public static final int CSV_DATA_LINE_MIN_COUNT = 10;
 
     public static final String PRETREATMENT = "Prétraitement";
@@ -121,13 +129,13 @@ public class Constants {
     public static final int ITERATION_MAX_VALUE = 1000;
 
     public static final int INPUT_MIN_VALUE = 1;
-    public static final int INPUT_MAX_VALUE = 10;
+    public static final int INPUT_MAX_VALUE = 12;
 
     public static final int OUTPUT_MIN_VALUE = 1;
-    public static final int OUTPUT_MAX_VALUE = 10;
+    public static final int OUTPUT_MAX_VALUE = 12;
 
     public static final int HIDDEN_LAYER_MIN_VALUE = 1;
-    public static final int HIDDEN_LAYER_MAX_VALUE = 20;
+    public static final int HIDDEN_LAYER_MAX_VALUE = 12;
 
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";
     public static final String HINGE_ERROR = "Hinge error";
@@ -153,7 +161,7 @@ public class Constants {
     public static final String CLASSIFICATION_TRAINING_DISPLAY_INTRODUCTION = "Exactitude de l'itération n° ";
     public static final String REGRESSION_TRAINING_DISPLAY_INTRODUCTION = "Erreur relative moyenne de l'itération n° ";
     public static final String PERCENT = " %";
-    public static final int TRAINING_DELAY = 300;
+    public static final int TRAINING_DELAY = 100;
     public static final int ANIMATION_PERIOD = 600;
     public static final int NEURON_RADIUS = 10;
     public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLUE;
@@ -165,7 +173,7 @@ public class Constants {
     public static final String PRECISION = "Précision";
     public static final String RECALL = "Sensibilité";
     public static final String F1SCORE = "Score F1";
-    public static final ButtonType DELETE = new ButtonType("Recommencer");
+    public static final ButtonType DELETE = new ButtonType("Recommencer tout");
     public static final ButtonType DO_NOT_DELETE = new ButtonType("Ne pas recommencer");
 
     public static final String MEAN_ABSOLUTE_ERROR = "Erreur abslolue moyenne";

@@ -1,7 +1,6 @@
 package ihm.controls;
 
 import common.Constants;
-import common.Tools;
 import ihm.areas.TheScene;
 import javafx.scene.control.Button;
 

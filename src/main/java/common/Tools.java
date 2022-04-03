@@ -1,15 +1,14 @@
 package common;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -110,7 +109,14 @@ public class Tools {
         alert.setHeaderText(null);
         alert.setContentText(message);
         Tools.setStyle(alert.getDialogPane());
+        Tools.setDefaultButton(alert, Constants.DO_NOT_DELETE);
         return alert.showAndWait();
+    }
+
+    private static void setDefaultButton(Alert alert, ButtonType defaultButtonType) {
+        DialogPane pane = alert.getDialogPane();
+        for (ButtonType buttonType : alert.getButtonTypes())
+            ((Button) pane.lookupButton(buttonType)).setDefaultButton(buttonType == defaultButtonType);
     }
 
     /**
@@ -155,6 +161,7 @@ public class Tools {
 
     /**
      * compte le nombre del lignes d'un fichier
+     *
      * @param path le chemin absolu du fichier
      * @return le nombre de ligne du fichier
      */
@@ -175,8 +182,9 @@ public class Tools {
 
     /**
      * modifie l'arriere plan de la scene en creant un degrade diagonal
-     * @param scene la scene dont on veut modifier le fond
-     * @param top_left_color la couleur du coin haut gauche
+     *
+     * @param scene              la scene dont on veut modifier le fond
+     * @param top_left_color     la couleur du coin haut gauche
      * @param bottom_right_color la couleur du coin bas droit
      */
     public static void setSceneBackground(Scene scene, Color top_left_color, Color bottom_right_color) {
@@ -191,6 +199,7 @@ public class Tools {
     public static String stringFormatRelativeIndicator(double indicator) {
         return String.format("%.2f", 100 * indicator) + Constants.PERCENT;
     }
+
     public static String stringFormatAbsoluteIndicator(double indicator) {
         return String.format("%.2f", indicator);
     }
@@ -205,6 +214,7 @@ public class Tools {
 
     /**
      * impose une longueur limite a un textfield
+     *
      * @param textField le textfield a limiter
      * @param maxLength la longueur maximale
      */
@@ -231,19 +241,33 @@ public class Tools {
         return answer;
     }
 
-    public static void serialize (Object object, String filePath) throws Exception{
-        File fichier =  new File(filePath) ;
-        ObjectOutputStream objectOutputStream =  new ObjectOutputStream(new FileOutputStream(fichier)) ;
-        objectOutputStream.writeObject(object) ;
+    public static File chooseFile(Stage stage, String title, String[][] extensions) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+
+        if (extensions != null) {
+            for (String[] extension : extensions) {
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter(extension[0], extension[1]));
+            }
+        }
+
+        return fileChooser.showOpenDialog(stage);
+    }
+
+    public static void serialize(Object object, String filePath) throws Exception {
+        File fichier = new File(filePath);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(fichier));
+        objectOutputStream.writeObject(object);
         objectOutputStream.flush();
         objectOutputStream.close();
 
     }
 
-    public static Object deSerialize (String filePath) throws Exception{
-        File fichier =  new File(filePath) ;
-        ObjectInputStream objectInputStream =  new ObjectInputStream(new FileInputStream(fichier)) ;
-        return objectInputStream.readObject() ;
+    public static Object deSerialize(String filePath) throws Exception {
+        File fichier = new File(filePath);
+        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fichier));
+        return objectInputStream.readObject();
     }
 
     /**
@@ -256,11 +280,11 @@ public class Tools {
             region.setStyle("-fx-background-color: transparent;");
     }
 
-    public static void setStyle(Control control){
+    public static void setStyle(Control control) {
         control.setStyle("-fx-text-inner-color: #021a57; -fx-font: 14px Tahoma; -fx-text-alignment: center");
     }
 
-    public static void setStyle(Pane pane){
+    public static void setStyle(Pane pane) {
         pane.setStyle("-fx-text-inner-color: #021a57; -fx-font: 14px Tahoma");
     }
 }

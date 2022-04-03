@@ -1,9 +1,11 @@
 package main;
 
-import ihm.controls.DeepHBox;
+import common.Tools;
 import ihm.areas.TheScene;
+import ihm.controls.DeepMenuBar;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import common.Constants;
 
@@ -14,7 +16,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        TheScene scene = new TheScene(new DeepHBox(false));
+        DeepMenuBar menuBar =  new DeepMenuBar();
+        VBox vBox = new VBox(menuBar);
+        Tools.addBorder(vBox,false);
+
+        TheScene scene = new TheScene(vBox);
+        menuBar.setScene(scene);
         stage.setScene(scene);
         scene.setStage(stage);
         stage.show();

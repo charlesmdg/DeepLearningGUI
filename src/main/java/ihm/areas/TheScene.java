@@ -8,21 +8,23 @@ import data.Evaluation;
 import data.IaModel;
 import ihm.controls.DeepHBox;
 import ihm.controls.DeepVBox;
+import ihm.controls.MenuItemListener;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
-import javafx.stage.FileChooser;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.Optional;
 
-public class TheScene extends Scene {
+public class TheScene extends Scene implements MenuItemListener {
 
+    private  DeepHBox hBox;
     private final PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
     private final DatasetArea datasetArea = new DatasetArea(this);
     private final ArchitectureArea architectureArea;
-    private final OptimizationArea optimizationArea = new OptimizationArea();
+    private final OptimizationArea optimizationArea;
     private final VisualisationArea visualisationArea = new VisualisationArea();
     private final EvaluationArea evaluationArea = new EvaluationArea();
     private final TrainingArea trainingArea = new TrainingArea();
@@ -33,9 +35,10 @@ public class TheScene extends Scene {
     private Stage stage;
     private IaModel iaModel;
 
-    public TheScene(DeepHBox group) {
+    public TheScene(VBox group) {
         super(group, Constants.MAIN_WINDOW_WIDTH, Constants.MAIN_WINDOW_HEIGHT);
         this.architectureArea = new ArchitectureArea(this);
+        this.optimizationArea = new OptimizationArea(this);
 
         Tools.setSceneBackground(this, Constants.SCENE_TOP_LEFT_COLOR, Constants.SCENE_BOTTOM_RIGHT_COLOR);
 
@@ -47,14 +50,19 @@ public class TheScene extends Scene {
      *
      * @param group le group principal de la scene
      */
-    private void initScene(DeepHBox group) {
+    private void initScene(VBox group) {
+        this.hBox = new DeepHBox(false);
+        this.hBox.setVisible(false);
+        group.getChildren().add(Tools.createVExpandableSpacer());
+        group.getChildren().add(hBox);
+        group.getChildren().add(Tools.createVExpandableSpacer());
         DeepVBox parameterBox = new DeepVBox(false);
         DeepVBox visualisationBox = new DeepVBox(false);
-
-        this.fillGroup(group, parameterBox, visualisationBox);
+        this.fillGroup(hBox, parameterBox, visualisationBox);
         this.fillParameterBox(parameterBox);
         this.fillVisualisationBox(visualisationBox);
 
+        this.predictionTypeArea.setChildrenDisabled(true);
         this.datasetArea.setChildrenDisabled(true);
         this.architectureArea.setChildrenDisabled(true);
         this.optimizationArea.setChildrenDisabled(true);
@@ -82,17 +90,17 @@ public class TheScene extends Scene {
      * @param parameterBox le box des parametres
      */
     private void fillParameterBox(DeepVBox parameterBox) {
-        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         parameterBox.add(this.predictionTypeArea.getBox());
-        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         parameterBox.add(this.datasetArea.getBox());
-        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         parameterBox.add(this.buttonArea.getBox());
-        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         parameterBox.add(this.architectureArea.getBox());
-        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         parameterBox.add(this.optimizationArea.getBox());
-        parameterBox.add(Tools.createVExpandableSpacer());
+        parameterBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
     }
 
     /**
@@ -101,13 +109,13 @@ public class TheScene extends Scene {
      * @param visualisationBox le cadre de visualisation
      */
     private void fillVisualisationBox(DeepVBox visualisationBox) {
-        visualisationBox.add(Tools.createVExpandableSpacer());
+        visualisationBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         visualisationBox.add(this.visualisationArea);
-        visualisationBox.add(Tools.createVExpandableSpacer());
+        visualisationBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         visualisationBox.add(this.trainingArea.getBox());
-        visualisationBox.add(Tools.createVExpandableSpacer());
+        visualisationBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
         visualisationBox.add(this.evaluationArea.getBox());
-        visualisationBox.add(Tools.createVExpandableSpacer());
+        visualisationBox.add(Tools.createVerticalSpacer(Constants.DISPLAY_AREA_INTER_SPACE));
     }
 
     public void setStage(Stage stage) {
@@ -173,6 +181,46 @@ public class TheScene extends Scene {
         }
     }
 
+    public void menuItemclicked(String menuItemText) {
+        switch (menuItemText) {
+            case Constants.NEW:
+                this.newMenuItemClicked();
+                break;
+            case Constants.OPEN:
+                this.openMenuItemClicked();
+                break;
+            case Constants.SAVE:
+                this.saveMenuItemClicked();
+                break;
+            case Constants.SAVE_AS:
+                this.saveAsMenuItemClicked();
+                break;
+            default:
+        }
+    }
+
+
+    private void newMenuItemClicked() {
+        this.hBox.setVisible(true);
+        this.predictionTypeArea.setChildrenDisabled(false);
+    }
+
+    private void openMenuItemClicked() {
+        Tools.inform(Message.NOT_IMPLEMENTED_YET);
+//        File file = Tools.chooseFile(this.stage, Constants.MODEL_FILE_CHOOSER_TITLE, null);
+//        if (file != null) {
+//        }
+    }
+
+    private void saveMenuItemClicked() {
+        Tools.inform(Message.NOT_IMPLEMENTED_YET);
+    }
+
+    private void saveAsMenuItemClicked() {
+        Tools.inform(Message.NOT_IMPLEMENTED_YET);
+    }
+
+
     /**
      * declenche quann on change un spinner du cadre architecture
      *
@@ -180,8 +228,6 @@ public class TheScene extends Scene {
      * @param newValue    la nouvelle valeur du spinner
      */
     public void spinnerValueChanged(String spinnerText, int newValue) {
-        //Attention fausse repetition, le newValue est positionne differemment
-        //d'un cas a l'autre
         switch (spinnerText) {
             case Constants.INPUTS:
                 this.visualisationArea.drawNetwork(newValue,
@@ -198,6 +244,11 @@ public class TheScene extends Scene {
                         this.architectureArea.getOutputCount(),
                         newValue);
                 break;
+            case Constants.ITERATIONS:
+                if (newValue == 0) {
+                    this.optimizationArea.setIterationCount(Constants.DEFAULT_ITERATION_COUNT);
+                }
+                break;
             default:
         }
     }
@@ -206,12 +257,9 @@ public class TheScene extends Scene {
      * declenche l'ouverture du file chooser pour choisir le fichier csv
      */
     private void chooseCSVFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(Constants.FILE_CHOOSER_TITLE);
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter(Constants.CSV, Constants.STAR_DOT_CSV),
-                new FileChooser.ExtensionFilter(Constants.ALL, Constants.STAR_DOT_STAR));
-        File file = fileChooser.showOpenDialog(this.stage);
+        String[][] extensions = {{Constants.CSV, Constants.STAR_DOT_CSV},
+                {Constants.ALL, Constants.STAR_DOT_STAR}};
+        File file = Tools.chooseFile(this.stage, Constants.CSV_FILE_CHOOSER_TITLE, extensions);
         if (file != null) {
             String filePath = file.getPath();
             if (this.datasetArea.checkCsvFile(filePath)) {

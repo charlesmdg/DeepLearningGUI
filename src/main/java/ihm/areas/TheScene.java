@@ -316,6 +316,11 @@ public class TheScene extends Scene {
      */
     private boolean checkBeforeTraining() {
 
+        if (this.optimizationArea.getIterationCount() == 0) {
+            Tools.inform(Message.ITERATION_COUNT_ZERO);
+            return false;
+        }
+
         if (this.predictionTypeArea.getPredictionType().equals(Constants.REGRESSION)) {
             Tools.inform(Message.NOT_IMPLEMENTED, Constants.REGRESSION);
             return false;
@@ -359,11 +364,6 @@ public class TheScene extends Scene {
     }
 
     private void startTrainingButtonClicked() {
-        if (this.optimizationArea.getIterationCount() == 0) {
-            Tools.inform(Message.ITERATION_COUNT_ZERO);
-            return;
-        }
-        this.visualisationArea.startBlinking();
         this.startTrainingThread();
     }
 
@@ -375,11 +375,12 @@ public class TheScene extends Scene {
      * lance le thread de l'entrainement du modele
      */
     private void startTrainingThread() {
-
         try {
             if (!checkBeforeTraining()) {
                 return;
             }
+            //Doit etre en dehors du thread d'entrainement
+            this.visualisationArea.startBlinking();
 
             this.trainingThread = new Thread(() -> {
                 try {

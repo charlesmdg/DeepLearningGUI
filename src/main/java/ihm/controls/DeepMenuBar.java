@@ -1,14 +1,9 @@
 package ihm.controls;
 
 import common.Tools;
-import ihm.areas.TheScene;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import common.Constants;
-import javafx.scene.control.MenuItem;
-
 import java.util.ArrayList;
 
 public class DeepMenuBar extends MenuBar {
@@ -20,11 +15,11 @@ public class DeepMenuBar extends MenuBar {
         Tools.setStyle(this);
 
         Menu fileMenu = new Menu(Constants.FILE);
-//        Menu editMenu = new Menu(Constants.EDIT);
-//        Menu helpMenu = new Menu(Constants.HELP);
+        Menu editMenu = new Menu(Constants.EDIT);
+        Menu helpMenu = new Menu(Constants.HELP);
         this.getMenus().add(fileMenu);
-//        this.getMenus().add(editMenu);
-//        this.getMenus().add(helpMenu);
+        this.getMenus().add(editMenu);
+        this.getMenus().add(helpMenu);
 
         DeepMenuItem newMenuItem = new DeepMenuItem(Constants.NEW);
         DeepMenuItem openMenuItem = new DeepMenuItem(Constants.OPEN);

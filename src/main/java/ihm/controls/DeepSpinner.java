@@ -27,6 +27,7 @@ public class DeepSpinner extends Spinner<Integer> {
                         scene.spinnerValueChanged(DeepSpinner.this.text, newValue);
                 });
 
+
         Tools.setStyle(this);
     }
 

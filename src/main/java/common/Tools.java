@@ -255,6 +255,20 @@ public class Tools {
         return fileChooser.showOpenDialog(stage);
     }
 
+    public static File saveFile(Stage stage, String title, String[][] extensions) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+
+        if (extensions != null) {
+            for (String[] extension : extensions) {
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter(extension[0], extension[1]));
+            }
+        }
+
+        return fileChooser.showSaveDialog(stage);
+    }
+
     public static void serialize(Object object, String filePath) throws Exception {
         File fichier = new File(filePath);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(fichier));

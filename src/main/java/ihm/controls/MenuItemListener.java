@@ -1,5 +1,5 @@
 package ihm.controls;
 
 public interface MenuItemListener {
-    public void menuItemclicked(String text);
+    void menuItemclicked(String text);
 }

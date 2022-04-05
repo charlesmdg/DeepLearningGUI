@@ -22,4 +22,6 @@ public class Message {
     public static final String ITERATION_COUNT_ZERO = "Le nombre d'itérations est revenu à zéro.";
     public static final String NOT_IMPLEMENTED_YET = "Cette fonctionnalité n'est pas encore implémentée.";
     public static final String CANCEL_TRAINING_CONFIRMATION = "Souhaitez-vous vraiment recommencer tout l'entraînement du modèle ?";
+    public static final String SAVE_ERROR = "Erreur dans l'enregistrement de la configuration.";
+    public static final String READ_ERROR = "Erreur dans la lecture du fichier de configuration.";
 }

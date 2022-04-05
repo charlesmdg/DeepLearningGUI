@@ -76,6 +76,8 @@ public class Constants {
 
     public static final String CSV = "CSV";
     public static final String STAR_DOT_CSV = "*.csv";
+    public static final String CFG = "CFG";
+    public static final String STAR_DOT_CFG = "*.cfg";
     public static final String ALL = "All";
     public static final String STAR_DOT_STAR = "*.*";
 

@@ -205,10 +205,18 @@ public class TheScene extends Scene implements MenuItemListener {
     }
 
     private void openMenuItemClicked() {
-        Tools.inform(Message.NOT_IMPLEMENTED_YET);
-//        File file = Tools.chooseFile(this.stage, Constants.MODEL_FILE_CHOOSER_TITLE, null);
-//        if (file != null) {
-//        }
+        String[][] extensions = {{Constants.CFG, Constants.STAR_DOT_CFG}};
+        File file = Tools.chooseFile(this.stage, Constants.MODEL_FILE_CHOOSER_TITLE, extensions);
+        if (file != null) {
+            String pathFile = file.getPath();
+            try {
+                TrainingConfiguration trainingConfiguration = (TrainingConfiguration)Tools.deSerialize(pathFile);
+                System.out.println(trainingConfiguration);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Tools.error(Message.SAVE_ERROR);
+            }
+        }
     }
 
     private void saveMenuItemClicked() {
@@ -216,9 +224,19 @@ public class TheScene extends Scene implements MenuItemListener {
     }
 
     private void saveAsMenuItemClicked() {
-        Tools.inform(Message.NOT_IMPLEMENTED_YET);
+        String[][] extensions = {{Constants.CFG, Constants.STAR_DOT_CFG}};
+        File file = Tools.saveFile(this.stage, Constants.MODEL_FILE_CHOOSER_TITLE, extensions);
+        if (file != null) {
+            String pathFile = file.getPath();
+            TrainingConfiguration trainingConfiguration = this.getTraningConfiguration();
+            try {
+                Tools.serialize(trainingConfiguration, pathFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Tools.error(Message.SAVE_ERROR);
+            }
+        }
     }
-
 
     /**
      * declenche quand on change un spinner du cadre architecture
@@ -279,7 +297,7 @@ public class TheScene extends Scene implements MenuItemListener {
         CsvLoader csvLoader = this.datasetArea.getCsvLoader();
         String[] columnNames = csvLoader.getColumnNames();
         //A ce stade, apres le csvLoader.check columnNames.length >=2
-        this.datasetArea.setTargetVariable(columnNames[columnNames.length - 1]);
+        this.datasetArea.setTargetVariableName(columnNames[columnNames.length - 1]);
         this.datasetArea.setTraining(Constants.DEFAULT_TRAINING);
         this.datasetArea.setPretreatment(Constants.STANDARD_SCALER);
     }
@@ -420,7 +438,7 @@ public class TheScene extends Scene implements MenuItemListener {
             if (!checkBeforeTraining()) {
                 return;
             }
-            //Doit etre en dehors du thread d'entrainement
+            //Doit absolument etre en dehors du thread d'entrainement
             this.visualisationArea.startTrainingAnimation();
 
             this.trainingThread = new Thread(() -> {
@@ -487,8 +505,9 @@ public class TheScene extends Scene implements MenuItemListener {
         }
     }
 
-    private void saveConfiguration(String filePath) throws Exception{
-        TrainingConfiguration trainingConfiguration = new TrainingConfiguration(
+    private TrainingConfiguration getTraningConfiguration(){
+
+        return new TrainingConfiguration(
                 this.predictionTypeArea.getPredictionType(),
                 this.datasetArea.getCsvLoader().getFilePath(),
                 this.datasetArea.getTargetVariableName(),
@@ -503,6 +522,8 @@ public class TheScene extends Scene implements MenuItemListener {
                 this.optimizationArea.getLearningRate(),
                 this.optimizationArea.getIterationCount()
         );
-        Tools.serialize(trainingConfiguration, filePath);
+    }
+
+    private void loadTraningConfiguration(TrainingConfiguration trainingConfiguration){
     }
 }

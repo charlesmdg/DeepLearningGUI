@@ -1,9 +1,9 @@
 package ihm.areas;
 
-public class SceneAssistant {
+public class ParameterBox {
     private final TheScene scene;
 
-    public SceneAssistant(TheScene scene){
+    public ParameterBox(TheScene scene){
         this.scene = scene;
     }
 }

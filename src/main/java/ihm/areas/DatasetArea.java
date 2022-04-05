@@ -7,7 +7,6 @@ import ihm.controls.*;
 import javafx.scene.layout.Region;
 
 public class DatasetArea extends DeepVInputArea {
-
     private final DeepTextField csvFileTextField = new DeepTextField(false);
     private final DeepTextField targetVariableNameTextField = new DeepTextField(false);
     private final DeepTextField trainingTextField = new DeepNumericalTextField(true);
@@ -52,7 +51,7 @@ public class DatasetArea extends DeepVInputArea {
         this.csvFileTextField.setText(csvFile);
     }
 
-    public void setTargetVariable(String targetVariable) {
+    public void setTargetVariableName(String targetVariable) {
         this.targetVariableNameTextField.setText(targetVariable);
     }
 

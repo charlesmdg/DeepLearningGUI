@@ -14,8 +14,10 @@ public class OptimizationArea extends DeepVInputArea {
     public OptimizationArea(TheScene scene){
         super(Constants.PARAMETER_AREA_WIDTH, Constants.OPTIMISATION_AREA_HEIGHT, true);
         this.iterationSpinner = new DeepSpinner(Constants.ITERATIONS,
-                                    Constants.ITERATION_MIN_VALUE, Constants.ITERATION_MAX_VALUE,
+                                    Constants.ITERATION_MIN_VALUE,
+                                    Constants.ITERATION_MAX_VALUE,
                                     scene);
+        this.iterationSpinner.setIncrement(Constants.DEFAULT_ITERATION_COUNT_INCREMENT);
 
         this.add(new DeepTitleLabel(Constants.OPTIMIZATION));
 

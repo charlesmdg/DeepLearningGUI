@@ -28,4 +28,8 @@ public class Main extends Application {
         stage.setTitle(Constants.MAIN_WINDOW_TITLE);
         stage.setOnCloseRequest(e -> {Platform.exit(); System.exit(0);});
     }
+    
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
 }

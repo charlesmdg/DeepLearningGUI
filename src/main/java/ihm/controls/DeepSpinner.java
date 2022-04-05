@@ -10,13 +10,19 @@ import javafx.scene.control.SpinnerValueFactory;
 public class DeepSpinner extends Spinner<Integer> {
     private final int minValue;
     private final int maxValue;
+    private int increment;
     private final String text;
+
+    public void setIncrement(int increment) {
+        this.increment = increment;
+    }
 
     public DeepSpinner(String text, int minValue, int maxValue, TheScene scene) {
         super();
         this.text = text;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.increment = Constants.DEFAULT_SPINNER_INCREMENT;
         Tools.setWidth(this, Constants.SPINNER_WIDTH);
 
         this.editorProperty().get().setAlignment(Pos.CENTER);
@@ -39,8 +45,9 @@ public class DeepSpinner extends Spinner<Integer> {
     }
 
     private void setValueFactory() {
-        SpinnerValueFactory<Integer> valueFactory =
+        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(this.minValue, this.maxValue);
+        valueFactory.setAmountToStepBy(this.increment);
         this.setValueFactory(valueFactory);
 
     }

@@ -23,8 +23,8 @@ public class Constants {
     public static final int RADIO_BUTTON_GROUP_WIDTH = 150;
     public static final int RADIO_BUTTON_GROUP_HEIGHT = 94;
 
-    public static final int SPINNER_WIDTH = 70;
-    public static final int COMBOBOX_WIDTH = 190;
+    public static final int SPINNER_WIDTH = 90;
+    public static final int COMBOBOX_WIDTH = 90;
     public static final int TEXT_TEXTFIELD_WIDTH = 115;
     public static final int NUM_TEXTFIELD_WIDTH = 60;
     public static final int INPUT_FIELD_MAX_WIDTH = 210;
@@ -125,8 +125,11 @@ public class Constants {
     public static final String PARAMETERS = "Paramètre(s)";
     public static final String ITERATIONS = "Itérations";
 
+    public static final int DEFAULT_SPINNER_INCREMENT = 1;
+
     public static final int ITERATION_MIN_VALUE = 0;
-    public static final int ITERATION_MAX_VALUE = 1000;
+    public static final int ITERATION_MAX_VALUE = 10000;
+    public static final int DEFAULT_ITERATION_COUNT_INCREMENT = 1000;
 
     public static final int INPUT_MIN_VALUE = 1;
     public static final int INPUT_MAX_VALUE = 12;
@@ -155,13 +158,13 @@ public class Constants {
 
     public static final String[] OPTIMIZERS = {STOCHASTIC_GRADIENT, ADAM, NADAM, NESTEROV, ADAMAX};
     public static final double DEFAULT_LEARNING_RATE = 0.1;
-    public static final int DEFAULT_ITERATION_COUNT = 100;
+    public static final int DEFAULT_ITERATION_COUNT = 1000;
     public static final double DEFAULT_TRAINING = 0.75;
 
     public static final String CLASSIFICATION_TRAINING_DISPLAY_INTRODUCTION = "Exactitude de l'itération n° ";
     public static final String REGRESSION_TRAINING_DISPLAY_INTRODUCTION = "Erreur relative moyenne de l'itération n° ";
     public static final String PERCENT = " %";
-    public static final int TRAINING_DELAY = 100;
+    public static final int TRAINING_DELAY = 1;
     public static final int ANIMATION_PERIOD = 600;
     public static final int NEURON_RADIUS = 10;
     public static final Color INPUT_OUPUT_NEURON_FILL_COLOR = Color.BLUE;

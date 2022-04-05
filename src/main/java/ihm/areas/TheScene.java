@@ -222,7 +222,7 @@ public class TheScene extends Scene implements MenuItemListener {
 
 
     /**
-     * declenche quann on change un spinner du cadre architecture
+     * declenche quand on change un spinner du cadre architecture
      *
      * @param spinnerText le spinner modifie
      * @param newValue    la nouvelle valeur du spinner

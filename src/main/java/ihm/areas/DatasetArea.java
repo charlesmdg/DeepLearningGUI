@@ -4,14 +4,12 @@ import common.Constants;
 import common.Tools;
 import data.CsvLoader;
 import ihm.controls.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.layout.Region;
 
 public class DatasetArea extends DeepVInputArea {
 
     private final DeepTextField csvFileTextField = new DeepTextField(false);
-    private final DeepComboBox targetVariableComboBox = new DeepComboBox(Constants.EMPTY_STRINGS);
+    private final DeepTextField targetVariableNameTextField = new DeepTextField(false);
     private final DeepTextField trainingTextField = new DeepNumericalTextField(true);
     private final DeepComboBox pretreatmentComboBox = new DeepComboBox(Constants.PRETREATMENT_OPTIONS);
     private final DeepButton chooseButton;
@@ -32,7 +30,7 @@ public class DatasetArea extends DeepVInputArea {
         Tools.setWidth(this.trainingTextField, Constants.NUM_TEXTFIELD_WIDTH);
 
         String[] labelTexts = {Constants.CSV_FILE, Constants.TARGET_VARIABLE, Constants.TRAINING_RATE, Constants.PRETREATMENT};
-        Region[] regions = {hBox, this.targetVariableComboBox, this.trainingTextField, this.pretreatmentComboBox};
+        Region[] regions = {hBox, this.targetVariableNameTextField, this.trainingTextField, this.pretreatmentComboBox};
         this.fill(labelTexts, regions);
     }
 
@@ -45,7 +43,7 @@ public class DatasetArea extends DeepVInputArea {
     public void setChildrenDisabled(boolean disabled) {
         this.csvFileTextField.setDisable(disabled);
         this.chooseButton.setDisable(disabled);
-        this.targetVariableComboBox.setDisable(disabled);
+        this.targetVariableNameTextField.setDisable(disabled);
         this.trainingTextField.setDisable(disabled);
         this.pretreatmentComboBox.setDisable(disabled);
     }
@@ -55,7 +53,7 @@ public class DatasetArea extends DeepVInputArea {
     }
 
     public void setTargetVariable(String targetVariable) {
-        this.targetVariableComboBox.setValue(targetVariable);
+        this.targetVariableNameTextField.setText(targetVariable);
     }
 
     public void setTraining(double training) {
@@ -66,13 +64,8 @@ public class DatasetArea extends DeepVInputArea {
         this.pretreatmentComboBox.setValue(pretreatment);
     }
 
-    public void setTargetVariableComboBoxItemList(String[] columnNames) {
-        ObservableList<String> list = FXCollections.observableArrayList(columnNames);
-        this.targetVariableComboBox.setItems(list);
-    }
-
     public String getTargetVariableName() {
-        return this.targetVariableComboBox.getSelectionModel().getSelectedItem();
+        return this.targetVariableNameTextField.getText();
     }
 
     public double getTrainingProportion(){
@@ -86,7 +79,6 @@ public class DatasetArea extends DeepVInputArea {
     public CsvLoader getCsvLoader() {
         return this.csvLoader;
     }
-
 
     public DeepTextField getTrainingTextField() {
         return this.trainingTextField;

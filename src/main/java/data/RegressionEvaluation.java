@@ -33,5 +33,4 @@ public class RegressionEvaluation extends Evaluation {
     public double getIndicatorValue() {
         return this.mape;
     }
-
 }

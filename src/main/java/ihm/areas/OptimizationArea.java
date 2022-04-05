@@ -75,4 +75,12 @@ public class OptimizationArea extends DeepVInputArea {
     public DeepTextField getParameterTextField() {
         return this.parameterTextField;
     }
+
+    public DeepComboBox getLossFunctionComboBox() {
+        return this.lossFunctionComboBox;
+    }
+
+    public DeepComboBox getOptimizerComboBox() {
+        return this.optimizerComboBox;
+    }
 }

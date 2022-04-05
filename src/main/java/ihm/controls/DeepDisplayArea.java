@@ -35,6 +35,14 @@ public class DeepDisplayArea extends DeepVInputArea {
         this.println(o.toString());
     }
 
+    public void setText(String text){
+        this.textArea.setText(text);
+    }
+
+    public void setText(Object o){
+        this.setText(o.toString());
+    }
+
     public void clear(){
         this.textArea.clear();
     }

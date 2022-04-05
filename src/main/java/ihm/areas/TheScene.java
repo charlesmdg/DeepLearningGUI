@@ -199,7 +199,6 @@ public class TheScene extends Scene implements MenuItemListener {
         }
     }
 
-
     private void newMenuItemClicked() {
         this.hBox.setVisible(true);
         this.predictionTypeArea.setChildrenDisabled(false);
@@ -278,7 +277,6 @@ public class TheScene extends Scene implements MenuItemListener {
     private void fillDatasetArea(File file) {
         this.datasetArea.setCsvFile(file.getName());
         CsvLoader csvLoader = this.datasetArea.getCsvLoader();
-        this.datasetArea.setTargetVariableComboBoxItemList(csvLoader.getColumnNames());
         String[] columnNames = csvLoader.getColumnNames();
         //A ce stade, apres le csvLoader.check columnNames.length >=2
         this.datasetArea.setTargetVariable(columnNames[columnNames.length - 1]);
@@ -437,7 +435,8 @@ public class TheScene extends Scene implements MenuItemListener {
                         Thread.sleep(Constants.TRAINING_DELAY);
                         data.Evaluation evaluation = this.iaModel.train();
                         this.optimizationArea.getIterationSpinner().decrement();
-                        this.trainingArea.println(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
+//                        this.trainingArea.println(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
+//                        this.trainingArea.setText(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
                     }
 
                     this.evaluateModel();
@@ -486,5 +485,24 @@ public class TheScene extends Scene implements MenuItemListener {
             this.optimizationArea.setIterationCount(Constants.DEFAULT_ITERATION_COUNT);
             this.buttonArea.getcancelTrainingButton().setDisable(true);
         }
+    }
+
+    private void saveConfiguration(String filePath) throws Exception{
+        TrainingConfiguration trainingConfiguration = new TrainingConfiguration(
+                this.predictionTypeArea.getPredictionType(),
+                this.datasetArea.getCsvLoader().getFilePath(),
+                this.datasetArea.getTargetVariableName(),
+                this.datasetArea.getTrainingProportion(),
+                this.datasetArea.getPretreatment(),
+                this.architectureArea.getInputCount(),
+                this.architectureArea.getOutputCount(),
+                this.architectureArea.getHiddenLayerCount(),
+                this.architectureArea.getActivationFunction(),
+                this.optimizationArea.getLossFunction(),
+                this.optimizationArea.getOptimizer(),
+                this.optimizationArea.getLearningRate(),
+                this.optimizationArea.getIterationCount()
+        );
+        Tools.serialize(trainingConfiguration, filePath);
     }
 }

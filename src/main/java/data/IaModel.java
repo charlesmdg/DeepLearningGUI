@@ -241,6 +241,7 @@ public class IaModel implements Serializable {
     }
 
 
+
     /**
      * effectue une iteration de l'entrainement du modele sur tout le jeu d'entrainement
      * @return l'objet qui regroupe les indicateurs de qualite des predictions

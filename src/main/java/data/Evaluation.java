@@ -10,7 +10,7 @@ public abstract class Evaluation {
 
     public abstract String toStringWithIteration(int iteration);
     public abstract double getIndicatorValue();
-    
+
     public static double mse(INDArray yTrue, INDArray yPred){
         try {
             return Double.parseDouble(String.valueOf(Nd4j.sum((yTrue.sub(yPred)).mul(yTrue.sub(yPred))).div(yTrue.shape()[0])));

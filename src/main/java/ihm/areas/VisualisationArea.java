@@ -49,9 +49,15 @@ public class VisualisationArea extends DeepPane {
     public void drawNetwork(int inputCount, int outputCount, int hiddenLayerCount) {
         this.clear();
 
-        this.inputCount = inputCount;
-        this.outputCount = outputCount;
-        this.hiddenLayerCount = hiddenLayerCount;
+
+//        this.inputCount = inputCount;
+//        this.outputCount = outputCount;
+//        this.hiddenLayerCount = hiddenLayerCount;
+
+// Limitation du nombre de neurones et de couches dessines
+        this.inputCount = Math.min(inputCount, Constants.INPUT_MAX_VALUE);
+        this.outputCount = Math.min(outputCount, Constants.OUTPUT_MAX_VALUE);
+        this.hiddenLayerCount = Math.min(hiddenLayerCount, Constants.HIDDEN_LAYER_COUNT_MAX_VALUE);
 
         this.initizeNetwork(inputCount, outputCount, hiddenLayerCount);
 
@@ -72,6 +78,10 @@ public class VisualisationArea extends DeepPane {
         for (int ii = 0; ii < hiddenLayerCount; ii++) {
             hiddenLayerNeuronCounts.add(inputCount);
         }
+// Limitation du nombre de neurones par couches dessines
+//        for (int ii = 0; ii < hiddenLayerNeuronCounts.size(); ii++) {
+//            hiddenLayerNeuronCounts.set(ii, Math.min(hiddenLayerNeuronCounts.get(ii), Constants.INPUT_MAX_VALUE));
+//        }
 
         this.network = Network.createNetwork(inputCount, outputCount, hiddenLayerCount, hiddenLayerNeuronCounts);
         this.network.pack(this.drawPane.getWidth(), this.drawPane.getHeight());
@@ -116,8 +126,8 @@ public class VisualisationArea extends DeepPane {
             this.clear();
         } else {
             this.drawNetwork(this.inputCount,
-                            this.outputCount,
-                            this.hiddenLayerCount);
+                    this.outputCount,
+                    this.hiddenLayerCount);
         }
     }
 

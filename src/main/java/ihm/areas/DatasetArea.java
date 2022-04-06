@@ -47,15 +47,16 @@ public class DatasetArea extends DeepVInputArea {
         this.pretreatmentComboBox.setDisable(disabled);
     }
 
-    public void setCsvFile(String csvFile) {
+    public void setCsvFileName(String csvFile) {
         this.csvFileTextField.setText(csvFile);
+        this.csvFileTextField.positionCaret(this.csvFileTextField.getLength());
     }
 
     public void setTargetVariableName(String targetVariable) {
         this.targetVariableNameTextField.setText(targetVariable);
     }
 
-    public void setTraining(double training) {
+    public void setTrainingSplit(double training) {
         this.trainingTextField.setText(String.valueOf(training));
     }
 
@@ -81,5 +82,9 @@ public class DatasetArea extends DeepVInputArea {
 
     public DeepTextField getTrainingTextField() {
         return this.trainingTextField;
+    }
+
+    public DeepTextField getCsvFileTextField() {
+        return this.csvFileTextField;
     }
 }

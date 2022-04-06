@@ -24,4 +24,8 @@ public class Message {
     public static final String CANCEL_TRAINING_CONFIRMATION = "Souhaitez-vous vraiment recommencer tout l'entraînement du modèle ?";
     public static final String SAVE_ERROR = "Erreur dans l'enregistrement de la configuration.";
     public static final String READ_ERROR = "Erreur dans la lecture du fichier de configuration.";
+    public static final String MODEL_SAVE_ERROR = "Erreur dans l'enregistrement du modèle.";
+    public static final String MODEL_LOAD_ERROR = "Erreur dans le chargement du modèle.";
+    public static final String DATA_SAVE_ERROR = "Erreur dans l'enregistrement du jeu de données.";
+    public static final String DATA_LOAD_ERROR = "Erreur dans le chargement du jeu de données.";
 }

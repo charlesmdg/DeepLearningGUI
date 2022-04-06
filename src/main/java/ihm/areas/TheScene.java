@@ -14,13 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.util.Optional;
 
 public class TheScene extends Scene implements MenuItemListener {
 
-    private  DeepHBox hBox;
+    private DeepHBox hBox;
     private final PredictionTypeArea predictionTypeArea = new PredictionTypeArea(this);
     private final DatasetArea datasetArea = new DatasetArea(this);
     private final ArchitectureArea architectureArea;
@@ -210,8 +209,8 @@ public class TheScene extends Scene implements MenuItemListener {
         if (file != null) {
             String pathFile = file.getPath();
             try {
-                TrainingConfiguration trainingConfiguration = (TrainingConfiguration)Tools.deSerialize(pathFile);
-                System.out.println(trainingConfiguration);
+                TrainingConfiguration trainingConfiguration = (TrainingConfiguration) Tools.deSerialize(pathFile);
+                this.loadTraningConfiguration(trainingConfiguration, pathFile);
             } catch (Exception e) {
                 e.printStackTrace();
                 Tools.error(Message.SAVE_ERROR);
@@ -230,6 +229,11 @@ public class TheScene extends Scene implements MenuItemListener {
             String pathFile = file.getPath();
             TrainingConfiguration trainingConfiguration = this.getTraningConfiguration();
             try {
+                if(iaModel != null){
+                    this.iaModel.saveModel(pathFile.replace(Constants.CFG, Constants.MDL));
+                    this.iaModel.saveData(pathFile.replace(Constants.CFG, Constants.TRG),
+                                        pathFile.replace(Constants.CFG, Constants.EVN));
+                }
                 Tools.serialize(trainingConfiguration, pathFile);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -293,12 +297,12 @@ public class TheScene extends Scene implements MenuItemListener {
     }
 
     private void fillDatasetArea(File file) {
-        this.datasetArea.setCsvFile(file.getName());
+        this.datasetArea.setCsvFileName(file.getPath());
         CsvLoader csvLoader = this.datasetArea.getCsvLoader();
         String[] columnNames = csvLoader.getColumnNames();
         //A ce stade, apres le csvLoader.check columnNames.length >=2
         this.datasetArea.setTargetVariableName(columnNames[columnNames.length - 1]);
-        this.datasetArea.setTraining(Constants.DEFAULT_TRAINING);
+        this.datasetArea.setTrainingSplit(Constants.DEFAULT_TRAINING);
         this.datasetArea.setPretreatment(Constants.STANDARD_SCALER);
     }
 
@@ -326,7 +330,7 @@ public class TheScene extends Scene implements MenuItemListener {
 
         this.architectureArea.setInputCount(inputCount);
         this.architectureArea.setOutputCount(outputCount);
-        this.architectureArea.sethiddenLayerCount(hiddenLayerCount);
+        this.architectureArea.setHiddenLayerCount(hiddenLayerCount);
         this.architectureArea.setActivationFunction(activationFunction);
     }
 
@@ -349,19 +353,23 @@ public class TheScene extends Scene implements MenuItemListener {
 
     public void initModelIfNecessary() {
         if (this.iaModel == null) {
-            this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
-                    this.architectureArea.getInputCount(),
-                    this.architectureArea.getOutputCount(),
-                    this.architectureArea.getHiddenLayerCount(),
-                    this.architectureArea.getActivationFunction(),
-                    this.optimizationArea.getLossFunction(),
-                    this.optimizationArea.getOptimizer(),
-                    this.optimizationArea.getLearningRate());
+            this.initIaModel();
         }
 
         if (!this.iaModel.modelReady()) {
             this.iaModel.initModel();
         }
+    }
+
+    public void initIaModel() {
+        this.iaModel = new IaModel(this.predictionTypeArea.getPredictionType(),
+                this.architectureArea.getInputCount(),
+                this.architectureArea.getOutputCount(),
+                this.architectureArea.getHiddenLayerCount(),
+                this.architectureArea.getActivationFunction(),
+                this.optimizationArea.getLossFunction(),
+                this.optimizationArea.getOptimizer(),
+                this.optimizationArea.getLearningRate());
     }
 
     public void splitDataIfNecessary() throws Exception {
@@ -453,8 +461,7 @@ public class TheScene extends Scene implements MenuItemListener {
                         Thread.sleep(Constants.TRAINING_DELAY);
                         data.Evaluation evaluation = this.iaModel.train();
                         this.optimizationArea.getIterationSpinner().decrement();
-//                        this.trainingArea.println(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
-//                        this.trainingArea.setText(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
+                        this.trainingArea.println(evaluation.toStringWithIteration(this.iaModel.getAchievedInterationCount()));
                     }
 
                     this.evaluateModel();
@@ -505,8 +512,9 @@ public class TheScene extends Scene implements MenuItemListener {
         }
     }
 
-    private TrainingConfiguration getTraningConfiguration(){
-
+    private TrainingConfiguration getTraningConfiguration() {
+        int achievedIterationCount = (this.iaModel != null) ? this.iaModel.getAchievedInterationCount() : Constants.IMPOSSIBLE_INDEX;
+        double achivedLatestIndicatorValue = (this.iaModel != null) ? this.iaModel.getAchivedLatestIndicatorValue() : Constants.IMPOSSIBLE_INDEX;
         return new TrainingConfiguration(
                 this.predictionTypeArea.getPredictionType(),
                 this.datasetArea.getCsvLoader().getFilePath(),
@@ -520,10 +528,44 @@ public class TheScene extends Scene implements MenuItemListener {
                 this.optimizationArea.getLossFunction(),
                 this.optimizationArea.getOptimizer(),
                 this.optimizationArea.getLearningRate(),
-                this.optimizationArea.getIterationCount()
+                this.optimizationArea.getIterationCount(),
+                this.iaModel != null,
+                achievedIterationCount,
+                achivedLatestIndicatorValue
         );
     }
 
-    private void loadTraningConfiguration(TrainingConfiguration trainingConfiguration){
+    private void loadTraningConfiguration(TrainingConfiguration trainingConfiguration, String filePath) {
+        if (this.datasetArea.checkCsvFile(trainingConfiguration.getCsvFilePath())) {
+            this.predictionTypeArea.setPredictionType(trainingConfiguration.getPredictionType());
+            this.datasetArea.setCsvFileName(trainingConfiguration.getCsvFilePath());
+            this.datasetArea.setTargetVariableName(trainingConfiguration.getTargetVariableName());
+            this.datasetArea.setTrainingSplit(trainingConfiguration.getTrainingSplit());
+            this.datasetArea.setPretreatment(trainingConfiguration.getPretreatement());
+            this.architectureArea.setInputCount(trainingConfiguration.getInputCount());
+            this.architectureArea.setOutputCount(trainingConfiguration.getOutputCount());
+            this.architectureArea.setHiddenLayerCount(trainingConfiguration.getHiddenLayerCount());
+            this.architectureArea.setActivationFunction(trainingConfiguration.getActivationFunction());
+            this.optimizationArea.setLossFunction(trainingConfiguration.getLossFunction());
+            this.optimizationArea.setOptimizer(trainingConfiguration.getOptimizer());
+            this.optimizationArea.setParameter(trainingConfiguration.getLearningRate());
+            this.optimizationArea.setIterationCount(trainingConfiguration.getIterationCount());
+            this.hBox.setVisible(true);
+
+            this.predictionTypeArea.setChildrenDisabled(true);
+            this.datasetArea.setChildrenDisabled(false);
+            this.architectureArea.setChildrenDisabled(false);
+            this.optimizationArea.setChildrenDisabled(false);
+            this.buttonArea.getTrainButton().setDisable(false);
+
+            if(trainingConfiguration.isTrainingStarted()){
+                this.initIaModel();
+                this.iaModel.loadModel(filePath.replace(Constants.CFG, Constants.MDL));
+                this.iaModel.loadData(filePath.replace(Constants.CFG, Constants.TRG),
+                                    filePath.replace(Constants.CFG, Constants.EVN));
+                this.iaModel.setAchievedInterationCount(trainingConfiguration.getAchievedInterationCount());
+                this.iaModel.setAchivedLatestIndicatorValue(trainingConfiguration.getAchivedLatestIndicatorValue());
+            }
+        }
     }
 }

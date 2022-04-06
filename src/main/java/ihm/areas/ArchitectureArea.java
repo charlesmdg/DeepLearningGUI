@@ -1,28 +1,26 @@
 package ihm.areas;
 
+import common.Constants;
 import ihm.controls.DeepComboBox;
 import ihm.controls.DeepSpinner;
 import ihm.controls.DeepTitleLabel;
 import ihm.controls.DeepVInputArea;
 import javafx.scene.layout.Region;
 
-import static common.Constants.*;
-
 public class ArchitectureArea extends DeepVInputArea {
     private final DeepSpinner inputCountSpinner;
     private final DeepSpinner outputCountSpinner;
     private final DeepSpinner hiddenLayerCountSpinner;
-    private final DeepComboBox activationFunctionComboBox = new DeepComboBox(ACTIVATION_FUNCTIONS);
+    private final DeepComboBox activationFunctionComboBox = new DeepComboBox(Constants.ACTIVATION_FUNCTIONS);
 
     public ArchitectureArea(TheScene scene) {
-        super(PARAMETER_AREA_WIDTH, ARCHITECTURE_AREA_HEIGHT, true);
-        this.inputCountSpinner = new DeepSpinner(INPUTS, INPUT_MIN_VALUE, INPUT_MAX_VALUE, scene);
-        this.outputCountSpinner = new DeepSpinner(OUTPUTS, OUTPUT_MIN_VALUE, OUTPUT_MAX_VALUE, scene);
-        this.hiddenLayerCountSpinner = new DeepSpinner(HIDDEN_LAYERS, HIDDEN_LAYER_MIN_VALUE, HIDDEN_LAYER_MAX_VALUE, scene);
+        super(Constants.PARAMETER_AREA_WIDTH, Constants.ARCHITECTURE_AREA_HEIGHT, true);
+        this.inputCountSpinner = new DeepSpinner(Constants.INPUTS, Constants.INPUT_MIN_VALUE, Constants.INPUT_MAX_VALUE, scene);
+        this.outputCountSpinner = new DeepSpinner(Constants.OUTPUTS, Constants.OUTPUT_MIN_VALUE, Constants.OUTPUT_MAX_VALUE, scene);
+        this.hiddenLayerCountSpinner = new DeepSpinner(Constants.HIDDEN_LAYERS, Constants.HIDDEN_LAYER_COUNT_MIN_VALUE, Constants.HIDDEN_LAYER_COUNT_MAX_VALUE, scene);
+        this.add(new DeepTitleLabel(Constants.ARCHITECTURE));
 
-        this.add(new DeepTitleLabel(ARCHITECTURE));
-
-        String[] labelTexts = {INPUTS, OUTPUTS, HIDDEN_LAYERS, ACTIVATION_FUNCTION};
+        String[] labelTexts = {Constants.INPUTS, Constants.OUTPUTS, Constants.HIDDEN_LAYERS, Constants.ACTIVATION_FUNCTION};
         Region[] regions = {this.inputCountSpinner, this.outputCountSpinner, this.hiddenLayerCountSpinner, this.activationFunctionComboBox};
         this.fill(labelTexts, regions);
     }
@@ -58,7 +56,7 @@ public class ArchitectureArea extends DeepVInputArea {
         this.outputCountSpinner.setValue(outputCount);
     }
 
-    public void sethiddenLayerCount(int hiddenLayerCount){
+    public void setHiddenLayerCount(int hiddenLayerCount){
         this.hiddenLayerCountSpinner.setValue(hiddenLayerCount);
     }
 

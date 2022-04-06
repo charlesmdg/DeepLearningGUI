@@ -1,5 +1,7 @@
 package ihm.areas;
 
+import data.IaModel;
+
 import java.io.Serializable;
 
 public class TrainingConfiguration implements Serializable {
@@ -16,12 +18,17 @@ public class TrainingConfiguration implements Serializable {
     private final String optimizer;
     private final double learningRate;
     private final int iterationCount;
+    private final boolean trainingStarted;
+    private final int achievedInterationCount;
+    private final double achivedLatestIndicatorValue;
 
     public TrainingConfiguration(String predictionType, String csvFilePath, String targetVariableName,
                                  double trainingSplit, String pretreatement,
                                  int inputCount, int outputCount, int hiddenLayerCount, String activationFunction,
                                  String lossFunction,
-                                 String optimizer, double learningRate, int iterationCount) {
+                                 String optimizer, double learningRate, int iterationCount,
+                                 boolean trainingStarted,
+                                 int achievedInterationCount, double achivedLatestIndicatorValue) {
         this.predictionType = predictionType;
         this.csvFilePath = csvFilePath;
         this.targetVariableName = targetVariableName;
@@ -35,6 +42,9 @@ public class TrainingConfiguration implements Serializable {
         this.optimizer = optimizer;
         this.learningRate = learningRate;
         this.iterationCount = iterationCount;
+        this.trainingStarted = trainingStarted;
+        this.achievedInterationCount = achievedInterationCount;
+        this.achivedLatestIndicatorValue = achivedLatestIndicatorValue;
     }
 
     public String getCsvFilePath() {
@@ -88,6 +98,19 @@ public class TrainingConfiguration implements Serializable {
     public String getPredictionType() {
         return this.predictionType;
     }
+
+    public boolean isTrainingStarted() {
+        return this.trainingStarted;
+    }
+
+    public int getAchievedInterationCount() {
+        return this.achievedInterationCount;
+    }
+
+    public double getAchivedLatestIndicatorValue() {
+        return this.achivedLatestIndicatorValue;
+    }
+
 }
 
 

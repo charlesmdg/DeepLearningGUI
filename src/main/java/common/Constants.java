@@ -74,10 +74,13 @@ public class Constants {
     public static final String[] EMPTY_STRINGS = {EMPTY_STRING};
     public static final int IMPOSSIBLE_INDEX = -1;
 
-    public static final String CSV = "CSV";
+    public static final String CSV = "csv";
     public static final String STAR_DOT_CSV = "*.csv";
-    public static final String CFG = "CFG";
+    public static final String CFG = "cfg";
     public static final String STAR_DOT_CFG = "*.cfg";
+    public static final String MDL = "mdl";
+    public static final String TRG = "trg";
+    public static final String EVN = "evn";
     public static final String ALL = "All";
     public static final String STAR_DOT_STAR = "*.*";
 
@@ -137,8 +140,8 @@ public class Constants {
     public static final int OUTPUT_MIN_VALUE = 1;
     public static final int OUTPUT_MAX_VALUE = 12;
 
-    public static final int HIDDEN_LAYER_MIN_VALUE = 1;
-    public static final int HIDDEN_LAYER_MAX_VALUE = 12;
+    public static final int HIDDEN_LAYER_COUNT_MIN_VALUE = 1;
+    public static final int HIDDEN_LAYER_COUNT_MAX_VALUE = 12;
 
     public static final String MEAN_SQUARED_ERROR = "Mean squared error";
     public static final String HINGE_ERROR = "Hinge error";

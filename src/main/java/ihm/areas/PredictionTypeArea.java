@@ -26,6 +26,10 @@ public class PredictionTypeArea extends DeepVInputArea {
         this.fill(regions);
     }
 
+    public void setPredictionType(String predictionType){
+        this.radioButtonGroup.setSelectedRadioButton(predictionType);
+    }
+
     public void setChildrenDisabled(boolean disabled){
         this.radioButtonGroup.setChildrenDisabled(disabled);
     }

@@ -1,6 +1,7 @@
 package data;
 
 import common.Constants;
+import common.Message;
 import common.Tools;
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
@@ -25,6 +26,7 @@ import org.nd4j.linalg.learning.config.*;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class IaModel implements Serializable {
@@ -42,6 +44,27 @@ public class IaModel implements Serializable {
     private int achievedInterationCount = 0;
     private double achivedLatestIndicatorValue = Constants.IMPOSSIBLE_INDEX;
 
+    public void setTrainingData(DataSet trainingData) {
+        this.trainingData = trainingData;
+    }
+
+    public void setEvaluationData(DataSet evaluationData) {
+        this.evaluationData = evaluationData;
+    }
+
+    public void setAchievedInterationCount(int achievedInterationCount) {
+        this.achievedInterationCount = achievedInterationCount;
+    }
+
+    public void setAchivedLatestIndicatorValue(double achivedLatestIndicatorValue) {
+        this.achivedLatestIndicatorValue = achivedLatestIndicatorValue;
+    }
+
+    public void setModel(MultiLayerNetwork model) {
+        this.model = model;
+    }
+
+
     public IaModel(String predictionType,
                    int inputCount, int outputCount, int hiddenLayerCount,
                    String activationFunction, String lossFunction, String optimizer,
@@ -55,7 +78,6 @@ public class IaModel implements Serializable {
         this.lossFunction = lossFunction;
         this.learningRate = learningRate;
         this.optimizer = optimizer;
-        this.initModel();
     }
 
     /**
@@ -275,6 +297,44 @@ public class IaModel implements Serializable {
             double mae = data.Evaluation.mae(dataset.getLabels(), output);
             double mape = data.Evaluation.mape(dataset.getLabels(), output);
             return new data.RegressionEvaluation(mae, mse, mape);
+        }
+    }
+
+    public void saveModel(String filePath){
+        try {
+            this.model.save(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            Tools.error(Message.MODEL_SAVE_ERROR);
+        }
+    }
+
+    public void loadModel(String filePath){
+        try {
+            this.model = MultiLayerNetwork.load(new File(filePath), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Tools.error(Message.MODEL_SAVE_ERROR);
+        }
+    }
+
+    public void saveData(String trainingDataFilePath, String evaluationDataFilePath){
+        try {
+            Tools.serialize(this.trainingData, trainingDataFilePath);
+            Tools.serialize(this.evaluationData, evaluationDataFilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Tools.error(Message.DATA_SAVE_ERROR);
+        }
+    }
+
+    public void loadData(String trainingDataFilePath, String evaluationDataFilePath){
+        try {
+            this.trainingData = (DataSet) Tools.deSerialize(trainingDataFilePath);
+            this.evaluationData = (DataSet) Tools.deSerialize(evaluationDataFilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Tools.error(Message.DATA_LOAD_ERROR);
         }
     }
 

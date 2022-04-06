@@ -37,6 +37,15 @@ public class DeepRadioButtonGroup extends DeepVInputArea {
         return (DeepRadioButton) this.toggleGroup.getSelectedToggle();
     }
 
+    public void setSelectedRadioButton(String text) {
+        for(DeepRadioButton radioButton: this.deepRadioButtons){
+            if(radioButton.getText().equals(text)){
+                radioButton.selectedProperty().setValue(true);
+                break;
+            }
+        }
+    }
+
     public void setChildrenDisabled(boolean disabled){
         for(DeepRadioButton radioButton: deepRadioButtons){
             radioButton.setDisable(disabled);
